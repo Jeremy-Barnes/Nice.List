@@ -8,19 +8,60 @@
     <script type="text/javascript" src="/Scripts/knockout-3.3.0.js"></script>
     <script type="text/javascript" src="/Scripts/jquery-2.1.4.js"></script>
     <script type="text/javascript" src="/Scripts/jquery-ui-1.11.4.js"></script>
-    <script src="app.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="DTO/DTOs.js"></script>
 </head>
 <body>
-    <div data-bind="foreach: lines">
-        <div data-bind="text: $data.firstName"> </div>
+    <div class="main" data-bind="if:$root.status() == AppStatus.Landing">
+
+        <button data-bind="click: $root.getSignUp">
+            Sign Up!
+        </button>
     </div>
 
-    <button data-bind="click: $root.getData">
-        View All Users
-    </button>
+    <div class="main" data-bind="if: $root.status() == AppStatus.SignUp">
 
-    <button data-bind="click: $root.submitData">
-        Create A User
-    </button>
+        <form action="http://localhost:8080/api/nice/users/createUser" method="post" enctype="application/x-www-form-urlencoded" >
+            <div>
+                <label>Email Address</label> <input type="email" name="emailAddress" required />
+            </div>
+
+            <div data-bind="css: { passwordMismatch: passwordsMatch() == false}">
+                <label>Password</label> <input type="password" name="password" data-bind="textInput: user().password" required />
+                <label>Confirm Password</label> <input type="password" data-bind="textInput: passwordConfirm" required />
+            </div>
+            <div>
+                <input type="submit" value="Sign Up" data-bind="enable: passwordsMatch" />
+            </div>
+        </form>
+    </div>
+
+    <div class="main" data-bind="if: $root.status() == AppStatus.Account">
+        <form>
+            <div>
+                <label>First Name</label> <input type="text" name="firstName" data-bind="value: user().firstName" /> 
+                <label>Last Name</label> <input type="text" name="lastName" data-bind="value: user().lastName" />
+            </div>
+            <div>
+                <label>Email Address</label> <input type="email" name="emailAddress" data-bind="value: user().emailAddress" required />
+            </div>
+
+            <div data-bind="css: { passwordMismatch: passwordsMatch() == false}">
+                <label>New Password</label> <input type="password" name="password" data-bind="textInput: user().password" required />
+                <label>Confirm Password</label> <input type="password" data-bind="textInput: passwordConfirm" required />
+            </div>
+            <div>
+                <label>City</label> <input type="text" name="city" data-bind="value: user().city" required />
+                <label>State</label> <input type="text" name="state" data-bind="value: user().state" required />
+                <label>Zip/Post Code</label> <input type="text" data-bind="value: user().postcode"  name="postcode" required />
+                <br />
+                <label>Country</label> <input type="text" name="country" data-bind="value: user().country" required />
+            </div>
+            <div>
+                <input type="submit" value="Sign Up" data-bind="enable: passwordsMatch" />
+            </div>
+        </form>
+    </div>
+
 </body>
 </html>

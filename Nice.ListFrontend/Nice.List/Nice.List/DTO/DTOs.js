@@ -6,7 +6,6 @@ var User = (function () {
 var UserModel = (function () {
     function UserModel() {
         this.userID = ko.observable(0);
-        this.userName = ko.observable("");
         this.firstName = ko.observable("");
         this.lastName = ko.observable("");
         this.emailAddress = ko.observable("");

@@ -26,7 +26,6 @@
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
     <Content Include="Scripts\knockout-3.3.0.js" />
-    <Content Include="SignUp.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>

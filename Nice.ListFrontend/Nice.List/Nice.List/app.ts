@@ -10,11 +10,15 @@ $(document).ready(function () {
 });
 
 class App {
-    public lines: KnockoutObservableArray<UserModel>;
+    public user: KnockoutObservable<UserModel>;
+    public status: KnockoutObservable<AppStatus> = ko.observable(AppStatus.Landing);
+    public passwordConfirm: KnockoutObservable<string> = ko.observable("");
+    public passwordsMatch: KnockoutComputed<boolean>;
+
 
     constructor() {
-        this.lines = ko.observableArray<UserModel>();
-        var that = this;
+        this.user = ko.observable(new UserModel());
+        this.passwordsMatch = ko.pureComputed(() => { return this.user().password() == this.passwordConfirm();}, this);
     }//ctor
 
     public getData() {
@@ -30,7 +34,6 @@ class App {
             var items = o[0];
             for (let i = 0; i < o.length; i++) {
                 let item: User = o[i];
-                that.lines.push(ko.toJS(item));
             }
         }).fail(function (request: JQueryXHR) {
             alert(request);
@@ -68,4 +71,11 @@ class App {
 
     }
 
+    public getSignUp() {
+        this.status(AppStatus.SignUp);
+    }
+}
+
+enum AppStatus {
+    SignUp, Landing, Account, ViewUser
 }

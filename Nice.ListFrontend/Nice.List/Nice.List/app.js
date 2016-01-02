@@ -9,8 +9,11 @@ $(document).ready(function () {
 });
 var App = (function () {
     function App() {
-        this.lines = ko.observableArray();
-        var that = this;
+        var _this = this;
+        this.status = ko.observable(AppStatus.Landing);
+        this.passwordConfirm = ko.observable("");
+        this.user = ko.observable(new UserModel());
+        this.passwordsMatch = ko.pureComputed(function () { return _this.user().password() == _this.passwordConfirm(); }, this);
     } //ctor
     App.prototype.getData = function () {
         var settings = {
@@ -25,7 +28,6 @@ var App = (function () {
             var items = o[0];
             for (var i = 0; i < o.length; i++) {
                 var item = o[i];
-                that.lines.push(ko.toJS(item));
             }
         }).fail(function (request) {
             alert(request);
@@ -57,6 +59,16 @@ var App = (function () {
             alert(request);
         });
     };
+    App.prototype.getSignUp = function () {
+        this.status(AppStatus.SignUp);
+    };
     return App;
 })();
+var AppStatus;
+(function (AppStatus) {
+    AppStatus[AppStatus["SignUp"] = 0] = "SignUp";
+    AppStatus[AppStatus["Landing"] = 1] = "Landing";
+    AppStatus[AppStatus["Account"] = 2] = "Account";
+    AppStatus[AppStatus["ViewUser"] = 3] = "ViewUser";
+})(AppStatus || (AppStatus = {}));
 //# sourceMappingURL=app.js.map

@@ -1,6 +1,5 @@
 ﻿class User {
     userID: number;
-    userName: string;
     firstName: string;
     lastName: string;
     emailAddress: string;
@@ -13,7 +12,6 @@
 
 class UserModel {
     userID: KnockoutObservable<number> = ko.observable(0);
-    userName: KnockoutObservable<string> = ko.observable("");
     firstName: KnockoutObservable<string> = ko.observable("");
     lastName: KnockoutObservable<string> = ko.observable("");
     emailAddress: KnockoutObservable<string> = ko.observable("");

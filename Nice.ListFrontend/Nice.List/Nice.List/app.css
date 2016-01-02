@@ -5,3 +5,6 @@
 span {
     font-style: italic;
 }
+.passwordMismatch {
+    background-color: red;
+}
