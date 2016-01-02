@@ -38,9 +38,9 @@ public class UserInfoService {
 	@POST
 	@Path("/createUser")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public void putUser(@FormParam("userID") int userID, @FormParam("userName") String userName, @FormParam("firstName") String firstName, @FormParam("lastName") String lastName,
+	public void putUser(@FormParam("userID") int userID, String userName, @FormParam("firstName") String firstName, @FormParam("lastName") String lastName,
 						@FormParam("emailAddress") String emailAddress, @FormParam("password") String password, @FormParam("city") String city, @FormParam("state") String state,
 						@FormParam("country") String country, @FormParam("postcode") String postcode) {
-		UserBLL.createUser(new User(userID, userName, firstName, lastName, emailAddress, password, null, city, state, country, postcode));
+		UserBLL.createUser(new User(userID, firstName, lastName, emailAddress, password, null, city, state, country, postcode));
 	}
 }

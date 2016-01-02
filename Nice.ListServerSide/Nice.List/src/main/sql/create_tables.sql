@@ -1,7 +1,6 @@
 CREATE TABLE users(
 	userID SERIAL NOT NULL PRIMARY KEY,
-	userName VARCHAR(24) NOT NULL,
-	firstName VARCHAR(24) NOT NULL,
+	firstName VARCHAR(24),
 	lastName VARCHAR(24),
 	emailAddress VARCHAR(100) NOT NULL,
 	password VARCHAR NOT NULL,
@@ -10,7 +9,7 @@ CREATE TABLE users(
 	state VARCHAR(50),
 	country VARCHAR(50),
 	postcode VARCHAR(20),
-	CONSTRAINT uk_userName UNIQUE (userName)
+	CONSTRAINT uk_email UNIQUE (emailAddress)
 );
 
 CREATE TABLE wishlistItems(

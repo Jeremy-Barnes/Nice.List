@@ -19,7 +19,6 @@ public class User {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name="increment", strategy = "increment")
 	private int userID;
-	private String userName;
 	private String firstName;
 	private String lastName;
 	private String emailAddress;
@@ -33,9 +32,8 @@ public class User {
 	public User(){
 	}
 
-	public User(int userID, String userName, String firstName, String lastName, String emailAddress, String password, String salt, String city, String state, String country, String postcode) {
+	public User(int userID, String firstName, String lastName, String emailAddress, String password, String salt, String city, String state, String country, String postcode) {
 		this.userID = userID;
-		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.emailAddress = emailAddress;
@@ -53,14 +51,6 @@ public class User {
 
 	public void setUserID(int userID) {
 		this.userID = userID;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public String getFirstName() {
