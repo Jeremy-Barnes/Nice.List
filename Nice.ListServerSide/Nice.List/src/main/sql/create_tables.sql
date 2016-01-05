@@ -9,8 +9,8 @@ CREATE TABLE users(
 	state VARCHAR(50),
 	country VARCHAR(50),
 	postcode VARCHAR(20),
-	tokenSelector VARCHAR(64),
-	tokenValidator VARCHAR(64),
+	tokenSelector VARCHAR,
+	tokenValidator VARCHAR,
 	CONSTRAINT uk_email UNIQUE (emailAddress)
 );
 

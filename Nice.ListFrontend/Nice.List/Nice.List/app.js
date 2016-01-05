@@ -27,19 +27,8 @@ var App = (function () {
             this.getUser(selectorValidator[0], selectorValidator[1]);
         }
     };
-    App.prototype.getCookie = function () {
-        var settings = {
-            url: "http://localhost:8080/api/nice/users/" + "getCookie",
-            type: "GET",
-            crossDomain: true,
-            dataType: "text",
-        };
-        jQuery.ajax(settings).fail(function (request) {
-            alert(request);
-        });
-    };
     App.prototype.getUser = function (selector, validator) {
-        var valid = { selector: "test", validator: validator };
+        var valid = { selector: selector, validator: validator };
         var parameters = JSON.stringify(valid);
         var settings = {
             url: "http://localhost:8080/api/nice/users/" + "getUserFromToken",
@@ -64,32 +53,6 @@ var App = (function () {
         else {
             return null;
         }
-    };
-    App.prototype.submitData = function () {
-        var testUser = {
-            userID: 1,
-            userName: "Test Name",
-            firstName: "Jill",
-            lastName: "Smith",
-            city: "Anytown",
-            state: "IL",
-            country: "USA",
-            postcode: "74114",
-            emailAddress: "test@email.com",
-            password: "guest"
-        };
-        var parameters = JSON.stringify(testUser);
-        var settings = {
-            url: "http://localhost:8080/api/nice/users/" + "createUser",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: parameters,
-            crossDomain: true
-        };
-        jQuery.ajax(settings).fail(function (request) {
-            alert(request);
-        });
     };
     return App;
 })();
