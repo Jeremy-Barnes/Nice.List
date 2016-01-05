@@ -28,11 +28,14 @@ public class User {
 	private String state;
 	private String country;
 	private String postcode;
+	private String tokenSelector;
+	private String tokenValidator;
 
 	public User(){
 	}
 
-	public User(int userID, String firstName, String lastName, String emailAddress, String password, String salt, String city, String state, String country, String postcode) {
+	public User(int userID, String firstName, String lastName, String emailAddress, String password, String salt, String city, String state,
+				String country, String postcode, String tokenSelector, String tokenValidator) {
 		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -43,6 +46,8 @@ public class User {
 		this.state = state;
 		this.country = country;
 		this.postcode = postcode;
+		this.tokenSelector = tokenSelector;
+		this.tokenValidator = tokenValidator;
 	}
 
 	public int getUserID() {
@@ -123,5 +128,21 @@ public class User {
 
 	public void setPostcode(String postcode) {
 		this.postcode = postcode;
+	}
+
+	public String getTokenSelector() {
+		return tokenSelector;
+	}
+
+	public void setTokenSelector(String tokenSelector) {
+		this.tokenSelector = tokenSelector;
+	}
+
+	public String getTokenValidator() {
+		return tokenValidator;
+	}
+
+	public void setTokenValidator(String tokenValidator) {
+		this.tokenValidator = tokenValidator;
 	}
 }

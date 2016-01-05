@@ -17,4 +17,9 @@ var UserModel = (function () {
     }
     return UserModel;
 })();
+var Token = (function () {
+    function Token() {
+    }
+    return Token;
+})();
 //# sourceMappingURL=DTOs.js.map

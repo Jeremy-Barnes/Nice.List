@@ -14,24 +14,56 @@ var App = (function () {
         this.passwordConfirm = ko.observable("");
         this.user = ko.observable(new UserModel());
         this.passwordsMatch = ko.pureComputed(function () { return _this.user().password() == _this.passwordConfirm(); }, this);
+        this.initUser();
     } //ctor
-    App.prototype.getData = function () {
+    App.prototype.initUser = function () {
+        var siteCookie = this.findCookie();
+        if (siteCookie == null) {
+            //TODO kill these cookies
+            this.status(AppStatus.SignUp);
+        }
+        else {
+            var selectorValidator = siteCookie.split(":");
+            this.getUser(selectorValidator[0], selectorValidator[1]);
+        }
+    };
+    App.prototype.getCookie = function () {
         var settings = {
-            url: "http://localhost:8080/api/nice/users/" + "getAll",
+            url: "http://localhost:8080/api/nice/users/" + "getCookie",
             type: "GET",
+            crossDomain: true,
+            dataType: "text",
+        };
+        jQuery.ajax(settings).fail(function (request) {
+            alert(request);
+        });
+    };
+    App.prototype.getUser = function (selector, validator) {
+        var valid = { selector: "test", validator: validator };
+        var parameters = JSON.stringify(valid);
+        var settings = {
+            url: "http://localhost:8080/api/nice/users/" + "getUserFromToken",
+            type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
+            data: parameters,
             crossDomain: true
         };
-        var that = this;
+        var self = this;
         jQuery.ajax(settings).then(function (o) {
-            var items = o[0];
-            for (var i = 0; i < o.length; i++) {
-                var item = o[i];
-            }
+            self.user(ko.toJS(o));
         }).fail(function (request) {
             alert(request);
         });
+    };
+    App.prototype.findCookie = function () {
+        var usefulCookies = ("; " + document.cookie).split("; nicelist="); //everyone else's garbage ; mine
+        if (usefulCookies.length == 2) {
+            return usefulCookies[1];
+        }
+        else {
+            return null;
+        }
     };
     App.prototype.submitData = function () {
         var testUser = {
@@ -58,9 +90,6 @@ var App = (function () {
         jQuery.ajax(settings).fail(function (request) {
             alert(request);
         });
-    };
-    App.prototype.getSignUp = function () {
-        this.status(AppStatus.SignUp);
     };
     return App;
 })();

@@ -9,6 +9,8 @@ CREATE TABLE users(
 	state VARCHAR(50),
 	country VARCHAR(50),
 	postcode VARCHAR(20),
+	tokenSelector VARCHAR(64),
+	tokenValidator VARCHAR(64),
 	CONSTRAINT uk_email UNIQUE (emailAddress)
 );
 
@@ -53,4 +55,12 @@ CREATE TABLE friendGroupingEntry (
 	ownerID INT NOT NULL REFERENCES users(userID),
 	done BIT NOT NULL
 );
- 
+--
+-- CREATE TABLE tokens {
+-- 	tokenID SERIAL NOT NULL PRIMARY KEY,
+-- 	selector VARCHAR(12),
+-- 	token VARCHAR(64),
+-- 	userID INT NOT NULL REFERENCES users(userID),
+-- 	expires DATE
+-- }
+--

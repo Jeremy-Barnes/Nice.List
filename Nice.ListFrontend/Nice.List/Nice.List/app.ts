@@ -18,62 +18,49 @@ class App {
 
     constructor() {
         this.user = ko.observable(new UserModel());
-        this.passwordsMatch = ko.pureComputed(() => { return this.user().password() == this.passwordConfirm();}, this);
+        this.passwordsMatch = ko.pureComputed(() => { return this.user().password() == this.passwordConfirm(); }, this);
+        this.initUser();
     }//ctor
 
-    public getData() {
-        var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/users/" + "getAll",
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            crossDomain: true
-        };
-        var that = this;
-        jQuery.ajax(settings).then(function (o) {
-            var items = o[0];
-            for (let i = 0; i < o.length; i++) {
-                let item: User = o[i];
-            }
-        }).fail(function (request: JQueryXHR) {
-            alert(request);
-        });
-
+    private initUser(): void {
+        let siteCookie: string = this.findCookie();
+        if (siteCookie == null) { //no user or too many users
+            //TODO kill these cookies
+            this.status(AppStatus.SignUp);
+        } else {
+            let selectorValidator = siteCookie.split(":");
+            this.getUser(selectorValidator[0], selectorValidator[1]);
+        }
     }
 
-    public submitData() {
-        var testUser: User = {
-            userID : 1,
-            userName : "Test Name",
-            firstName : "Jill",
-            lastName : "Smith",
-            city : "Anytown",
-            state : "IL",
-            country: "USA",
-            postcode: "74114",
-            emailAddress: "test@email.com",
-            password: "guest"
-        };
-        var parameters = JSON.stringify(testUser);
-
+    public getUser(selector: string, validator: string) {
+        var valid: Token = { selector: selector, validator: validator}
+        var parameters = JSON.stringify(valid);
         var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/users/" + "createUser",
+            url: "http://localhost:8080/api/nice/users/" + "getUserFromToken",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: parameters,
             crossDomain: true
         };
-        jQuery.ajax(settings).fail(function (request: JQueryXHR) {
+        var self = this;
+        jQuery.ajax(settings).then(function (o: User) {
+            self.user(ko.toJS(o));
+        }).fail(function (request: JQueryXHR) {
             alert(request);
         });
-
-
     }
 
-    public getSignUp() {
-        this.status(AppStatus.SignUp);
+    private findCookie(): string {
+        let usefulCookies = ("; " + document.cookie).split("; nicelist="); //everyone else's garbage ; mine
+        if (usefulCookies.length == 2) {
+            return usefulCookies[1];
+        } else {
+            return null;
+        }
     }
+    
 }
 
 enum AppStatus {

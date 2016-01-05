@@ -22,4 +22,7 @@ class UserModel {
     postcode: KnockoutObservable<string> = ko.observable("");
 }
 
-
+class Token {
+    selector: string;
+    validator: string;
+}

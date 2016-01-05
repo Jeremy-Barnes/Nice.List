@@ -14,27 +14,31 @@
 <body>
     <div class="main" data-bind="if:$root.status() == AppStatus.Landing">
 
-        <button data-bind="click: $root.getSignUp">
-            Sign Up!
+        <button data-bind="click: $root.getCookie">
+            Test Cookie
         </button>
+
+        <button data-bind="click: $root.findCookie">
+            Find a Cookie
+        </button>
+
     </div>
 
     <div class="main" data-bind="if: $root.status() == AppStatus.SignUp">
+            <form action="http://localhost:8080/api/nice/users/createUser" method="post" enctype="application/x-www-form-urlencoded">
+                <div>
+                    <label>Email Address</label> <input type="email" name="emailAddress" required />
+                </div>
 
-        <form action="http://localhost:8080/api/nice/users/createUser" method="post" enctype="application/x-www-form-urlencoded" >
-            <div>
-                <label>Email Address</label> <input type="email" name="emailAddress" required />
-            </div>
-
-            <div data-bind="css: { passwordMismatch: passwordsMatch() == false}">
-                <label>Password</label> <input type="password" name="password" data-bind="textInput: user().password" required />
-                <label>Confirm Password</label> <input type="password" data-bind="textInput: passwordConfirm" required />
-            </div>
-            <div>
-                <input type="submit" value="Sign Up" data-bind="enable: passwordsMatch" />
-            </div>
-        </form>
-    </div>
+                <div data-bind="css: { passwordMismatch: passwordsMatch() == false}">
+                    <label>Password</label> <input type="password" name="password" data-bind="textInput: user().password" required />
+                    <label>Confirm Password</label> <input type="password" data-bind="textInput: passwordConfirm" required />
+                </div>
+                <div>
+                    <input type="submit" value="Sign Up" data-bind="enable: passwordsMatch" />
+                </div>
+            </form>
+</div>
 
     <div class="main" data-bind="if: $root.status() == AppStatus.Account">
         <form>
