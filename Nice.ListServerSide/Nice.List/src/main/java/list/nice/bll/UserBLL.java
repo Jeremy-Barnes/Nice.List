@@ -46,30 +46,52 @@ public class UserBLL {
 
 	public static User getUserLogin(String email, String password) throws GeneralSecurityException, UnsupportedEncodingException {
 		Session dbSession = HibernateUtil.getSessionFactory().openSession();
+		Transaction trans = dbSession.beginTransaction();
+
 		User user = (User) dbSession.createQuery("from User where emailAddress = :email").setParameter("email", email).uniqueResult();
-		dbSession.close();
+
+		String validator;
 		if(checkLogin(user.getPassword(), password, user.getSalt())) {
-			return user;
+			validator = createSelectorAndHashValidator(user);
+			dbSession.flush();
+			trans.commit();
+			dbSession.close();
+			user.setTokenValidator(validator);
 		} else {
-			return null;
+			user = null;
+			trans.rollback();;
+			dbSession.close();
 		}
+
+		return user;
 	}
 
-	public static User updateUser(User user){
+	public static User updateUser(User user, String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
+		User confirmUser = getUser(selector, validator);
+		if(confirmUser == null || confirmUser.getUserID() != user.getUserID()){
+			throw new GeneralSecurityException("Invalid Cookie");
+		}
+
 		Session dbSession = HibernateUtil.getSessionFactory().openSession();
 		Transaction trans = dbSession.beginTransaction();
 
-//		hashAndSaltPassword(user);
-//		String selectorUnHashed =createSelectorAndHashValidator(user);
+		if(user.getPassword() != null && !user.getPassword().isEmpty()) {
+			hashAndSaltPassword(user);
+		}
 
 		dbSession.update(user);
-
 		trans.commit();
 		dbSession.close();
 		return user;
 	}
 
-
+	public static User wipeSensitiveFields(User user) {
+		user.setSalt("");
+		user.setPassword("");
+		user.setTokenSelector("");
+		user.setTokenValidator("");
+		return user;
+	}
 
 	private static void hashAndSaltPassword(User user) throws GeneralSecurityException, UnsupportedEncodingException {
 		byte[] saltByte = new byte[16];

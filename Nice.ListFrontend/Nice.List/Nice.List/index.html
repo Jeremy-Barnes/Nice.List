@@ -13,12 +13,13 @@
     <script type="text/javascript" src="DTO/DTOs.js"></script>
 </head>
 <body>
+
     <div class="main" data-bind="if:status() == AppStatus.Landing">
 
         <button data-bind="click: findCookie">
             Find a Cookie
         </button>
-        <div> Welcome back <label data-bind="text: user().firstName" />! <br/> Maybe someday there will be content here.</div>
+        <div> Welcome back <label data-bind="text: user().firstName" />! </div> <div> <br/> Maybe someday there will be content here.</div>
 
     </div>
 
@@ -57,6 +58,7 @@
 
     <div class="main" data-bind="if: status() == AppStatus.Account">
         <form data-bind="submit: submitAccountChanges, with: user">
+
             <div>
                 <label>First Name</label> <input type="text" name="firstName" data-bind="value: firstName" /> 
                 <label>Last Name</label> <input type="text" name="lastName" data-bind="value: lastName" />
@@ -66,8 +68,8 @@
             </div>
 
             <div data-bind="css: { passwordMismatch: $root.passwordsMatch() == false}">
-                <label>New Password</label> <input type="password" name="password" data-bind="textInput: password" required />
-                <label>Confirm Password</label> <input type="password" data-bind="textInput: $root.passwordConfirm" required />
+                <label>New Password</label> <input type="password" name="password" data-bind="textInput: password" />
+                <label>Confirm Password</label> <input type="password" data-bind="textInput: $root.passwordConfirm" />
             </div>
             <div>
                 <label>City</label> <input type="text" name="city" data-bind="value: city" required />
