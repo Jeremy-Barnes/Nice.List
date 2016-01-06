@@ -6,63 +6,78 @@
     <title>Nice.List</title>
     <link rel="stylesheet" href="app.css" type="text/css" />
     <script type="text/javascript" src="/Scripts/knockout-3.3.0.js"></script>
+    <script type="text/javascript" src="/Scripts/knockout.mapping-latest.js"></script>
     <script type="text/javascript" src="/Scripts/jquery-2.1.4.js"></script>
     <script type="text/javascript" src="/Scripts/jquery-ui-1.11.4.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <script type="text/javascript" src="DTO/DTOs.js"></script>
 </head>
 <body>
-    <div class="main" data-bind="if:$root.status() == AppStatus.Landing">
+    <div class="main" data-bind="if:status() == AppStatus.Landing">
 
-        <button data-bind="click: $root.getCookie">
-            Test Cookie
-        </button>
-
-        <button data-bind="click: $root.findCookie">
+        <button data-bind="click: findCookie">
             Find a Cookie
         </button>
+        <div> Welcome back <label data-bind="text: user().firstName" />! <br/> Maybe someday there will be content here.</div>
 
     </div>
 
-    <div class="main" data-bind="if: $root.status() == AppStatus.SignUp">
-            <form action="http://localhost:8080/api/nice/users/createUser" method="post" enctype="application/x-www-form-urlencoded">
-                <div>
-                    <label>Email Address</label> <input type="email" name="emailAddress" required />
-                </div>
-
-                <div data-bind="css: { passwordMismatch: passwordsMatch() == false}">
-                    <label>Password</label> <input type="password" name="password" data-bind="textInput: user().password" required />
-                    <label>Confirm Password</label> <input type="password" data-bind="textInput: passwordConfirm" required />
-                </div>
-                <div>
-                    <input type="submit" value="Sign Up" data-bind="enable: passwordsMatch" />
-                </div>
-            </form>
-</div>
-
-    <div class="main" data-bind="if: $root.status() == AppStatus.Account">
-        <form>
+    <div class="main" data-bind="if: status() == AppStatus.SignUp">
+        <form data-bind="submit: submitAccountChanges, with: user">
+            <h1>Sign up!</h1>
             <div>
-                <label>First Name</label> <input type="text" name="firstName" data-bind="value: user().firstName" /> 
-                <label>Last Name</label> <input type="text" name="lastName" data-bind="value: user().lastName" />
-            </div>
-            <div>
-                <label>Email Address</label> <input type="email" name="emailAddress" data-bind="value: user().emailAddress" required />
+                <label>Email Address</label> <input type="email" name="emailAddress" data-bind="value: emailAddress" required />
             </div>
 
-            <div data-bind="css: { passwordMismatch: passwordsMatch() == false}">
-                <label>New Password</label> <input type="password" name="password" data-bind="textInput: user().password" required />
-                <label>Confirm Password</label> <input type="password" data-bind="textInput: passwordConfirm" required />
+            <div data-bind="css: { passwordMismatch: $root.passwordsMatch() == false}">
+                <label>Password</label> <input type="password" name="password" data-bind="textInput: password" required />
+                <label>Confirm Password</label> <input type="password" data-bind="textInput: $root.passwordConfirm" required />
             </div>
             <div>
-                <label>City</label> <input type="text" name="city" data-bind="value: user().city" required />
-                <label>State</label> <input type="text" name="state" data-bind="value: user().state" required />
-                <label>Zip/Post Code</label> <input type="text" data-bind="value: user().postcode"  name="postcode" required />
+                <input type="submit" value="Sign Up" data-bind="enable: $root.passwordsMatch" />
+            </div>
+        </form>
+
+
+        <form data-bind="submit: logIn, with: user">
+            <h1>Log In!</h1>
+            <div>
+                <label>Email Address</label> <input type="email" name="emailAddress" data-bind="value: emailAddress" required />
+            </div>
+
+            <div>
+                <label>Password</label> <input type="password" name="password" data-bind="textInput: password" required />
+            </div>
+            <div>
+                <input type="submit" value="Log In" />
+            </div>
+        </form>
+
+    </div>
+
+    <div class="main" data-bind="if: status() == AppStatus.Account">
+        <form data-bind="submit: submitAccountChanges, with: user">
+            <div>
+                <label>First Name</label> <input type="text" name="firstName" data-bind="value: firstName" /> 
+                <label>Last Name</label> <input type="text" name="lastName" data-bind="value: lastName" />
+            </div>
+            <div>
+                <label>Email Address</label> <input type="email" name="emailAddress" data-bind="value: emailAddress" required />
+            </div>
+
+            <div data-bind="css: { passwordMismatch: $root.passwordsMatch() == false}">
+                <label>New Password</label> <input type="password" name="password" data-bind="textInput: password" required />
+                <label>Confirm Password</label> <input type="password" data-bind="textInput: $root.passwordConfirm" required />
+            </div>
+            <div>
+                <label>City</label> <input type="text" name="city" data-bind="value: city" required />
+                <label>State</label> <input type="text" name="state" data-bind="value: state" required />
+                <label>Zip/Post Code</label> <input type="text" data-bind="value: postcode"  name="postcode" required />
                 <br />
-                <label>Country</label> <input type="text" name="country" data-bind="value: user().country" required />
+                <label>Country</label> <input type="text" name="country" data-bind="value: country" required />
             </div>
             <div>
-                <input type="submit" value="Sign Up" data-bind="enable: passwordsMatch" />
+                <input type="submit" value="Sign Up" data-bind="enable: $root.passwordsMatch" />
             </div>
         </form>
     </div>

@@ -27,6 +27,15 @@ var App = (function () {
             this.getUser(selectorValidator[0], selectorValidator[1]);
         }
     };
+    App.prototype.findCookie = function () {
+        var usefulCookies = ("; " + document.cookie).split("; nicelist="); //everyone else's garbage ; mine
+        if (usefulCookies.length == 2) {
+            return usefulCookies[1];
+        }
+        else {
+            return null;
+        }
+    };
     App.prototype.getUser = function (selector, validator) {
         var valid = { selector: selector, validator: validator };
         var parameters = JSON.stringify(valid);
@@ -40,19 +49,55 @@ var App = (function () {
         };
         var self = this;
         jQuery.ajax(settings).then(function (o) {
-            self.user(ko.toJS(o));
+            self.user(ko.mapping.fromJS(o));
+            self.status(AppStatus.Landing);
         }).fail(function (request) {
             alert(request);
         });
     };
-    App.prototype.findCookie = function () {
-        var usefulCookies = ("; " + document.cookie).split("; nicelist="); //everyone else's garbage ; mine
-        if (usefulCookies.length == 2) {
-            return usefulCookies[1];
+    App.prototype.submitAccountChanges = function () {
+        var parameters = JSON.stringify(ko.toJS(this.user()));
+        var methodName = "";
+        if (this.status() == AppStatus.SignUp) {
+            methodName = "createUser";
         }
         else {
-            return null;
+            methodName = "changeUserInformation";
         }
+        var settings = {
+            url: "http://localhost:8080/api/nice/users/" + methodName,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (updatedUser) {
+            var us = ko.mapping.fromJS(updatedUser);
+            self.user(us);
+            self.status(AppStatus.Account);
+        }).fail(function (request) {
+            alert(request);
+        });
+    };
+    App.prototype.logIn = function () {
+        var parameters = JSON.stringify({ emailAddress: this.user().emailAddress(), password: this.user().password() });
+        var settings = {
+            url: "http://localhost:8080/api/nice/users/" + "getUserFromLogin",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (o) {
+            self.user(ko.mapping.fromJS(o));
+            self.status(AppStatus.Landing);
+        }).fail(function (request) {
+            alert(request);
+        });
     };
     return App;
 })();

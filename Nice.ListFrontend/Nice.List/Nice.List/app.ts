@@ -33,6 +33,15 @@ class App {
         }
     }
 
+    private findCookie(): string {
+        let usefulCookies = ("; " + document.cookie).split("; nicelist="); //everyone else's garbage ; mine
+        if (usefulCookies.length == 2) {
+            return usefulCookies[1];
+        } else {
+            return null;
+        }
+    }
+
     public getUser(selector: string, validator: string) {
         var valid: Token = { selector: selector, validator: validator}
         var parameters = JSON.stringify(valid);
@@ -46,19 +55,60 @@ class App {
         };
         var self = this;
         jQuery.ajax(settings).then(function (o: User) {
-            self.user(ko.toJS(o));
+            self.user(ko.mapping.fromJS(o));
+            self.status(AppStatus.Landing);
         }).fail(function (request: JQueryXHR) {
             alert(request);
         });
     }
 
-    private findCookie(): string {
-        let usefulCookies = ("; " + document.cookie).split("; nicelist="); //everyone else's garbage ; mine
-        if (usefulCookies.length == 2) {
-            return usefulCookies[1];
+   
+
+    public submitAccountChanges() {
+        var parameters = JSON.stringify(ko.toJS(this.user()));
+
+        var methodName = "";
+        if (this.status() == AppStatus.SignUp) {
+            methodName = "createUser";
         } else {
-            return null;
+            methodName = "changeUserInformation";
         }
+
+        var settings: JQueryAjaxSettings = {
+            url: "http://localhost:8080/api/nice/users/" + methodName,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (updatedUser: User) {
+            var us = ko.mapping.fromJS(updatedUser); 
+            self.user(us);
+            self.status(AppStatus.Account);
+        }).fail(function (request: JQueryXHR) {
+            alert(request);
+        });
+    }
+
+    public logIn() {
+        var parameters = JSON.stringify({ emailAddress: this.user().emailAddress(), password: this.user().password() });
+        var settings: JQueryAjaxSettings = {
+            url: "http://localhost:8080/api/nice/users/" + "getUserFromLogin",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (o: User) {
+            self.user(ko.mapping.fromJS(o));
+            self.status(AppStatus.Landing);
+        }).fail(function (request: JQueryXHR) {
+            alert(request);
+        });
     }
     
 }

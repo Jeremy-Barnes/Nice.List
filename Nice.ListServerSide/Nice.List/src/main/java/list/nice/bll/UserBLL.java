@@ -4,7 +4,6 @@ import com.lambdaworks.codec.Base64;
 import com.lambdaworks.crypto.SCrypt;
 import list.nice.dal.HibernateUtil;
 import list.nice.dal.dto.User;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -35,8 +34,7 @@ public class UserBLL {
 	public static User getUser(String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
 		Session dbSession = HibernateUtil.getSessionFactory().openSession();
 
-		Query q = dbSession.createQuery("from User where tokenSelector = :selector").setParameter("selector", selector);
-		User user = (User) q.uniqueResult();
+		User user = (User) dbSession.createQuery("from User where tokenSelector = :selector").setParameter("selector", selector).uniqueResult();
 		dbSession.close();
 
 		if(verifyValidator(validator, user)) {
@@ -48,7 +46,7 @@ public class UserBLL {
 
 	public static User getUserLogin(String email, String password) throws GeneralSecurityException, UnsupportedEncodingException {
 		Session dbSession = HibernateUtil.getSessionFactory().openSession();
-		User user = (User) dbSession.createQuery("from User where emailAddress = " + email).uniqueResult();
+		User user = (User) dbSession.createQuery("from User where emailAddress = :email").setParameter("email", email).uniqueResult();
 		dbSession.close();
 		if(checkLogin(user.getPassword(), password, user.getSalt())) {
 			return user;
@@ -57,40 +55,57 @@ public class UserBLL {
 		}
 	}
 
+	public static User updateUser(User user){
+		Session dbSession = HibernateUtil.getSessionFactory().openSession();
+		Transaction trans = dbSession.beginTransaction();
+
+//		hashAndSaltPassword(user);
+//		String selectorUnHashed =createSelectorAndHashValidator(user);
+
+		dbSession.update(user);
+
+		trans.commit();
+		dbSession.close();
+		return user;
+	}
+
+
+
 	private static void hashAndSaltPassword(User user) throws GeneralSecurityException, UnsupportedEncodingException {
 		byte[] saltByte = new byte[16];
 		SecureRandom.getInstance("SHA1PRNG").nextBytes(saltByte);
 		String saltStr = new String(Base64.encode(saltByte));
 
-		byte[] hashByte = SCrypt.scrypt(user.getPassword().getBytes("UTF-8"), saltByte, 16384, 8, 1, 64);
+		byte[] hashByte = SCrypt.scrypt(user.getPassword().getBytes("UTF-8"), saltStr.getBytes("UTF-8"), 16384, 8, 1, 64);
 		String hashStr = new String(Base64.encode(hashByte));
 
 		user.setPassword(hashStr);
 		user.setSalt(saltStr);
 	}
 
-	private static boolean checkLogin(String passwordHash, String password, String salt) throws GeneralSecurityException, UnsupportedEncodingException {
-		byte[] hashByte = SCrypt.scrypt(password.getBytes("UTF-8"), salt.getBytes("UTF-8"), 16384, 8, 1, 64);
+	private static boolean checkLogin(String dbPasswordHash, String suppliedPassword, String suppliedSalt) throws GeneralSecurityException, UnsupportedEncodingException {
+		byte[] hashByte = SCrypt.scrypt(suppliedPassword.getBytes("UTF-8"), suppliedSalt.getBytes("UTF-8"), 16384, 8, 1, 64);
 		String hashStrConfirm = new String(Base64.encode(hashByte));
-		return hashStrConfirm.equals(passwordHash);
+		return hashStrConfirm.equals(dbPasswordHash);
 	}
 
 	private static String createSelectorAndHashValidator(User user) throws GeneralSecurityException, UnsupportedEncodingException {
-		byte[] validByte = new byte[16];
-		SecureRandom.getInstance("SHA1PRNG").nextBytes(validByte);
-		String validatorStr = new String(Base64.encode(validByte)); //Get in UTF
-		byte[] hashValidatorByte = SCrypt.scrypt(validatorStr.getBytes(), validatorStr.getBytes(), 16384, 8, 1, 64);
+		byte[] validatorByte = new byte[16];
+		SecureRandom.getInstance("SHA1PRNG").nextBytes(validatorByte);
+		String validatorStr = new String(Base64.encode(validatorByte)); //Get in UTF
+		byte[] hashedValidatorByte = SCrypt.scrypt(validatorStr.getBytes("UTF-8"), validatorStr.getBytes("UTF-8"), 16384, 8, 1, 64);
 
-		user.setTokenSelector(new String(Base64.encode(SCrypt.scrypt(user.getEmailAddress().getBytes("UTF-8"), user.getEmailAddress().getBytes("UTF-8"), 16384, 8, 1, 64))));
-		user.setTokenValidator(new String(Base64.encode(hashValidatorByte)));
+		byte[] selectorByte = SCrypt.scrypt(user.getEmailAddress().getBytes("UTF-8"), user.getEmailAddress().getBytes("UTF-8"), 16384, 8, 1, 64);
+		user.setTokenSelector(new String(Base64.encode(selectorByte)));
+		user.setTokenValidator(new String(Base64.encode(hashedValidatorByte)));
 
 		return validatorStr; //TODO make this actually unique
 	}
 
-	private static boolean verifyValidator(String validator, User user) throws GeneralSecurityException, UnsupportedEncodingException {
-		byte[] hashByte = SCrypt.scrypt(validator.getBytes(), validator.getBytes(), 16384, 8, 1, 64);
+	private static boolean verifyValidator(String suppliedValidator, User dbUser) throws GeneralSecurityException, UnsupportedEncodingException {
+		byte[] hashByte = SCrypt.scrypt(suppliedValidator.getBytes("UTF-8"), suppliedValidator.getBytes("UTF-8"), 16384, 8, 1, 64);
 		String hashedCookieValidator = new String(Base64.encode(hashByte));
-		return hashedCookieValidator.equals(user.getTokenValidator());
+		return hashedCookieValidator.equals(dbUser.getTokenValidator());
 	}
 
 }

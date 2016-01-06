@@ -10,7 +10,6 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 
@@ -30,11 +29,12 @@ public class UserInfoService {
 
 	@POST
 	@Path("/getUserFromLogin")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUserFromLogin(@FormParam("emailAddress") String emailAddress, @FormParam("password") String password){
+	public Response getUserFromLogin(JAXBElement<User> user){
 		try {
-			return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(UserBLL.getUserLogin(emailAddress, password)).build();
+			User rUser = user.getValue();
+			return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(UserBLL.getUserLogin(rUser.getEmailAddress(), rUser.getPassword())).build();
 		} catch(Exception e ){
 			return null;
 		}
@@ -43,22 +43,12 @@ public class UserInfoService {
 	@POST
 	@Path("/createUser")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void putUser(JAXBElement<User> user) throws GeneralSecurityException, UnsupportedEncodingException {
-		UserBLL.createUser(user.getValue());
-	}
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response putUser(JAXBElement<User> user) throws GeneralSecurityException, URISyntaxException, UnsupportedEncodingException {
+		User userReal = user.getValue();
+		String validator = UserBLL.createUser(userReal);
 
-	@POST
-	@Path("/createUser")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response putUser(@FormParam("userID") int userID, String userName, @FormParam("firstName") String firstName, @FormParam("lastName") String lastName,
-						@FormParam("emailAddress") String emailAddress, @FormParam("password") String password, @FormParam("city") String city, @FormParam("state") String state,
-						@FormParam("country") String country, @FormParam("postcode") String postcode) throws GeneralSecurityException, URISyntaxException, UnsupportedEncodingException {
-		User user = new User(userID, firstName, lastName, emailAddress, password, null, city, state, country, postcode, null, null);
-		String validator = UserBLL.createUser(user);
-
-
-		NewCookie cook = new NewCookie("nicelist", user.getTokenSelector() + ":" + validator, "/", null, null, 3600, false );
-		return Response.seeOther(new URI("/")).status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").cookie(cook).build();
-
+		NewCookie cook = new NewCookie("nicelist", userReal.getTokenSelector() + ":" + validator, "/", null, null, 3600, false );
+		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(userReal).cookie(cook).build();
 	}
 }
