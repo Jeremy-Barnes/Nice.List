@@ -2,10 +2,7 @@ package list.nice.dal.dto;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -26,6 +23,7 @@ public class WishListItem {
 	private String comment;
 	private boolean isBought;
 	private int purchaserUserID;
+	@Temporal(TemporalType.DATE)
 	private Date dateAdded;
 	private double price;
 	private int want;

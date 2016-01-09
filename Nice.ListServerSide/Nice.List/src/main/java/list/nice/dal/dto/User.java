@@ -2,11 +2,13 @@ package list.nice.dal.dto;
 
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.WhereJoinTable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Jeremy on 12/30/2015.
@@ -30,6 +32,26 @@ public class User {
 	private String postcode;
 	private String tokenSelector;
 	private String tokenValidator;
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="requesteduserID"))
+	@WhereJoinTable(clause = "accepted = 'TRUE'")
+	private Set<User> friends = new HashSet<User>();
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteduserID"), inverseJoinColumns = @JoinColumn(name="requesteruserID"))
+	@WhereJoinTable(clause = "accepted = 'TRUE'")
+	private Set<User> friendOf = new HashSet<User>();
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="requesteduserID"))
+	@WhereJoinTable(clause = "accepted = 'FALSE'")
+	private Set<User> pendingRequests = new HashSet<User>();
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteduserID"), inverseJoinColumns = @JoinColumn(name="requesteruserID"))
+	@WhereJoinTable(clause = "accepted = 'FALSE'")
+	private Set<User> requestsToReview = new HashSet<User>();
 
 	public User(){
 	}
@@ -144,5 +166,19 @@ public class User {
 
 	public void setTokenValidator(String tokenValidator) {
 		this.tokenValidator = tokenValidator;
+	}
+
+	public List<User> getMyFriends(){
+		User[] myFriends = friends.toArray(new User[]{});
+		User[] friendsOfArr = friendOf.toArray(new User[]{});
+		List<User> allFriends = new ArrayList<User>();
+
+		for(User u : myFriends){
+			allFriends.add(u);
+		}
+		for(User u : friendsOfArr){
+			allFriends.add(u);
+		}
+		return allFriends;
 	}
 }

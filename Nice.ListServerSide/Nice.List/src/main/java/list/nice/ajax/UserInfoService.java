@@ -20,6 +20,20 @@ import java.security.GeneralSecurityException;
 @Path("/users")
 public class UserInfoService {
 
+
+	@POST
+	@Path("/getUser")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getUser(){
+		UserBLL.getUser();
+		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").build();
+	}
+
+
+
+
+
+
 	@POST
 	@Path("/getUserFromToken")
 	@Consumes(MediaType.APPLICATION_JSON)

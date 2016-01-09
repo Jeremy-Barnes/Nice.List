@@ -21,7 +21,7 @@ CREATE TABLE wishlistItems(
 	imageURL VARCHAR,
 	itemName VARCHAR(200),
 	comment VARCHAR(500),
-	isBought BIT NOT NULL,
+	isBought BOOLEAN NOT NULL,
 	purchaserUserID INT NOT NULL REFERENCES users(userID),
 	dateAdded DATE NOT NULL,
 	price MONEY,
@@ -32,7 +32,7 @@ CREATE TABLE friendships(
 	friendshipID SERIAL NOT NULL PRIMARY KEY,
 	requesterUserID INT NOT NULL REFERENCES users(userID),
   requestedUserID INT NOT NULL REFERENCES users(userID),
-	accepted BIT NOT NULL,
+	accepted BOOLEAN NOT NULL,
 	CONSTRAINT friendshipLink UNIQUE (requesterUserID, requestedUserID)
 );
 
@@ -53,14 +53,5 @@ CREATE TABLE friendGroupingEntry (
 	toDoEntryID SERIAL NOT NULL PRIMARY KEY,
 	friendID INT NOT NULL REFERENCES users(userID),
 	ownerID INT NOT NULL REFERENCES users(userID),
-	done BIT NOT NULL
+	done BOOLEAN NOT NULL
 );
---
--- CREATE TABLE tokens {
--- 	tokenID SERIAL NOT NULL PRIMARY KEY,
--- 	selector VARCHAR(12),
--- 	token VARCHAR(64),
--- 	userID INT NOT NULL REFERENCES users(userID),
--- 	expires DATE
--- }
---
