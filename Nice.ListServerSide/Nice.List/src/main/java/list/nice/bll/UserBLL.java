@@ -4,9 +4,8 @@ import com.lambdaworks.codec.Base64;
 import com.lambdaworks.crypto.SCrypt;
 import list.nice.dal.HibernateUtil;
 import list.nice.dal.dto.User;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
+import javax.persistence.EntityManager;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
@@ -18,25 +17,25 @@ import java.security.SecureRandom;
 public class UserBLL {
 
 	public static String createUser(User user) throws GeneralSecurityException, UnsupportedEncodingException {
-		Session dbSession = HibernateUtil.getSessionFactory().openSession();
-		Transaction trans = dbSession.beginTransaction();
+		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
+		entityManager.getTransaction().begin();
 
 		hashAndSaltPassword(user);
 		String selectorUnHashed =createSelectorAndHashValidator(user);
 
-		dbSession.save(user);
+		entityManager.persist(user);
 
-		trans.commit();
-		dbSession.close();
+		entityManager.getTransaction().commit();
+		entityManager.close();
 		return selectorUnHashed;
 	}
 
 	public static User getUser(String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
-		Session dbSession = HibernateUtil.getSessionFactory().openSession();
+		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 
-		User user = (User) dbSession.createQuery("from User where tokenSelector = :selector").setParameter("selector", selector).uniqueResult();
-		dbSession.close();
+		User user = (User) entityManager.createQuery("from User where tokenSelector = :selector").setParameter("selector", selector).getSingleResult();
 
+		entityManager.close();
 		if(verifyValidator(validator, user)) {
 			return user;
 		} else {
@@ -45,22 +44,23 @@ public class UserBLL {
 	}
 
 	public static User getUserLogin(String email, String password) throws GeneralSecurityException, UnsupportedEncodingException {
-		Session dbSession = HibernateUtil.getSessionFactory().openSession();
-		Transaction trans = dbSession.beginTransaction();
+		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
+		entityManager.getTransaction().begin();
 
-		User user = (User) dbSession.createQuery("from User where emailAddress = :email").setParameter("email", email).uniqueResult();
+		User user = (User) entityManager.createQuery("from User where emailAddress = :email").setParameter("email", email).getSingleResult();
 
 		String validator;
 		if(checkLogin(user.getPassword(), password, user.getSalt())) {
 			validator = createSelectorAndHashValidator(user);
-			dbSession.flush();
-			trans.commit();
-			dbSession.close();
+
+			entityManager.getTransaction().commit();
+			entityManager.close();
+
 			user.setTokenValidator(validator);
 		} else {
+			entityManager.getTransaction().rollback();
+			entityManager.close();
 			user = null;
-			trans.rollback();;
-			dbSession.close();
 		}
 
 		return user;
@@ -72,16 +72,16 @@ public class UserBLL {
 			throw new GeneralSecurityException("Invalid Cookie");
 		}
 
-		Session dbSession = HibernateUtil.getSessionFactory().openSession();
-		Transaction trans = dbSession.beginTransaction();
+		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
+		entityManager.getTransaction().begin();
 
 		if(user.getPassword() != null && !user.getPassword().isEmpty()) {
 			hashAndSaltPassword(user);
 		}
 
-		dbSession.update(user);
-		trans.commit();
-		dbSession.close();
+		entityManager.merge(user);
+		entityManager.getTransaction().commit();
+		entityManager.close();
 		return user;
 	}
 
