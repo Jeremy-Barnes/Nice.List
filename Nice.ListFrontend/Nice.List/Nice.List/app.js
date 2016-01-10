@@ -10,7 +10,7 @@ $(document).ready(function () {
 var App = (function () {
     function App() {
         var _this = this;
-        this.status = ko.observable(AppStatus.Landing);
+        this.status = ko.observable(AppStatus.Home);
         this.passwordConfirm = ko.observable("");
         this.user = ko.observable(new UserModel());
         this.passwordsMatch = ko.pureComputed(function () { return _this.user().password() == _this.passwordConfirm(); }, this);
@@ -20,7 +20,7 @@ var App = (function () {
         var siteCookie = this.findCookie();
         if (siteCookie == null) {
             //TODO kill these cookies
-            this.status(AppStatus.SignUp);
+            this.status(AppStatus.Landing);
         }
         else {
             var selectorValidator = siteCookie.split(":");
@@ -50,15 +50,25 @@ var App = (function () {
         var self = this;
         jQuery.ajax(settings).then(function (o) {
             self.user(ko.mapping.fromJS(o));
-            self.status(AppStatus.Landing);
+            self.status(AppStatus.Home);
         }).fail(function (request) {
             alert(request);
         });
     };
+    App.prototype.doThing = function () {
+        var settings = {
+            url: "http://localhost:8080/api/nice/users/getUser",
+            type: "POST",
+            dataType: "json",
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings);
+    };
     App.prototype.submitAccountChanges = function () {
         var parameters = JSON.stringify(ko.toJS(this.user()));
         var methodName = "";
-        if (this.status() == AppStatus.SignUp) {
+        if (this.status() == AppStatus.Landing) {
             methodName = "createUser";
         }
         else {
@@ -94,7 +104,7 @@ var App = (function () {
         var self = this;
         jQuery.ajax(settings).then(function (o) {
             self.user(ko.mapping.fromJS(o));
-            self.status(AppStatus.Landing);
+            self.status(AppStatus.Home);
         }).fail(function (request) {
             alert(request);
         });
@@ -103,9 +113,9 @@ var App = (function () {
 })();
 var AppStatus;
 (function (AppStatus) {
-    AppStatus[AppStatus["SignUp"] = 0] = "SignUp";
-    AppStatus[AppStatus["Landing"] = 1] = "Landing";
-    AppStatus[AppStatus["Account"] = 2] = "Account";
-    AppStatus[AppStatus["ViewUser"] = 3] = "ViewUser";
+    AppStatus[AppStatus["Home"] = 0] = "Home";
+    AppStatus[AppStatus["Account"] = 1] = "Account";
+    AppStatus[AppStatus["ViewUser"] = 2] = "ViewUser";
+    AppStatus[AppStatus["Landing"] = 3] = "Landing";
 })(AppStatus || (AppStatus = {}));
 //# sourceMappingURL=app.js.map

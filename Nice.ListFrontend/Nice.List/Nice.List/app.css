@@ -1,10 +1,61 @@
-﻿body {
-    font-family: 'Segoe UI', sans-serif;
+﻿html, body {
+    height: 100%;
+}
+
+body{
+    padding-top: 130px;
 }
 
 span {
     font-style: italic;
 }
+
+h1, h2 {
+    color: #1B8395;
+}
+
+.main {
+    height:100%;
+}
+
+
+
 .passwordMismatch {
     background-color: red;
+}
+
+.capsule-btn {
+    border-radius: 2em;
+    padding: 0px 20px; 
+}
+
+.btn-yellow {
+    color: #F3B719;
+}
+
+.btn-blue {
+    color: #1B8395;
+}
+
+.nav > li{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.nav-img {
+    margin-top: 12%;
+    margin-bottom: 12%;
+}
+
+#landingPage {
+    background-image: url(/img/snowflake-pattern-blue.png);
+    height:100%;
+}
+#features {
+    background-color: black;
+    height:100%;
+}
+#about{
+    background-color: pink;
+    height:100%;
 }

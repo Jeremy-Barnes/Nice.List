@@ -11,7 +11,7 @@ $(document).ready(function () {
 
 class App {
     public user: KnockoutObservable<UserModel>;
-    public status: KnockoutObservable<AppStatus> = ko.observable(AppStatus.Landing);
+    public status: KnockoutObservable<AppStatus> = ko.observable(AppStatus.Home);
     public passwordConfirm: KnockoutObservable<string> = ko.observable("");
     public passwordsMatch: KnockoutComputed<boolean>;
 
@@ -26,7 +26,7 @@ class App {
         let siteCookie: string = this.findCookie();
         if (siteCookie == null) { //no user or too many users
             //TODO kill these cookies
-            this.status(AppStatus.SignUp);
+            this.status(AppStatus.Landing);
         } else {
             let selectorValidator = siteCookie.split(":");
             this.getUser(selectorValidator[0], selectorValidator[1]);
@@ -56,19 +56,28 @@ class App {
         var self = this;
         jQuery.ajax(settings).then(function (o: User) {
             self.user(ko.mapping.fromJS(o));
-            self.status(AppStatus.Landing);
+            self.status(AppStatus.Home);
         }).fail(function (request: JQueryXHR) {
             alert(request);
         });
     }
 
-   
+    public doThing() {
+        var settings: JQueryAjaxSettings = {
+            url: "http://localhost:8080/api/nice/users/getUser",
+            type: "POST",
+            dataType: "json",
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings)
+    }
 
     public submitAccountChanges() {
         var parameters = JSON.stringify(ko.toJS(this.user()));
 
         var methodName = "";
-        if (this.status() == AppStatus.SignUp) {
+        if (this.status() == AppStatus.Landing) {
             methodName = "createUser";
         } else {
             methodName = "changeUserInformation";
@@ -105,7 +114,7 @@ class App {
         var self = this;
         jQuery.ajax(settings).then(function (o: User) {
             self.user(ko.mapping.fromJS(o));
-            self.status(AppStatus.Landing);
+            self.status(AppStatus.Home);
         }).fail(function (request: JQueryXHR) {
             alert(request);
         });
@@ -114,5 +123,5 @@ class App {
 }
 
 enum AppStatus {
-    SignUp, Landing, Account, ViewUser
+    Home, Account, ViewUser, Landing
 }
