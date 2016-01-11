@@ -6,10 +6,6 @@ body{
     padding-top: 130px;
 }
 
-span {
-    font-style: italic;
-}
-
 h1, h2 {
     color: #1B8395;
 }
@@ -18,7 +14,16 @@ h1, h2 {
     height:100%;
 }
 
+.modal-form {
+    width: 70%;
+    text-align: center;
+    margin: 0px 15%;
+}
 
+form > input {
+    margin: 8px 0px 8px 0px;
+    width: 100%;
+}
 
 .passwordMismatch {
     background-color: red;
@@ -32,6 +37,10 @@ h1, h2 {
 .capsule-btn {
     border-radius: 2em;
     padding: 10px 20px; 
+}
+
+.btn-long {
+    width: 100%;
 }
 
 .yellow {

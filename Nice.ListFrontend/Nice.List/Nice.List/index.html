@@ -42,8 +42,8 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#">Features</a></li>
                         <li><a href="#">About</a></li>
-                        <li><button type="button" class="btn navbar-btn btn-md capsule-btn blue">Log in</button></li>
-                        <li><button type="button" class="btn navbar-btn btn-md capsule-btn yellow">Sign up</button></li>
+                        <li><button type="button" class="btn navbar-btn capsule-btn blue" data-toggle="modal" data-target="#sign-in">Log in</button></li>
+                        <li><button type="button" class="btn navbar-btn capsule-btn yellow">Sign up</button></li>
                     </ul>
                 </div>
             </div>
@@ -138,15 +138,37 @@
     </div>
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="/Scripts/knockout-3.3.0.js"></script>
-    <script type="text/javascript" src="/Scripts/knockout.mapping-latest.js"></script>
+    <div id="sign-in" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
+                    <h1 class="text-center">Log In</h1>
+                </div>
 
-    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
-    <script src="bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
+
+                <form class="modal-form" data-bind="submit: logIn, with: user">
+                        <input type="email" name="emailAddress" class="form-control" data-bind="value: emailAddress" placeholder="email address" required />
+                        <input type="password" name="password" class="form-control" data-bind="textInput: password" placeholder="password" required />
+                        <input type="submit" class="btn btn-long blue form-control" value="Log In" />
+                </form>
+
+                <div class="modal-footer">
+                    <p class="text-center">Don't have an account? <a href="#">Sign Up.</a></p> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- Bootstrap core JavaScript
+            ================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+            <script type="text/javascript" src="/Scripts/knockout-3.3.0.js"></script>
+            <script type="text/javascript" src="/Scripts/knockout.mapping-latest.js"></script>
+
+            <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+            <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+            <script src="bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
+            <script src="bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
 </body>
 </html>
