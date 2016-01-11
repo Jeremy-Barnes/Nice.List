@@ -24,17 +24,24 @@ h1, h2 {
     background-color: red;
 }
 
+.promo {
+    font-size: 42px;
+    color: #1B8395;
+}
+
 .capsule-btn {
     border-radius: 2em;
-    padding: 0px 20px; 
+    padding: 10px 20px; 
 }
 
-.btn-yellow {
-    color: #F3B719;
+.yellow {
+    background-color: #F3B719;
+    color: white;
 }
 
-.btn-blue {
-    color: #1B8395;
+.blue {
+    background-color: #1B8395;
+    color: white;
 }
 
 .nav > li{
@@ -52,10 +59,8 @@ h1, h2 {
     height:100%;
 }
 #features {
-    background-color: black;
     height:100%;
 }
 #about{
-    background-color: pink;
     height:100%;
 }
