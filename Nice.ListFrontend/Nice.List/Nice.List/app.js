@@ -55,16 +55,6 @@ var App = (function () {
             alert(request);
         });
     };
-    App.prototype.doThing = function () {
-        var settings = {
-            url: "http://localhost:8080/api/nice/users/getUser",
-            type: "POST",
-            dataType: "json",
-            crossDomain: true
-        };
-        var self = this;
-        jQuery.ajax(settings);
-    };
     App.prototype.submitAccountChanges = function () {
         var parameters = JSON.stringify(ko.toJS(this.user()));
         var methodName = "";
@@ -92,9 +82,27 @@ var App = (function () {
         });
     };
     App.prototype.logIn = function () {
-        var parameters = JSON.stringify({ emailAddress: this.user().emailAddress(), password: this.user().password() });
+        var parameters = JSON.stringify(ko.mapping.toJS(this.user));
         var settings = {
             url: "http://localhost:8080/api/nice/users/" + "getUserFromLogin",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (o) {
+            self.user(ko.mapping.fromJS(o));
+            self.status(AppStatus.Home);
+        }).fail(function (request) {
+            alert(request);
+        });
+    };
+    App.prototype.signUp = function () {
+        var parameters = JSON.stringify(ko.mapping.toJS(this.user));
+        var settings = {
+            url: "http://localhost:8080/api/nice/users/" + "createUser",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
