@@ -4172,11 +4172,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border: 1px solid transparent;
 }
 @media (min-width: 768px) {
-  .navbar {
-    border-radius: 4px;
-  }
-}
-@media (min-width: 768px) {
   .navbar-header {
     float: left;
   }
@@ -4465,17 +4460,33 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.navbar-btn {
-  margin-top: 45px;
-  margin-bottom: 45px;
+@media (min-width: 768px) {
+  .navbar-btn {
+    margin-top: 45px;
+    margin-bottom: 45px;
+  }
+  .navbar-btn.btn-sm {
+    margin-top: 46.5px;
+    margin-bottom: 46.5px;
+  }
+  .navbar-btn.btn-xs {
+    margin-top: 56px;
+    margin-bottom: 56px;
+  }
 }
-.navbar-btn.btn-sm {
-  margin-top: 46.5px;
-  margin-bottom: 46.5px;
-}
-.navbar-btn.btn-xs {
-  margin-top: 56px;
-  margin-bottom: 56px;
+@media (max-width: 768px) {
+  .navbar-btn {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+  .navbar-btn.btn-sm {
+    margin-top: 15.75px;
+    margin-bottom: 15.75px;
+  }
+  .navbar-btn.btn-xs {
+    margin-top: 52px;
+    margin-bottom: 52px;
+  }
 }
 .navbar-text {
   margin-top: 56px;

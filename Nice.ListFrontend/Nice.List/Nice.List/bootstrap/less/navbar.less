@@ -16,10 +16,6 @@
 
   // Prevent floats from breaking the navbar
   &:extend(.clearfix all);
-
-  @media (min-width: @grid-float-breakpoint) {
-    border-radius: @navbar-border-radius;
-  }
 }
 
 
@@ -344,19 +340,30 @@
 
 // Buttons in navbars
 //
-// Vertically center a button within a navbar (when *not* in a form).
-
-.navbar-btn {
-  .navbar-vertical-align(@input-height-base);
-
-  &.btn-sm {
-    .navbar-vertical-align(@input-height-small);
-  }
-  &.btn-xs {
-    .navbar-vertical-align(22);
-  }
+// Vertically center a button within a navbar (when *not* in a form) and when not collapsed.
+@media(min-width: @grid-float-breakpoint ){
+    .navbar-btn {
+      .navbar-vertical-align(@input-height-base);
+      &.btn-sm {
+        .navbar-vertical-align(@input-height-small);
+      }
+      &.btn-xs {
+        .navbar-vertical-align(22);
+      }
+    }
 }
 
+@media(max-width: @grid-float-breakpoint ){
+    .navbar-btn {
+      .navbar-vertical-align(@input-height-base*2.5);
+      &.btn-sm {
+        .navbar-vertical-align(@input-height-small*2.5);
+      }
+      &.btn-xs {
+        .navbar-vertical-align(30);
+      }
+    }
+}
 
 // Text in navbars
 //

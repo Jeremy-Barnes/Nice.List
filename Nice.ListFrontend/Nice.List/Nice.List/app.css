@@ -15,9 +15,23 @@ h1, h2 {
 .sidebar * {
     color: white;
 }
+
 .namebar {
     background-color:#ededed;
-    width: 100%; 
+    width: 100%;
+}
+
+.no-gutter {
+    padding: 0;
+}
+
+.add-gutter {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.inlineblock {
+    display: inline-block;
 }
 
 .modal-form {

@@ -28,7 +28,7 @@
         <nav class="navbar navbar-default ">
             <div class="container">
                 <div class="navbar-header">
-                    <img alt="Nice.List" src="img/nice-list-logo.png" class="nav-img" width="189px" height="88px">
+                    <img alt="Nice.List" src="img/nice-list-logo.png" class="nav-img" width="189" height="88">
 
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-landing-collapse">
                         <span class="icon-bar"></span>
@@ -102,9 +102,10 @@
                     </ul>
                 </div>
 
-                <div class="col-sm-9 col-md-10">
+                <div class="col-sm-9 col-md-10 no-gutter">
                     <div class="navbar navbar-default namebar">
-                        <h2>Jill "Placeholder" Graves</h2>
+                            <div class="inlineblock add-gutter"><img src="img/elf-default-profile-photos-05.png" width="115" class="nav-img" /></div>
+                            <div class="inlineblock" style="vertical-align: middle;"><h1>Jill "Placeholder" Graves</h1> <p class="inlineblock">24</p> <p class="inlineblock">Tulsa</p></div>
                     </div>
 
                     <div class="table-responsive">
@@ -197,6 +198,8 @@
         </div>
     </div>
 
+        <button data-bind="click: $root.switchState">DO</button>
+
     <!-- Bootstrap core JavaScript -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/javascript" src="/Scripts/knockout-3.3.0.js"></script>
@@ -207,7 +210,7 @@
     <script src="bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
     <script src="bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
 
-    <button data-bind="click: $root.switchState"></button>
+   
 
 </body>
 </html>
