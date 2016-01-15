@@ -91,6 +91,7 @@ class App {
     }
 
     public logIn() {
+        var x = this.status;
         var parameters = JSON.stringify(ko.mapping.toJS(this.user));
         var settings: JQueryAjaxSettings = {
             url: "http://localhost:8080/api/nice/users/" + "getUserFromLogin",
@@ -126,6 +127,14 @@ class App {
         }).fail(function (request: JQueryXHR) {
             alert(request);
         });
+    }
+
+    public switchState() {
+        if (this.status() == AppStatus.Home) {
+            this.status(AppStatus.Landing);
+        } else {
+            this.status(AppStatus.Home);
+        }
     }
 
 }

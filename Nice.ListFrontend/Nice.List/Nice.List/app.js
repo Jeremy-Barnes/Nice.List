@@ -82,6 +82,7 @@ var App = (function () {
         });
     };
     App.prototype.logIn = function () {
+        var x = this.status;
         var parameters = JSON.stringify(ko.mapping.toJS(this.user));
         var settings = {
             url: "http://localhost:8080/api/nice/users/" + "getUserFromLogin",
@@ -116,6 +117,14 @@ var App = (function () {
         }).fail(function (request) {
             alert(request);
         });
+    };
+    App.prototype.switchState = function () {
+        if (this.status() == AppStatus.Home) {
+            this.status(AppStatus.Landing);
+        }
+        else {
+            this.status(AppStatus.Home);
+        }
     };
     return App;
 })();

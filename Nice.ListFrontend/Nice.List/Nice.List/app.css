@@ -2,16 +2,18 @@
     height: 100%;
 }
 
-body{
-    padding-top: 130px;
-}
-
 h1, h2 {
     color: #1B8395;
 }
 
-.content {
-    height:100%;
+.main {
+    height: 100%;
+}
+
+.sidebar {
+    height: 100%;
+    background-color: #006B2E;
+    width: 13.1%
 }
 
 .modal-form {
@@ -41,6 +43,14 @@ form > input {
 
 .btn-long {
     width: 100%;
+}
+
+.btn-narrow {
+    padding: 5px; 10px;
+}
+
+.centered {
+    text-align: center;
 }
 
 .yellow {
