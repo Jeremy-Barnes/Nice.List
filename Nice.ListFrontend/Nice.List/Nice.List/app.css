@@ -1,4 +1,4 @@
-﻿html, body {
+﻿html, body, .main, .onlyrow {
     height: 100%;
 }
 
@@ -6,14 +6,18 @@ h1, h2 {
     color: #1B8395;
 }
 
-.main {
-    height: 100%;
-}
-
 .sidebar {
     height: 100%;
     background-color: #006B2E;
     width: 13.1%
+}
+
+.sidebar * {
+    color: white;
+}
+.namebar {
+    background-color:#ededed;
+    width: 100%; 
 }
 
 .modal-form {

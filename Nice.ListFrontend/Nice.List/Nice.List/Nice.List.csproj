@@ -46,6 +46,7 @@
     <Content Include="bootstrap\js\tooltip.js" />
     <Content Include="bootstrap\js\transition.js" />
     <Content Include="bootstrap\package.js" />
+    <Content Include="img\elf-default-profile-photos-05.png" />
     <Content Include="img\gift.png" />
     <Content Include="img\icons-add.png" />
     <Content Include="img\icons-cart.png" />

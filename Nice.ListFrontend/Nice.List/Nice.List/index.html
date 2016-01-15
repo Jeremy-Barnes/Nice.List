@@ -70,38 +70,54 @@
 
 
     <div data-bind="if: status() != AppStatus.Landing, css: { main: status() != AppStatus.Landing }">
-        <div class="container-fluid">
-            <div class="row">
+        <div class="container-fluid main">
+            <div class="row onlyrow">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <div class="centered">
-                        <img alt="Nice.List" src="img/nice-list-logo.png" class="nav-img" width="189px" height="88px"> <br />
+                        <img alt="Nice.List" src="img/nice-list-logo.png" class="nav-img" width="189" height="88"> <br />
                     </div>
                     <button type="button" class="btn btn-long btn-narrow capsule-btn yellow"><span class="glyphicon glyphicon-plus-sign"></span> Add Item to Your List</button>
 
-                    <h5>My Lists</h5>
+                    <h4>My Lists</h4>
                     <ul class="nav nav-sidebar">
-                        <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-                        <li><a href="#">Reports</a></li>
-                        <li><a href="#">Analytics</a></li>
-                        <li><a href="#">Export</a></li>
+                        <li><span class="glyphicon glyphicon-list"></span> Friends</li>
+                        <li><span class="glyphicon glyphicon-list"></span> Family</li>
+                        <li><span class="glyphicon glyphicon-list"></span> A different placeholder</li>
                     </ul>
 
-                    <h5>Friends' Lists</h5>
+                    <h4>Friends' Lists</h4>
                     <ul class="nav nav-sidebar">
-                        <li><a href="">Nav item</a></li>
-                        <li><a href="">Nav item again</a></li>
-                        <li><a href="">One more nav</a></li>
-                        <li><a href="">Another nav item</a></li>
-                        <li><a href="">More navigation</a></li>
+                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42"/> Grace</li>
+                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Jeremy</li>
+                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Dominique</li>
+                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Blake</li>
+                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> John C Placeholder</li>
                     </ul>
+
+                    <h4>To Do</h4>
                     <ul class="nav nav-sidebar">
-                        <li><a href="">Nav item again</a></li>
-                        <li><a href="">One more nav</a></li>
-                        <li><a href="">Another nav item</a></li>
+                        <li><span class="glyphicon glyphicon-check"></span> Jeremy</li>
+                        <li><span class="glyphicon glyphicon-unchecked"></span> Mom</li>
+                        <li><span class="glyphicon glyphicon-unchecked"></span> Testperson</li>
                     </ul>
+                </div>
+
+                <div class="col-sm-9 col-md-10">
+                    <div class="navbar navbar-default namebar">
+                        <h2>Jill "Placeholder" Graves</h2>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+
+       
+
     </div>
 
     <div class="main" data-bind="if: status() == AppStatus.Account">
