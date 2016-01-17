@@ -52,6 +52,7 @@
     <Content Include="img\icons-cart.png" />
     <Content Include="img\icons-share.png" />
     <Content Include="img\nice-list-logo.png" />
+    <Content Include="img\scarf.jpg" />
     <Content Include="img\snowflake-pattern-2x.png" />
     <Content Include="img\snowflake-pattern-blue.png" />
     <Content Include="index.html" />
