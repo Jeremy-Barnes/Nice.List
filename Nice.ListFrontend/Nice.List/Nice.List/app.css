@@ -6,12 +6,12 @@ h1, h2 {
     color: #1B8395;
 }
 
-.sidebar {
-    height: 100%;
+.sidebar, #lists-sidebar {
+    height: 100% !important;
     background-color: #006B2E;
 }
 
-@media (min-width: 1000px){
+@media (min-width: 1800px){
     .sidebar {
         width: 13.1%
     }
@@ -25,6 +25,39 @@ h1, h2 {
     background-color:#ededed;
     width: 100%;
     margin-bottom: 35px;
+}
+
+.optional-topbar {
+    background-color: #006B2E;
+    height: 70px;
+}
+.optional-topbar > button {
+    margin-top: 18px;
+    float: left;
+}
+
+.optional-topbar > img {
+    margin-top: 10px;
+    margin-left: -0px
+}
+
+.menu-expand {
+    background-image: none;
+    background-color: transparent;
+    padding: 9px 10px;
+    border: none;
+}
+
+.menu-expand > .icon-bar {
+    background-color: white;
+    display: block;
+    width: 15px;
+    height: 2px;
+    border-radius: 1px;
+}
+
+.menu-expand > .icon-bar + .icon-bar{
+    margin-top: 2px;
 }
 
 .no-gutter {
@@ -70,7 +103,7 @@ form > input {
 }
 
 .btn-narrow {
-    padding: 5px; 10px;
+    padding: 5px 10px;
 }
 
 .wish-list-item {
@@ -120,9 +153,7 @@ form > input {
     background-image: url(/img/snowflake-pattern-blue.png);
     height:100%;
 }
-#features {
-    height:100%;
-}
-#about{
+
+#features, #about{
     height:100%;
 }

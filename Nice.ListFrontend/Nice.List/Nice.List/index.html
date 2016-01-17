@@ -69,11 +69,27 @@
     </div>
 
 
+
+
+
+
+
+
     <div data-bind="if: status() != AppStatus.Landing, css: { main: status() != AppStatus.Landing }">
         <div class="container-fluid main">
             <div class="row onlyrow">
-                <div class="col-xs-6 col-sm-6 col-md-2 sidebar">
-                    <div class="centered">
+
+                <nav class="centered optional-topbar visible-xs">
+                    <button type="button" class="menu-expand collapsed" data-toggle="collapse" data-target="#lists-sidebar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <img src="img/nice-list-logo.png" height="55" />
+                </nav>
+
+                <div class="col-xs-0 col-sm-4 col-md-3 col-lg-1 collapse navbar-collapse sidebar" id="lists-sidebar">
+                    <div class="centered visible-sm visible-md visible-lg">
                         <img alt="Nice.List" src="img/nice-list-logo.png" class="nav-img" width="189" height="88"> <br />
                     </div>
                     <button type="button" class="btn btn-long btn-narrow capsule-btn yellow"><span class="glyphicon glyphicon-plus-sign"></span> Add Item to Your List</button>
@@ -87,7 +103,7 @@
 
                     <h4>Friends' Lists</h4>
                     <ul class="nav nav-sidebar">
-                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42"/> Grace</li>
+                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Grace</li>
                         <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Jeremy</li>
                         <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Dominique</li>
                         <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Blake</li>
@@ -102,95 +118,92 @@
                     </ul>
                 </div>
 
-                <div class="col-xs-6 col-sm-6 col-md-10 no-gutter">
-                    <div class="navbar navbar-default namebar">
+                <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9 no-gutter">
+                        <div class="navbar navbar-default namebar">
                             <div class="inlineblock add-gutter"><img src="img/elf-default-profile-photos-05.png" width="115" class="nav-img" /></div>
                             <div class="inlineblock" style="vertical-align: middle;"><h1>Jill "Placeholder" Graves</h1> <p class="inlineblock">24</p> <p class="inlineblock">Tulsa</p></div>
-                    </div>
+                        </div>
 
-                    
 
-                    <div class="list col-xs-6 col-sm-6 col-md-10 ">
-                        <p>Sort By: Desire Price Date Added</p>
-                        <div class="wish-list-item">
-                            <div class="image-frame">
-                                <img src="img/scarf.jpg" width="265" />
+
+                        <div class="list col-xs-12 col-sm-12 col-md-10 col-lg-12">
+                            <p>Sort By: Desire Price Date Added</p>
+                            <div class="wish-list-item">
+                                <div class="image-frame">
+                                    <img src="img/scarf.jpg" width="265" />
+                                </div>
+                                <p>Red Cashmere Scarf</p>
+                                <p>$19.99</p>
+                                <p>Notes:</p>
+                                <p>Qty 1 Color Red Size Small</p>
                             </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
+                            <div class="wish-list-item centered">
+                                <div class="image-frame centered">
+                                    <img src="img/scarf.jpg" width="265" />
+                                </div>
+                                <p>Red Cashmere Scarf</p>
+                                <p>$19.99</p>
+                                <p>Notes:</p>
+                                <p>Qty 1 Color Red Size Small</p>
                             </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
+                            <div class="wish-list-item centered">
+                                <div class="image-frame centered">
+                                    <img src="img/scarf.jpg" width="265" />
+                                </div>
+                                <p>Red Cashmere Scarf</p>
+                                <p>$19.99</p>
+                                <p>Notes:</p>
+                                <p>Qty 1 Color Red Size Small</p>
                             </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
+                            <div class="wish-list-item centered">
+                                <div class="image-frame centered">
+                                    <img src="img/scarf.jpg" width="265" />
+                                </div>
+                                <p>Red Cashmere Scarf</p>
+                                <p>$19.99</p>
+                                <p>Notes:</p>
+                                <p>Qty 1 Color Red Size Small</p>
                             </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
+                            <div class="wish-list-item centered">
+                                <div class="image-frame centered">
+                                    <img src="img/scarf.jpg" width="265" />
+                                </div>
+                                <p>Red Cashmere Scarf</p>
+                                <p>$19.99</p>
+                                <p>Notes:</p>
+                                <p>Qty 1 Color Red Size Small</p>
                             </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
+                            <div class="wish-list-item centered">
+                                <div class="image-frame centered">
+                                    <img src="img/scarf.jpg" width="265" />
+                                </div>
+                                <p>Red Cashmere Scarf</p>
+                                <p>$19.99</p>
+                                <p>Notes:</p>
+                                <p>Qty 1 Color Red Size Small</p>
                             </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
+                            <div class="wish-list-item centered">
+                                <div class="image-frame centered">
+                                    <img src="img/scarf.jpg" width="265" />
+                                </div>
+                                <p>Red Cashmere Scarf</p>
+                                <p>$19.99</p>
+                                <p>Notes:</p>
+                                <p>Qty 1 Color Red Size Small</p>
                             </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
+                            <div class="wish-list-item centered">
+                                <div class="image-frame centered">
+                                    <img src="img/scarf.jpg" width="265" />
+                                </div>
+                                <p>Red Cashmere Scarf</p>
+                                <p>$19.99</p>
+                                <p>Notes:</p>
+                                <p>Qty 1 Color Red Size Small</p>
                             </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
-
-       
-
     </div>
 
     <div class="main" data-bind="if: status() == AppStatus.Account">
