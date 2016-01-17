@@ -6,19 +6,28 @@ h1, h2 {
     color: #1B8395;
 }
 
-.sidebar, #lists-sidebar {
-    height: 100% !important;
-    background-color: #006B2E;
+.sidebar {
+    position: fixed;
+    z-index: 1000;
 }
 
 @media (min-width: 1800px){
-    .sidebar {
+    .sidebar, #lists-sidebar-placeholder {
         width: 13.1%
     }
 }
 
 .sidebar * {
     color: white;
+}
+  
+#lists-sidebar {
+    height: 100% !important;
+    background-color: #006B2E;
+}
+
+#lists-sidebar-placeholder {
+    min-width: 230px
 }
 
 .namebar {
@@ -27,10 +36,18 @@ h1, h2 {
     margin-bottom: 35px;
 }
 
-.optional-topbar {
-    background-color: #006B2E;
+#optional-topbar-placeholder {
     height: 70px;
 }
+
+.optional-topbar {
+    background-color: #006B2E;
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    z-index: 1000;
+}
+
 .optional-topbar > button {
     margin-top: 18px;
     float: left;

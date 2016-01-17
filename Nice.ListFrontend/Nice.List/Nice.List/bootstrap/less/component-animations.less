@@ -31,3 +31,11 @@
   .transition-duration(.35s);
   .transition-timing-function(ease);
 }
+
+#lists-sidebar.collapsing {
+  height: 0;
+  overflow: hidden;
+  .transition-property(~"width, visibility");
+  .transition-duration(.35s);
+  .transition-timing-function(ease);
+}
