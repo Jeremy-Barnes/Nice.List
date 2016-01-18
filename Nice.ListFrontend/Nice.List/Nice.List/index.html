@@ -77,18 +77,18 @@
 
     <div data-bind="if: status() != AppStatus.Landing, css: { main: status() != AppStatus.Landing }">
         <div class="container-fluid main">
-            <div class="row onlyrow">
 
-                <nav class="centered optional-topbar visible-xs">
+            <nav class="centered optional-topbar navbar-fixed-top visible-xs">
                     <button type="button" class="menu-expand collapsed" data-toggle="collapse" data-target="#lists-sidebar, #lists-sidebar-placeholder">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
                     <img src="img/nice-list-logo.png" height="55" />
-                </nav> <div class="visible-xs" id="optional-topbar-placeholder"> &nbsp;</div>
-
-                <div class="col-xs-0 col-sm-4 col-md-3 col-lg-1 collapse width navbar-collapse sidebar" id="lists-sidebar">
+                </nav> 
+            <div id="optional-topbar-placeholder" class="visible-xs"> &nbsp;</div>
+                
+            <div class="collapse width navbar-collapse sidebar" id="lists-sidebar">
                     <div class="centered visible-sm visible-md visible-lg">
                         <img alt="Nice.List" src="img/nice-list-logo.png" class="nav-img" width="189" height="88"> <br />
                     </div>
@@ -117,127 +117,143 @@
                         <li><span class="glyphicon glyphicon-unchecked"></span> Testperson</li>
                     </ul>
                 </div>
-                <div class="col-xs-0 col-sm-4 col-md-3 col-lg-1 visible-lg visible-md collapse navbar-collapse" id="lists-sidebar-placeholder"> &nbsp; </div>
+            <div id="lists-sidebar-placeholder" class="visible-sm visible-md visible-lg collapse"> &nbsp;</div>
 
+           
 
-                <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9 no-gutter">
-                        <div class="navbar navbar-default namebar">
-                            <div class="inlineblock add-gutter"><img src="img/elf-default-profile-photos-05.png" width="115" class="nav-img" /></div>
-                            <div class="inlineblock" style="vertical-align: middle;"><h1>Jill "Placeholder" Graves</h1> <p class="inlineblock">24</p> <p class="inlineblock">Tulsa</p></div>
+            <div id="wishlist-view" data-bind="if: status() == AppStatus.Home">
+
+                <div class="navbar navbar-default namebar namebar-full visible-sm visible-md visible-lg">
+                    <div class="inlineblock"><img src="img/elf-default-profile-photos-05.png" width="115" class="nav-img" /></div>
+                    <div class="inlineblock" style="vertical-align: middle;"><h1>Jill "Placeholder" Graves</h1> <p class="inlineblock">24</p> <p class="inlineblock">Tulsa</p></div>
+                </div>
+
+                <div class="navbar navbar-default namebar visible-xs">
+                    <div class="inlineblock"><img src="img/elf-default-profile-photos-05.png" width="115" class="nav-img" /></div>
+                    <div class="inlineblock" style="vertical-align: middle;"><h1>Jill "Placeholder" Graves</h1> <p class="inlineblock">24</p> <p class="inlineblock">Tulsa</p></div>
+                </div>
+
+                <div class="row add-gutter">
+                    <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <p>Sort By: Desire Price Date Added</p>
+                        <div class="wish-list-item">
+                            <div class="image-frame">
+                                <img src="img/scarf.jpg" width="265" />
+                            </div>
+                            <p>Red Cashmere Scarf</p>
+                            <p>$19.99</p>
+                            <p>Notes:</p>
+                            <p>Qty 1 Color Red Size Small</p>
                         </div>
-
-
-
-                        <div class="list col-xs-12 col-sm-12 col-md-10 col-lg-12">
-                            <p>Sort By: Desire Price Date Added</p>
-                            <div class="wish-list-item">
-                                <div class="image-frame">
-                                    <img src="img/scarf.jpg" width="265" />
-                                </div>
-                                <p>Red Cashmere Scarf</p>
-                                <p>$19.99</p>
-                                <p>Notes:</p>
-                                <p>Qty 1 Color Red Size Small</p>
+                        <div class="wish-list-item centered">
+                            <div class="image-frame centered">
+                                <img src="img/scarf.jpg" width="265" />
                             </div>
-                            <div class="wish-list-item centered">
-                                <div class="image-frame centered">
-                                    <img src="img/scarf.jpg" width="265" />
-                                </div>
-                                <p>Red Cashmere Scarf</p>
-                                <p>$19.99</p>
-                                <p>Notes:</p>
-                                <p>Qty 1 Color Red Size Small</p>
+                            <p>Red Cashmere Scarf</p>
+                            <p>$19.99</p>
+                            <p>Notes:</p>
+                            <p>Qty 1 Color Red Size Small</p>
+                        </div>
+                        <div class="wish-list-item centered">
+                            <div class="image-frame centered">
+                                <img src="img/scarf.jpg" width="265" />
                             </div>
-                            <div class="wish-list-item centered">
-                                <div class="image-frame centered">
-                                    <img src="img/scarf.jpg" width="265" />
-                                </div>
-                                <p>Red Cashmere Scarf</p>
-                                <p>$19.99</p>
-                                <p>Notes:</p>
-                                <p>Qty 1 Color Red Size Small</p>
+                            <p>Red Cashmere Scarf</p>
+                            <p>$19.99</p>
+                            <p>Notes:</p>
+                            <p>Qty 1 Color Red Size Small</p>
+                        </div>
+                        <div class="wish-list-item centered">
+                            <div class="image-frame centered">
+                                <img src="img/scarf.jpg" width="265" />
                             </div>
-                            <div class="wish-list-item centered">
-                                <div class="image-frame centered">
-                                    <img src="img/scarf.jpg" width="265" />
-                                </div>
-                                <p>Red Cashmere Scarf</p>
-                                <p>$19.99</p>
-                                <p>Notes:</p>
-                                <p>Qty 1 Color Red Size Small</p>
+                            <p>Red Cashmere Scarf</p>
+                            <p>$19.99</p>
+                            <p>Notes:</p>
+                            <p>Qty 1 Color Red Size Small</p>
+                        </div>
+                        <div class="wish-list-item centered">
+                            <div class="image-frame centered">
+                                <img src="img/scarf.jpg" width="265" />
                             </div>
-                            <div class="wish-list-item centered">
-                                <div class="image-frame centered">
-                                    <img src="img/scarf.jpg" width="265" />
-                                </div>
-                                <p>Red Cashmere Scarf</p>
-                                <p>$19.99</p>
-                                <p>Notes:</p>
-                                <p>Qty 1 Color Red Size Small</p>
+                            <p>Red Cashmere Scarf</p>
+                            <p>$19.99</p>
+                            <p>Notes:</p>
+                            <p>Qty 1 Color Red Size Small</p>
+                        </div>
+                        <div class="wish-list-item centered">
+                            <div class="image-frame centered">
+                                <img src="img/scarf.jpg" width="265" />
                             </div>
-                            <div class="wish-list-item centered">
-                                <div class="image-frame centered">
-                                    <img src="img/scarf.jpg" width="265" />
-                                </div>
-                                <p>Red Cashmere Scarf</p>
-                                <p>$19.99</p>
-                                <p>Notes:</p>
-                                <p>Qty 1 Color Red Size Small</p>
+                            <p>Red Cashmere Scarf</p>
+                            <p>$19.99</p>
+                            <p>Notes:</p>
+                            <p>Qty 1 Color Red Size Small</p>
+                        </div>
+                        <div class="wish-list-item centered">
+                            <div class="image-frame centered">
+                                <img src="img/scarf.jpg" width="265" />
                             </div>
-                            <div class="wish-list-item centered">
-                                <div class="image-frame centered">
-                                    <img src="img/scarf.jpg" width="265" />
-                                </div>
-                                <p>Red Cashmere Scarf</p>
-                                <p>$19.99</p>
-                                <p>Notes:</p>
-                                <p>Qty 1 Color Red Size Small</p>
+                            <p>Red Cashmere Scarf</p>
+                            <p>$19.99</p>
+                            <p>Notes:</p>
+                            <p>Qty 1 Color Red Size Small</p>
+                        </div>
+                        <div class="wish-list-item centered">
+                            <div class="image-frame centered">
+                                <img src="img/scarf.jpg" width="265" />
                             </div>
-                            <div class="wish-list-item centered">
-                                <div class="image-frame centered">
-                                    <img src="img/scarf.jpg" width="265" />
-                                </div>
-                                <p>Red Cashmere Scarf</p>
-                                <p>$19.99</p>
-                                <p>Notes:</p>
-                                <p>Qty 1 Color Red Size Small</p>
-                            </div>
+                            <p>Red Cashmere Scarf</p>
+                            <p>$19.99</p>
+                            <p>Notes:</p>
+                            <p>Qty 1 Color Red Size Small</p>
                         </div>
                     </div>
+                </div> 
             </div>
+
+            <div id="account-view" data-bind="if: status() == AppStatus.Account">
+                <form id="account-settings" data-bind="submit: submitAccountChanges, with: user">
+
+                    <div>
+                        <input type="text" class="form-control" name="firstName" placeholder="first name" data-bind="value: firstName" />
+                        <input type="text" class="form-control" name="lastName" placeholder="last name" data-bind="value: lastName" />
+                    </div>
+
+                    <div>
+                        <input type="text" class="form-control" name="city" placeholder="city" data-bind="value: city" required />
+                        <br />
+                        <input type="text" class="form-control" name="state" placeholder="state" data-bind="value: state" required />
+                        <input type="text" class="form-control" name="postcode" placeholder="zip" data-bind="value: postcode" required />
+                        <br />
+                        <input type="text" class="form-control" name="country" placeholder="country" data-bind="value: country" required />
+                    </div>
+
+                    <div>
+                        <img src="img/elf-default-profile-photos-05.png" /> Add a profile photo
+                    </div>
+
+                    <div>
+                        <input type="text" class="form-control" name="state" placeholder="file on your computer..." required /> <button class="btn form-control">Browse</button> <button class="btn form-control">Upload</button>
+                    </div>
+
+                    <div>
+                        <label>Email Address</label> <input type="email" class="form-control" name="emailAddress" data-bind="value: emailAddress" required />
+                    </div>
+
+                    <div data-bind="css: { passwordMismatch: $root.passwordsMatch() == false}">
+                        <label>New Password</label> <input type="password" class="form-control" name="password" data-bind="textInput: password" />
+                        <label>Confirm Password</label> <input type="password" class="form-control" data-bind="textInput: $root.passwordConfirm" />
+                    </div>
+
+                    <div>
+                        <input type="submit" class="btn blue form-control" value="Submit" data-bind="enable: $root.passwordsMatch" />
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
-
-    <div class="main" data-bind="if: status() == AppStatus.Account">
-        <div class="content">
-            <form data-bind="submit: submitAccountChanges, with: user">
-
-                <div>
-                    <label>First Name</label> <input type="text" name="firstName" data-bind="value: firstName" />
-                    <label>Last Name</label> <input type="text" name="lastName" data-bind="value: lastName" />
-                </div>
-                <div>
-                    <label>Email Address</label> <input type="email" name="emailAddress" data-bind="value: emailAddress" required />
-                </div>
-
-                <div data-bind="css: { passwordMismatch: $root.passwordsMatch() == false}">
-                    <label>New Password</label> <input type="password" name="password" data-bind="textInput: password" />
-                    <label>Confirm Password</label> <input type="password" data-bind="textInput: $root.passwordConfirm" />
-                </div>
-                <div>
-                    <label>City</label> <input type="text" name="city" data-bind="value: city" required />
-                    <label>State</label> <input type="text" name="state" data-bind="value: state" required />
-                    <label>Zip/Post Code</label> <input type="text" data-bind="value: postcode" name="postcode" required />
-                    <br />
-                    <label>Country</label> <input type="text" name="country" data-bind="value: country" required />
-                </div>
-                <div>
-                    <input type="submit" value="Sign Up" data-bind="enable: $root.passwordsMatch" />
-                </div>
-            </form>
-        </div>
-    </div>
-
 
     <!-----DIALOG BOX HTML----->
     <div id="log-in" class="modal fade" role="dialog">
