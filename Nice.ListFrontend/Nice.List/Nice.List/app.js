@@ -123,7 +123,7 @@ var App = (function () {
             this.status(AppStatus.Landing);
         }
         else {
-            this.status(AppStatus.Home);
+            this.status(AppStatus.Account);
         }
     };
     return App;

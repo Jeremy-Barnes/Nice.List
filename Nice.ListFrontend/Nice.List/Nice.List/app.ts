@@ -133,7 +133,7 @@ class App {
         if (this.status() == AppStatus.Home) {
             this.status(AppStatus.Landing);
         } else {
-            this.status(AppStatus.Home);
+            this.status(AppStatus.Account);
         }
     }
 

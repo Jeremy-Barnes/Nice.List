@@ -1,6 +1,10 @@
 ﻿html, body, .main, .onlyrow {
     height: 100%;
-    padding-left: 0px;
+}
+
+.container-fluid {
+    height: 100%;
+    padding: 0px;
 }
 
 h1, h2 {
@@ -37,16 +41,25 @@ h1, h2 {
 
 .namebar {
     background-color:#ededed;
-    width: 100%;
-    margin-bottom: 35px;
+    position:absolute;
+    overflow: hidden;
 }
 
-.namebar {
-    display: inline !important;
-    position:absolute;
-    width: calc(100% - 250px);
-    overflow: hidden;
-    margin-left: -3px;
+#namebar-placeholder {
+    height: 100px
+}
+
+.namebar-full {
+    width: 99%;
+    margin-left: -5px;
+}
+
+.namebar-small {
+    width: 125%;
+}
+
+#namebar-full-placeholder {
+    height: 175px
 }
 
 #optional-topbar-placeholder {
@@ -109,10 +122,6 @@ h1, h2 {
 form > input {
     margin: 8px 0px 8px 0px;
     width: 100%;
-}
-
-#account-settings > * > input {
-    display: inline-block;
 }
 
 .passwordMismatch {
@@ -189,7 +198,12 @@ form > input {
     height:100%;
 }
 
-#wishlist-view {
+.view {
+    position: absolute;
     display: inline-block;
-    width: 80%;
+}
+
+form > .row, form > div > .row {
+    margin-top: 9px;
+    margin-bottom: 9px;
 }
