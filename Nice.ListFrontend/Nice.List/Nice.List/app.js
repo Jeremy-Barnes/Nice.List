@@ -12,6 +12,8 @@ var App = (function () {
         var _this = this;
         this.status = ko.observable(AppStatus.Home);
         this.passwordConfirm = ko.observable("");
+        this.friendEmailAddress = ko.observable("");
+        this.friendAddStatus = ko.observable(FriendAddStatus.Waiting);
         this.user = ko.observable(new UserModel());
         this.passwordsMatch = ko.pureComputed(function () { return _this.user().password() == _this.passwordConfirm(); }, this);
         this.initUser();
@@ -56,7 +58,9 @@ var App = (function () {
         });
     };
     App.prototype.submitAccountChanges = function () {
-        var parameters = JSON.stringify(ko.toJS(this.user()));
+        var dat = new FormData();
+        dat.append("user", JSON.stringify(ko.toJS(this.user())));
+        dat.append("file", jQuery("#file")[0].files[0]);
         var methodName = "";
         if (this.status() == AppStatus.Landing) {
             methodName = "createUser";
@@ -67,9 +71,10 @@ var App = (function () {
         var settings = {
             url: "http://localhost:8080/api/nice/users/" + methodName,
             type: "POST",
-            contentType: "application/json; charset=utf-8",
+            contentType: false,
+            processData: false,
             dataType: "json",
-            data: parameters,
+            data: dat,
             crossDomain: true
         };
         var self = this;
@@ -100,30 +105,15 @@ var App = (function () {
             alert(request);
         });
     };
-    App.prototype.signUp = function () {
-        var parameters = JSON.stringify(ko.mapping.toJS(this.user));
-        var settings = {
-            url: "http://localhost:8080/api/nice/users/" + "createUser",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: parameters,
-            crossDomain: true
-        };
-        var self = this;
-        jQuery.ajax(settings).then(function (o) {
-            self.user(ko.mapping.fromJS(o));
-            self.status(AppStatus.Home);
-        }).fail(function (request) {
-            alert(request);
-        });
+    App.prototype.addFriend = function () {
+        alert("todo lol");
     };
     App.prototype.switchState = function () {
-        if (this.status() == AppStatus.Home) {
+        if (this.status() != AppStatus.Landing) {
             this.status(AppStatus.Landing);
         }
         else {
-            this.status(AppStatus.Account);
+            this.status(AppStatus.Friends);
         }
     };
     return App;
@@ -134,5 +124,12 @@ var AppStatus;
     AppStatus[AppStatus["Account"] = 1] = "Account";
     AppStatus[AppStatus["ViewUser"] = 2] = "ViewUser";
     AppStatus[AppStatus["Landing"] = 3] = "Landing";
+    AppStatus[AppStatus["Friends"] = 4] = "Friends";
 })(AppStatus || (AppStatus = {}));
+var FriendAddStatus;
+(function (FriendAddStatus) {
+    FriendAddStatus[FriendAddStatus["Success"] = 0] = "Success";
+    FriendAddStatus[FriendAddStatus["Failure"] = 1] = "Failure";
+    FriendAddStatus[FriendAddStatus["Waiting"] = 2] = "Waiting";
+})(FriendAddStatus || (FriendAddStatus = {}));
 //# sourceMappingURL=app.js.map

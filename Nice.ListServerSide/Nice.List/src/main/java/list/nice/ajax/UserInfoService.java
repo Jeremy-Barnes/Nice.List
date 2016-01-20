@@ -3,14 +3,20 @@ package list.nice.ajax;
 import list.nice.bll.UserBLL;
 import list.nice.dal.dto.Token;
 import list.nice.dal.dto.User;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.*;
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import java.io.UnsupportedEncodingException;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 
@@ -45,21 +51,6 @@ public class UserInfoService {
 	}
 
 	@POST
-	@Path("/changeUserInformation")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response changeUserInformation(JAXBElement<User> user, @Context HttpHeaders header){
-		try {
-			String cookie = header.getCookies().get("nicelist").getValue();
-			String[] entry = cookie.split(":");
-			User rUser = user.getValue();
-			return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(UserBLL.updateUser(rUser, entry[0], entry[1])).build();
-		} catch(Exception e ){
-			return null;
-		}
-	}
-
-	@POST
 	@Path("/createUser")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -70,4 +61,44 @@ public class UserInfoService {
 		NewCookie cook = new NewCookie("nicelist", userReal.getTokenSelector() + ":" + validator, "/", null, null, 3600, false );
 		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(userReal).cookie(cook).build();
 	}
+
+	@POST
+	@Path("/changeUserInformation")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response uploadFile(FormDataMultiPart form, @Context HttpHeaders header) throws JAXBException, GeneralSecurityException, IOException {
+
+		//get cookie
+		String cookie = header.getCookies().get("nicelist").getValue();
+		String[] entry = cookie.split(":");
+
+		//get user
+		String userString = form.getField("user").getValue();
+		JAXBContext jc = JAXBContext.newInstance(User.class);
+		Unmarshaller unmarshaller = jc.createUnmarshaller();
+		unmarshaller.setProperty("eclipselink.media-type", "application/json");
+		unmarshaller.setProperty("eclipselink.json.include-root", false);
+		User user = unmarshaller.unmarshal(new StreamSource(new StringReader(userString)), User.class).getValue();
+
+		user = UserBLL.updateUser(user, entry[0], entry[1]);
+
+		//get file
+		FormDataBodyPart filePart = form.getField("file");
+		InputStream fileInputStream = filePart.getValueAs(InputStream.class);
+		OutputStream out = new FileOutputStream(new File("C:\\Users\\Jeremy\\Desktop\\Test.jpg")); // TODO not on my desktop also correct file ext
+		int read = 0;
+		byte[] bytes = new byte[1024];
+
+		while ((read = fileInputStream.read(bytes)) != -1) {
+			out.write(bytes, 0, read);
+		}
+		out.flush();
+		out.close();
+
+		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(user).build();
+	}
+
+
+
+
 }

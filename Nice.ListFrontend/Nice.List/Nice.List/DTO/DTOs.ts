@@ -8,6 +8,7 @@
     state: string;
     country: string;
     postcode: string;
+    pictureURL: string;
 }
 
 class UserModel {
@@ -20,6 +21,7 @@ class UserModel {
     state: KnockoutObservable<string> = ko.observable("");
     country: KnockoutObservable<string> = ko.observable("");
     postcode: KnockoutObservable<string> = ko.observable("");
+    pictureURL: KnockoutObservable<string> = ko.observable("");
 }
 
 class Token {

@@ -14,6 +14,7 @@ var UserModel = (function () {
         this.state = ko.observable("");
         this.country = ko.observable("");
         this.postcode = ko.observable("");
+        this.pictureURL = ko.observable("");
     }
     return UserModel;
 })();

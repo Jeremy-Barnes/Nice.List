@@ -24,6 +24,7 @@
     <![endif]-->
 </head>
 <body>
+    <button data-bind="click: $root.switchState">DO</button>
     <div data-bind="if: status() == AppStatus.Landing, css: { main: status() == AppStatus.Landing}">
         <nav class="navbar navbar-default ">
             <div class="container">
@@ -77,7 +78,6 @@
 
     <div data-bind="if: status() != AppStatus.Landing, css: { main: status() != AppStatus.Landing}">
         <div class="container-fluid">
-
             <nav class="centered optional-topbar navbar-fixed-top visible-xs">
                     <button type="button" class="menu-expand collapsed" data-toggle="collapse" data-target="#lists-sidebar, #lists-sidebar-placeholder">
                         <span class="icon-bar"></span>
@@ -219,8 +219,8 @@
                     <h1>Account Settings</h1>
                     <p>Finish your profile so friends can find you.</p>
                     <div class="row">
-                        <div class="col-md-6"><input type="text" class="form-control" name="firstName" placeholder="first name" data-bind="value: firstName" /></div>
-                        <div class="col-md-6"><input type="text" class="form-control" name="lastName" placeholder="last name" data-bind="value: lastName" /></div>
+                        <div class="col-md-6"><input type="text" class="form-control" name="firstName" placeholder="first name" data-bind="value: firstName" required /></div>
+                        <div class="col-md-6"><input type="text" class="form-control" name="lastName" placeholder="last name" data-bind="value: lastName" required /></div>
                     </div>
 
                     <div class="row">
@@ -239,12 +239,12 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-9"><input type="text" class="form-control" name="file" placeholder="file on your computer..." /></div>
-                        <div class="col-md-3"><button class="btn btn-default">Browse</button></div>
+                        <div class="col-md-10"><input type="text" class="form-control" readonly="readonly" data-bind="value: pictureURL"></div>
+                        <div class="col-md-2"><span class="btn btn-default btn-file"> Browse <input type="file" id="file" data-bind="value: pictureURL" /></span></div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12"><input type="email" class="form-control" name="emailAddress" placeholder="change email" data-bind="value: emailAddress" /></div>                        
+                        <div class="col-md-12"><input type="email" class="form-control" name="emailAddress" placeholder="change email" data-bind="value: emailAddress" /></div>
                     </div>
 
                     <div data-bind="css: { passwordMismatch: $root.passwordsMatch() == false}">
@@ -263,6 +263,27 @@
                 </form>
             </div>
 
+            <div id="friends-view" class="view" data-bind="if: status() == AppStatus.Friends">
+
+               <h1>My friends' lists</h1>
+                <p>You can view your friends' lists below.</p>
+                <button type="button" class="btn btn-narrow capsule-btn yellow" data-toggle="modal" data-target="#add-friend"><span class="glyphicon glyphicon-plus-sign"></span> Add a friend</button>
+
+                <div class="row onlyrow add-gutter">
+                    <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <div class="wish-list-item">
+                            <div class="image-frame">
+                                <img src="img/scarf.jpg" width="265" />
+                            </div>
+                            <p>Red Cashmere Scarf</p>
+                            <p>$19.99</p>
+                            <p>Notes:</p>
+                            <p>Qty 1 Color Red Size Small</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -298,7 +319,7 @@
                 </div>
 
 
-                <form class="modal-form" data-bind="submit: signUp, with: user">
+                <form class="modal-form" data-bind="submit: submitAccountChanges, with: user">
                     <input type="email" name="emailAddress" class="form-control" data-bind="value: emailAddress" placeholder="email address" required />
                     <input type="password" name="password" class="form-control" data-bind="textInput: password, css: { passwordMismatch: $root.passwordsMatch() == false}" placeholder="password" required />
                     <input type="password" name="password" class="form-control" data-bind="textInput: $root.confirmPassword, css: { passwordMismatch: $root.passwordsMatch() == false}" placeholder="confirm password" required />
@@ -312,7 +333,43 @@
         </div>
     </div>
 
-        <button data-bind="click: $root.switchState">DO</button>
+    <div id="add-friend" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content" data-bind="css: { active: friendAddStatus() == FriendAddStatus.Waiting, inactive: friendAddStatus() != FriendAddStatus.Waiting  }">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
+                    <h1 class="text-center">Add a Friend</h1>
+                </div>
+
+
+                <form class="modal-form" data-bind="submit: addFriend">
+                    <input type="email" name="emailAddress" class="form-control" data-bind="value: friendEmailAddress" placeholder="your friend's email address" required />
+                    <input type="submit" class="btn btn-long blue form-control" value="Add Friend" />
+                </form>
+
+
+            </div>
+
+            <div class="modal-content success" data-bind="css: { active: friendAddStatus() == FriendAddStatus.Success, inactive: friendAddStatus() != FriendAddStatus.Success  }">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
+                    <h1 class="text-center">Success!</h1>
+
+                    <p> Hurray! <span data-bind="text: friendEmailAddress"></span> has been added to your friends list. You can view their wishlist now.</p>
+                </div>
+            </div>
+
+            <div class="modal-content failure" data-bind="css: { active: friendAddStatus() == FriendAddStatus.Failure, inactive: friendAddStatus() != FriendAddStatus.Failure  }">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
+                    <h1 class="text-center">Oh no!</h1>
+
+                    <p> It looks like <span data-bind="text: friendEmailAddress"></span> doesn't have an account on NiceList.</p> 
+                    <input type="button" class="btn btn-long blue form-control" value="Send an Invitation" />
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap core JavaScript -->
     <!-- Placed at the end of the document so the pages load faster -->

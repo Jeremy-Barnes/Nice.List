@@ -15,6 +15,8 @@ class App {
     public passwordConfirm: KnockoutObservable<string> = ko.observable("");
     public passwordsMatch: KnockoutComputed<boolean>;
 
+    public friendEmailAddress: KnockoutObservable<string> = ko.observable("");
+    public friendAddStatus : KnockoutObservable<FriendAddStatus> = ko.observable(FriendAddStatus.Waiting);
 
     constructor() {
         this.user = ko.observable(new UserModel());
@@ -63,8 +65,10 @@ class App {
     }
 
     public submitAccountChanges() {
-        var parameters = JSON.stringify(ko.toJS(this.user()));
 
+        var dat = new FormData();
+        dat.append("user", JSON.stringify(ko.toJS(this.user())));
+        dat.append("file", (<any>jQuery("#file")[0]).files[0]);
         var methodName = "";
         if (this.status() == AppStatus.Landing) {
             methodName = "createUser";
@@ -75,9 +79,10 @@ class App {
         var settings: JQueryAjaxSettings = {
             url: "http://localhost:8080/api/nice/users/" + methodName,
             type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: parameters,
+            contentType: false,
+            processData: false,
+           dataType: "json", 
+            data: dat,
             crossDomain: true
         };
         var self = this;
@@ -88,6 +93,7 @@ class App {
         }).fail(function (request: JQueryXHR) {
             alert(request);
         });
+    
     }
 
     public logIn() {
@@ -109,36 +115,24 @@ class App {
             alert(request);
         });
     }
-    
-    public signUp() {
-        var parameters = JSON.stringify(ko.mapping.toJS(this.user));
-        var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/users/" + "createUser",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: parameters,
-            crossDomain: true
-        };
-        var self = this;
-        jQuery.ajax(settings).then(function (o: User) {
-            self.user(ko.mapping.fromJS(o));
-            self.status(AppStatus.Home);
-        }).fail(function (request: JQueryXHR) {
-            alert(request);
-        });
+
+    public addFriend() {
+        alert("todo lol");
     }
 
     public switchState() {
-        if (this.status() == AppStatus.Home) {
+        if (this.status() != AppStatus.Landing) {
             this.status(AppStatus.Landing);
         } else {
-            this.status(AppStatus.Account);
+            this.status(AppStatus.Friends);
         }
     }
-
 }
 
 enum AppStatus {
-    Home, Account, ViewUser, Landing
+    Home, Account, ViewUser, Landing, Friends
+}
+
+enum FriendAddStatus {
+    Success, Failure, Waiting
 }
