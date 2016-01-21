@@ -176,8 +176,14 @@ form > input {
 
 .wish-list-item > .image-frame {
     margin: 8px 6px;
-    width:264px;
+    width:94%;
     height:175px;
+    border: inherit;
+    overflow: hidden; 
+}
+
+.wish-list-item > .image-frame > img {
+    width:100%;
     border: inherit;
     overflow: hidden; 
 }
