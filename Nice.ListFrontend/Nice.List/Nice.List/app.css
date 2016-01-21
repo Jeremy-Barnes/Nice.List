@@ -1,10 +1,15 @@
-﻿html, body, .main, .onlyrow {
+﻿html, body, .main {
     height: 100%;
+    width: 100%;
 }
 
 .container-fluid {
     height: 100%;
     padding: 0px;
+}
+
+.onlyrow {
+    width: 100%;
 }
 
 h1, h2 {
@@ -39,6 +44,23 @@ h1, h2 {
     }
 }
 
+@media (max-width: 768px) {
+    .view {
+        width: 100%
+    }
+}
+
+@media (min-width: 769px) {
+    .view {
+        width: calc(98% - 230px);
+    }
+}
+
+.namebar-full {
+    width: 100% ;
+    margin-left: -5px;
+}
+
 .namebar {
     background-color:#ededed;
     position:absolute;
@@ -46,20 +68,14 @@ h1, h2 {
 }
 
 #namebar-placeholder {
-    height: 100px
-}
-
-.namebar-full {
-    width: 99%;
-    margin-left: -5px;
 }
 
 .namebar-small {
-    width: 125%;
+    width: 100%;
 }
 
 #namebar-full-placeholder {
-    height: 175px
+    height: 175px;
 }
 
 #optional-topbar-placeholder {
@@ -105,8 +121,8 @@ h1, h2 {
 }
 
 .add-gutter {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 1.5%;
+    padding-right: 1.5%;
 }
 
 .inlineblock {
@@ -150,7 +166,7 @@ form > input {
     background-color: #ededed;
     border: solid 2px #e1e1e1;
     border-radius: 10px;
-    width: 280px;
+    max-width: 280px;
     height: 380px;
     display: inline-block;
     margin-right: 15px;
@@ -159,7 +175,7 @@ form > input {
 
 .wish-list-item > .image-frame {
     margin: 8px 6px;
-    width:264px; 
+    width:264px;
     height:175px;
     border: inherit;
     overflow: hidden; 
@@ -198,6 +214,10 @@ form > input {
     height:100%;
 }
 
+#add-friend > .modal-dialog > .modal-content {
+    height: 250px;
+}
+
 .view {
     position: absolute;
     display: inline-block;
@@ -212,6 +232,7 @@ form > .row, form > div > .row {
     position: relative;
     overflow: hidden;
 }
+
 .btn-file input[type=file] {
     position: absolute;
     top: 0;

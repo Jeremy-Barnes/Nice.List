@@ -66,7 +66,7 @@ public class UserInfoService {
 	@Path("/changeUserInformation")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response uploadFile(FormDataMultiPart form, @Context HttpHeaders header) throws JAXBException, GeneralSecurityException, IOException {
+	public Response changeUserInformation(FormDataMultiPart form, @Context HttpHeaders header) throws JAXBException, GeneralSecurityException, IOException {
 
 		//get cookie
 		String cookie = header.getCookies().get("nicelist").getValue();

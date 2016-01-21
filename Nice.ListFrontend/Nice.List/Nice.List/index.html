@@ -24,7 +24,8 @@
     <![endif]-->
 </head>
 <body>
-    <button data-bind="click: $root.switchState">DO</button>
+   
+
     <div data-bind="if: status() == AppStatus.Landing, css: { main: status() == AppStatus.Landing}">
         <nav class="navbar navbar-default ">
             <div class="container">
@@ -136,9 +137,13 @@
 
                 <div class="row onlyrow add-gutter" >
                     <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
                         <p>Sort By: Desire Price Date Added</p>
 
-                        <div class="wish-list-item">
+
+
+
+                        <div class="wish-list-item col-xs-9 col-sm-6 col-md-6 col-lg-2">
                             <div class="image-frame">
                                 <img src="img/scarf.jpg" width="265" />
                             </div>
@@ -147,69 +152,7 @@
                             <p>Notes:</p>
                             <p>Qty 1 Color Red Size Small</p>
                         </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
-                            </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
-                            </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
-                            </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
-                            </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
-                            </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
-                            </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
-                        <div class="wish-list-item centered">
-                            <div class="image-frame centered">
-                                <img src="img/scarf.jpg" width="265" />
-                            </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
-                        </div>
+
                     </div>
                 </div> 
             </div>
@@ -287,6 +230,8 @@
         </div>
     </div>
 
+    <button data-bind="click: $root.switchState">DO</button>
+
     <!-----DIALOG BOX HTML----->
     <div id="log-in" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm" role="document">
@@ -335,38 +280,41 @@
 
     <div id="add-friend" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content" data-bind="css: { active: friendAddStatus() == FriendAddStatus.Waiting, inactive: friendAddStatus() != FriendAddStatus.Waiting  }">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
-                    <h1 class="text-center">Add a Friend</h1>
+            <div class="modal-content"> 
+
+                <div data-bind="if: friendAddStatus() == FriendAddStatus.Waiting">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
+                        <h1 class="text-center">Add a Friend</h1>
+                    </div>
+
+                    <form class="modal-form" data-bind="submit: addFriend">
+                        <input type="email" name="emailAddress" class="form-control" data-bind="value: friendEmailAddress" placeholder="your friend's email address" required />
+                        <input type="submit" class="btn btn-long blue form-control" value="Add Friend" />
+                    </form>
                 </div>
 
-
-                <form class="modal-form" data-bind="submit: addFriend">
-                    <input type="email" name="emailAddress" class="form-control" data-bind="value: friendEmailAddress" placeholder="your friend's email address" required />
-                    <input type="submit" class="btn btn-long blue form-control" value="Add Friend" />
-                </form>
-
-
-            </div>
-
-            <div class="modal-content success" data-bind="css: { active: friendAddStatus() == FriendAddStatus.Success, inactive: friendAddStatus() != FriendAddStatus.Success  }">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
-                    <h1 class="text-center">Success!</h1>
-
-                    <p> Hurray! <span data-bind="text: friendEmailAddress"></span> has been added to your friends list. You can view their wishlist now.</p>
+                <div class="success" data-bind="if: friendAddStatus() == FriendAddStatus.Success">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" ><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
+                        <h1 class="text-center">Success!</h1>
+                        <br />
+                        <p> Hurray! <span data-bind="text: friendEmailAddress"></span> has been added to your friends list. You can view their wishlist now.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="modal-content failure" data-bind="css: { active: friendAddStatus() == FriendAddStatus.Failure, inactive: friendAddStatus() != FriendAddStatus.Failure  }">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
-                    <h1 class="text-center">Oh no!</h1>
-
-                    <p> It looks like <span data-bind="text: friendEmailAddress"></span> doesn't have an account on NiceList.</p> 
-                    <input type="button" class="btn btn-long blue form-control" value="Send an Invitation" />
+                <div class="failure" data-bind="if: friendAddStatus() == FriendAddStatus.Failure">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-remove" style="font-size:16px;"></span>
+                        </button>
+                        <h1 class="text-center">Oh no!</h1>
+                        <br />
+                        <p> It looks like <span data-bind="text: friendEmailAddress"></span> doesn't have an account on NiceList.</p> 
+                        <input type="button" class="btn btn-long blue form-control" value="Send an Invitation" />
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

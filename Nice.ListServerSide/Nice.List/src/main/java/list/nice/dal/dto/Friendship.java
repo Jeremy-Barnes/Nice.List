@@ -27,6 +27,12 @@ public class Friendship {
 		this.accepted = accepted;
 	}
 
+	public Friendship( int requesterUserID, int requestedUserID, boolean accepted) {
+		this.requesterUserID = requesterUserID;
+		this.requestedUserID = requestedUserID;
+		this.accepted = accepted;
+	}
+
 	public int getUserID() {
 		return friendshipID;
 	}

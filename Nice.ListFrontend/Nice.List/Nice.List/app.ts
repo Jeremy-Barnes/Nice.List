@@ -3,13 +3,18 @@
 /// <reference path="Scripts/typings/knockout/knockout.d.ts" />
 /// <reference path="Scripts/typings/knockout.mapping/knockout.mapping.d.ts" />
 
+
+var page: App;
+
 $(document).ready(function () {
     $.ajaxSetup({ cache: false });
-    var page = new App();
+    page = new App();
     ko.applyBindings(page);
 });
 
+
 class App {
+
     public user: KnockoutObservable<UserModel>;
     public status: KnockoutObservable<AppStatus> = ko.observable(AppStatus.Home);
     public passwordConfirm: KnockoutObservable<string> = ko.observable("");
@@ -19,12 +24,17 @@ class App {
     public friendAddStatus : KnockoutObservable<FriendAddStatus> = ko.observable(FriendAddStatus.Waiting);
 
     constructor() {
+
         this.user = ko.observable(new UserModel());
         this.passwordsMatch = ko.pureComputed(() => { return this.user().password() == this.passwordConfirm(); }, this);
         this.initUser();
+
+        jQuery('#add-friend').on('hidden.bs.modal', (e) => { this.friendAddStatus(FriendAddStatus.Waiting); this.friendEmailAddress(""); }); //I'm not happy about this, either
+
     }//ctor
 
     private initUser(): void {
+
         let siteCookie: string = this.findCookie();
         if (siteCookie == null) { //no user or too many users
             //TODO kill these cookies
@@ -36,6 +46,7 @@ class App {
     }
 
     private findCookie(): string {
+
         let usefulCookies = ("; " + document.cookie).split("; nicelist="); //everyone else's garbage ; mine
         if (usefulCookies.length == 2) {
             return usefulCookies[1];
@@ -45,7 +56,8 @@ class App {
     }
 
     public getUser(selector: string, validator: string) {
-        var valid: Token = { selector: selector, validator: validator}
+
+        var valid: Token = { selector: selector, validator: validator }
         var parameters = JSON.stringify(valid);
         var settings: JQueryAjaxSettings = {
             url: "http://localhost:8080/api/nice/users/" + "getUserFromToken",
@@ -97,7 +109,7 @@ class App {
     }
 
     public logIn() {
-        var x = this.status;
+
         var parameters = JSON.stringify(ko.mapping.toJS(this.user));
         var settings: JQueryAjaxSettings = {
             url: "http://localhost:8080/api/nice/users/" + "getUserFromLogin",
@@ -117,14 +129,31 @@ class App {
     }
 
     public addFriend() {
-        alert("todo lol");
+
+        var parameters = {};
+        parameters["friendRequester"] = JSON.stringify(ko.mapping.toJS(this.user));
+        parameters["requestedEmailAddress"] = this.friendEmailAddress();
+        var settings: JQueryAjaxSettings = {
+            url: "http://localhost:8080/api/nice/friends/" + "createFriendship",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function () {
+            self.friendAddStatus(FriendAddStatus.Success);
+        }).fail(function (request: JQueryXHR) {
+            self.friendAddStatus(FriendAddStatus.Failure);
+        });
     }
 
     public switchState() {
         if (this.status() != AppStatus.Landing) {
             this.status(AppStatus.Landing);
         } else {
-            this.status(AppStatus.Friends);
+            this.status(AppStatus.Home);
         }
     }
 }

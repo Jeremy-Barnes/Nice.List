@@ -30,6 +30,15 @@ public class UserBLL {
 		return selectorUnHashed;
 	}
 
+	protected static User getUser(String emailAddress) {
+		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
+
+		User user = (User) entityManager.createQuery("from User where UPPER(emailAddress) = :emailAddress").setParameter("email", emailAddress.toUpperCase()).getSingleResult();
+
+		entityManager.close();
+		return wipeSensitiveFields(user); //email is not a secure getter - don't give passwords hashes out to friends.
+	}
+
 	public static User getUser(String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 
@@ -124,10 +133,9 @@ public class UserBLL {
 		return validatorStr; //TODO make this actually unique
 	}
 
-	private static boolean verifyValidator(String suppliedValidator, User dbUser) throws GeneralSecurityException, UnsupportedEncodingException {
+	protected static boolean verifyValidator(String suppliedValidator, User dbUser) throws GeneralSecurityException, UnsupportedEncodingException {
 		byte[] hashByte = SCrypt.scrypt(suppliedValidator.getBytes("UTF-8"), suppliedValidator.getBytes("UTF-8"), 16384, 8, 1, 64);
 		String hashedCookieValidator = new String(Base64.encode(hashByte));
 		return hashedCookieValidator.equals(dbUser.getTokenValidator());
 	}
-
 }

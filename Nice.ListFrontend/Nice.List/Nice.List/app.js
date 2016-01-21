@@ -2,9 +2,10 @@
 /// <reference path="Scripts/typings/jqueryui/jqueryui.d.ts" />
 /// <reference path="Scripts/typings/knockout/knockout.d.ts" />
 /// <reference path="Scripts/typings/knockout.mapping/knockout.mapping.d.ts" />
+var page;
 $(document).ready(function () {
     $.ajaxSetup({ cache: false });
-    var page = new App();
+    page = new App();
     ko.applyBindings(page);
 });
 var App = (function () {
@@ -17,6 +18,7 @@ var App = (function () {
         this.user = ko.observable(new UserModel());
         this.passwordsMatch = ko.pureComputed(function () { return _this.user().password() == _this.passwordConfirm(); }, this);
         this.initUser();
+        jQuery('#add-friend').on('hidden.bs.modal', function (e) { _this.friendAddStatus(FriendAddStatus.Waiting); _this.friendEmailAddress(""); }); //I'm not happy about this, either
     } //ctor
     App.prototype.initUser = function () {
         var siteCookie = this.findCookie();
@@ -87,7 +89,6 @@ var App = (function () {
         });
     };
     App.prototype.logIn = function () {
-        var x = this.status;
         var parameters = JSON.stringify(ko.mapping.toJS(this.user));
         var settings = {
             url: "http://localhost:8080/api/nice/users/" + "getUserFromLogin",
@@ -106,14 +107,30 @@ var App = (function () {
         });
     };
     App.prototype.addFriend = function () {
-        alert("todo lol");
+        var parameters = {};
+        parameters["friendRequester"] = JSON.stringify(ko.mapping.toJS(this.user));
+        parameters["requestedEmailAddress"] = this.friendEmailAddress();
+        var settings = {
+            url: "http://localhost:8080/api/nice/friends/" + "createFriendship",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function () {
+            self.friendAddStatus(FriendAddStatus.Success);
+        }).fail(function (request) {
+            self.friendAddStatus(FriendAddStatus.Failure);
+        });
     };
     App.prototype.switchState = function () {
         if (this.status() != AppStatus.Landing) {
             this.status(AppStatus.Landing);
         }
         else {
-            this.status(AppStatus.Friends);
+            this.status(AppStatus.Home);
         }
     };
     return App;
