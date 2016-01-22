@@ -1,6 +1,7 @@
 package list.nice.dal.dto;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.WhereJoinTable;
 
@@ -34,20 +35,29 @@ public class User {
 	private String tokenValidator;
 	private String pictureURL;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@JsonSerialize
+	public List<User> getFriends() {
+		return pendingRequests;
+	}
+
+	public void setFriends(List<User> friends) {
+		pendingRequests = friends;
+	}
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="requesteduserID"))
 	@WhereJoinTable(clause = "accepted = 'TRUE'")
-	private Set<User> friends = new HashSet<User>();
+	private List<User> friends = new ArrayList<User>();
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteduserID"), inverseJoinColumns = @JoinColumn(name="requesteruserID"))
 	@WhereJoinTable(clause = "accepted = 'TRUE'")
 	private Set<User> friendOf = new HashSet<User>();
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="requesteduserID"))
 	@WhereJoinTable(clause = "accepted = 'FALSE'")
-	private Set<User> pendingRequests = new HashSet<User>();
+	private List<User> pendingRequests = new ArrayList<User>();
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteduserID"), inverseJoinColumns = @JoinColumn(name="requesteruserID"))

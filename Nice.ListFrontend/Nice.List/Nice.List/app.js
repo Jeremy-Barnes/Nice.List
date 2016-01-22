@@ -133,14 +133,13 @@ var App = (function () {
     };
     App.prototype.addFriend = function () {
         var parameters = {};
-        parameters["friendRequester"] = JSON.stringify(ko.mapping.toJS(this.user));
+        parameters["user"] = ko.mapping.toJS(this.user);
         parameters["requestedEmailAddress"] = this.friendEmailAddress();
         var settings = {
             url: "http://localhost:8080/api/nice/friends/" + "createFriendship",
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: parameters,
+            data: JSON.stringify(parameters),
             crossDomain: true
         };
         var self = this;
@@ -155,7 +154,7 @@ var App = (function () {
             this.status(AppStatus.Landing);
         }
         else {
-            this.status(AppStatus.Account);
+            this.status(AppStatus.Friends);
         }
     };
     return App;

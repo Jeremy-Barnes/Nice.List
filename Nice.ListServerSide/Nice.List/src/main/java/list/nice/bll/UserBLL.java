@@ -21,19 +21,19 @@ public class UserBLL {
 		entityManager.getTransaction().begin();
 
 		hashAndSaltPassword(user);
-		String selectorUnHashed =createSelectorAndHashValidator(user);
+		String validatorUnHashed = createSelectorAndHashValidator(user);
 
 		entityManager.persist(user);
 
 		entityManager.getTransaction().commit();
 		entityManager.close();
-		return selectorUnHashed;
+		return validatorUnHashed;
 	}
 
 	protected static User getUser(String emailAddress) {
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 
-		User user = (User) entityManager.createQuery("from User where UPPER(emailAddress) = :emailAddress").setParameter("email", emailAddress.toUpperCase()).getSingleResult();
+		User user = (User) entityManager.createQuery("from User where UPPER(emailAddress) = :emailAddress").setParameter("emailAddress", emailAddress.toUpperCase()).getSingleResult();
 
 		entityManager.close();
 		return wipeSensitiveFields(user); //email is not a secure getter - don't give passwords hashes out to friends.
@@ -58,19 +58,19 @@ public class UserBLL {
 
 		User user = (User) entityManager.createQuery("from User where emailAddress = :email").setParameter("email", email).getSingleResult();
 
-		String validator;
+		String validator = null;
 		if(checkLogin(user.getPassword(), password, user.getSalt())) {
 			validator = createSelectorAndHashValidator(user);
 
 			entityManager.getTransaction().commit();
 			entityManager.close();
 
-			user.setTokenValidator(validator);
 		} else {
 			entityManager.getTransaction().rollback();
 			entityManager.close();
 			user = null;
 		}
+		if(validator != null) user.setTokenValidator(validator);
 
 		return user;
 	}

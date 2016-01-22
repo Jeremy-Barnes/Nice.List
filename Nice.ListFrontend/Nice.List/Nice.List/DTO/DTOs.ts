@@ -9,6 +9,8 @@
     country: string;
     postcode: string;
     pictureURL: string;
+
+    friends: User[];
 }
 
 class UserModel {
@@ -27,4 +29,9 @@ class UserModel {
 class Token {
     selector: string;
     validator: string;
+}
+
+class UserFriendAddContainer {
+    user: User;
+    requestedEmailAddress: string;
 }

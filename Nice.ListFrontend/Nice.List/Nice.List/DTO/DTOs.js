@@ -23,4 +23,9 @@ var Token = (function () {
     }
     return Token;
 })();
+var UserFriendAddContainer = (function () {
+    function UserFriendAddContainer() {
+    }
+    return UserFriendAddContainer;
+})();
 //# sourceMappingURL=DTOs.js.map

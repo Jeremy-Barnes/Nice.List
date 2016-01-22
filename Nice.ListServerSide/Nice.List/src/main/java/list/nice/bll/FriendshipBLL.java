@@ -19,7 +19,7 @@ public class FriendshipBLL {
 
 		User cookieUser = UserBLL.getUser(selector, validator);
 		User requestedFriend = UserBLL.getUser(requesteeEmail);
-		if(cookieUser.getEmailAddress() == requesteeEmail){
+		if(cookieUser.getEmailAddress().equalsIgnoreCase(requester.getEmailAddress())){
 			Friendship request = new Friendship(cookieUser.getUserID(), requestedFriend.getUserID(),false);
 			entityManager.persist(request);
 		} else {
