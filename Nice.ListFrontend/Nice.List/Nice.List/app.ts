@@ -26,7 +26,10 @@ class App {
     constructor() {
 
         this.user = ko.observable(new UserModel());
-        this.passwordsMatch = ko.pureComputed(() => { return this.user().password() == this.passwordConfirm(); }, this);
+        this.passwordsMatch = ko.pureComputed(() => {
+            var passwordCo = this.passwordConfirm();
+            return this.user().password() == this.passwordConfirm();
+        }, this);
         this.initUser();
 
         jQuery('#add-friend').on('hidden.bs.modal', (e) => { this.friendAddStatus(FriendAddStatus.Waiting); this.friendEmailAddress(""); }); //I'm not happy about this, either
@@ -76,20 +79,39 @@ class App {
         });
     }
 
-    public submitAccountChanges() {
-
-        var dat = new FormData();
-        dat.append("user", JSON.stringify(ko.toJS(this.user())));
-        dat.append("file", (<any>jQuery("#file")[0]).files[0]);
+    public createUser() {
         var methodName = "";
-        if (this.status() == AppStatus.Landing) {
-            methodName = "createUser";
-        } else {
-            methodName = "changeUserInformation";
-        }
-
+        var param = JSON.stringify(ko.toJS(this.user()));
+ 
         var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/users/" + methodName,
+            url: "http://localhost:8080/api/nice/users/" + "createUser",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: param,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (updatedUser: User) {
+            var us = ko.mapping.fromJS(updatedUser);
+            self.user(us);
+            self.passwordConfirm("");
+            (<any>$("#sign-up")).modal('hide'); 
+            self.status(AppStatus.Account);
+        }).fail(function (request: JQueryXHR) {
+            alert(request);
+        });
+    }
+
+
+    public submitAccountChanges() {
+        var methodName = "";
+        var dat = new FormData();
+            dat.append("user", JSON.stringify(ko.toJS(this.user())));
+            dat.append("file", (<any>jQuery("#file")[0]).files[0]);
+        
+        var settings: JQueryAjaxSettings = {
+            url: "http://localhost:8080/api/nice/users/" + "changeUserInformation",
             type: "POST",
             contentType: false,
             processData: false,
@@ -101,11 +123,10 @@ class App {
         jQuery.ajax(settings).then(function (updatedUser: User) {
             var us = ko.mapping.fromJS(updatedUser); 
             self.user(us);
-            self.status(AppStatus.Account);
+            self.status(AppStatus.Home);
         }).fail(function (request: JQueryXHR) {
             alert(request);
         });
-    
     }
 
     public logIn() {
@@ -122,7 +143,12 @@ class App {
         var self = this;
         jQuery.ajax(settings).then(function (o: User) {
             self.user(ko.mapping.fromJS(o));
-            self.status(AppStatus.Home);
+            (<any>$("#log-in")).modal('hide'); 
+            if (o.firstName.length && o.lastName.length) {
+                self.status(AppStatus.Home);
+            } else {
+                self.status(AppStatus.Account);
+            }
         }).fail(function (request: JQueryXHR) {
             alert(request);
         });
@@ -153,7 +179,7 @@ class App {
         if (this.status() != AppStatus.Landing) {
             this.status(AppStatus.Landing);
         } else {
-            this.status(AppStatus.Home);
+            this.status(AppStatus.Account);
         }
     }
 }

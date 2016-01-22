@@ -12,6 +12,16 @@
     width: 100%;
 }
 
+.view {
+    position: absolute;
+    display: inline-block;
+}
+
+#account-view {
+    width: auto;
+    min-width: 26%;
+}
+
 h1, h2 {
     color: #1B8395;
 }
@@ -37,10 +47,13 @@ h1, h2 {
 }
 
 @media (min-width: 768px) {
+    .view {
+        width: calc(98% - 230px);
+    }
     #lists-sidebar-placeholder {
-        min-width: 230px;
-        height: 100% !important;
-        display: inline-block !important;
+    min-width: 230px;
+    height: 100% !important;
+    display: inline-block !important;
     }
 }
 
@@ -48,35 +61,32 @@ h1, h2 {
     .view {
         width: 100%
     }
-}
 
-@media (min-width: 769px) {
-    .view {
-        width: calc(98% - 230px);
+    .namebar > div > h1 {
+        font-size: 21px;
     }
 }
 
-.namebar-full {
-    width: 100% ;
-    margin-left: -5px;
+.namebar > div {
+    margin-left: 20px;
 }
 
 .namebar {
+    width: 100% ;
+    margin-left: -5px;
     background-color:#ededed;
     position:absolute;
     overflow: hidden;
 }
 
 #namebar-placeholder {
-    height: 100px;
-}
-
-.namebar-small {
-    width: 100%;
-}
-
-#namebar-full-placeholder {
     height: 175px;
+}
+
+@media (max-width: 460px){
+    #namebar-placeholder {
+        height: 275px;
+    }
 }
 
 #optional-topbar-placeholder {
@@ -225,11 +235,6 @@ form > input {
     height: 250px;
 }
 
-.view {
-    position: absolute;
-    display: inline-block;
-}
-
 form > .row, form > div > .row {
     margin-top: 9px;
     margin-bottom: 9px;
@@ -263,3 +268,15 @@ form > .row, form > div > .row {
 .inactive {
     visibility: hidden;
 }
+
+.profile-picture {
+    width: 7%;
+    min-width: 80px;
+
+}
+
+.profile-picture > img {
+    width: 100%;
+    min-width: 80px;
+}
+

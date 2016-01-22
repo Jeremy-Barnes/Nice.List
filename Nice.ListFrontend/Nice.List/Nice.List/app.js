@@ -16,7 +16,10 @@ var App = (function () {
         this.friendEmailAddress = ko.observable("");
         this.friendAddStatus = ko.observable(FriendAddStatus.Waiting);
         this.user = ko.observable(new UserModel());
-        this.passwordsMatch = ko.pureComputed(function () { return _this.user().password() == _this.passwordConfirm(); }, this);
+        this.passwordsMatch = ko.pureComputed(function () {
+            var passwordCo = _this.passwordConfirm();
+            return _this.user().password() == _this.passwordConfirm();
+        }, this);
         this.initUser();
         jQuery('#add-friend').on('hidden.bs.modal', function (e) { _this.friendAddStatus(FriendAddStatus.Waiting); _this.friendEmailAddress(""); }); //I'm not happy about this, either
     } //ctor
@@ -59,19 +62,35 @@ var App = (function () {
             alert(request);
         });
     };
+    App.prototype.createUser = function () {
+        var methodName = "";
+        var param = JSON.stringify(ko.toJS(this.user()));
+        var settings = {
+            url: "http://localhost:8080/api/nice/users/" + "createUser",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: param,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (updatedUser) {
+            var us = ko.mapping.fromJS(updatedUser);
+            self.user(us);
+            self.passwordConfirm("");
+            $("#sign-up").modal('hide');
+            self.status(AppStatus.Account);
+        }).fail(function (request) {
+            alert(request);
+        });
+    };
     App.prototype.submitAccountChanges = function () {
+        var methodName = "";
         var dat = new FormData();
         dat.append("user", JSON.stringify(ko.toJS(this.user())));
         dat.append("file", jQuery("#file")[0].files[0]);
-        var methodName = "";
-        if (this.status() == AppStatus.Landing) {
-            methodName = "createUser";
-        }
-        else {
-            methodName = "changeUserInformation";
-        }
         var settings = {
-            url: "http://localhost:8080/api/nice/users/" + methodName,
+            url: "http://localhost:8080/api/nice/users/" + "changeUserInformation",
             type: "POST",
             contentType: false,
             processData: false,
@@ -83,7 +102,7 @@ var App = (function () {
         jQuery.ajax(settings).then(function (updatedUser) {
             var us = ko.mapping.fromJS(updatedUser);
             self.user(us);
-            self.status(AppStatus.Account);
+            self.status(AppStatus.Home);
         }).fail(function (request) {
             alert(request);
         });
@@ -101,7 +120,13 @@ var App = (function () {
         var self = this;
         jQuery.ajax(settings).then(function (o) {
             self.user(ko.mapping.fromJS(o));
-            self.status(AppStatus.Home);
+            $("#log-in").modal('hide');
+            if (o.firstName.length && o.lastName.length) {
+                self.status(AppStatus.Home);
+            }
+            else {
+                self.status(AppStatus.Account);
+            }
         }).fail(function (request) {
             alert(request);
         });
@@ -130,7 +155,7 @@ var App = (function () {
             this.status(AppStatus.Landing);
         }
         else {
-            this.status(AppStatus.Home);
+            this.status(AppStatus.Account);
         }
     };
     return App;

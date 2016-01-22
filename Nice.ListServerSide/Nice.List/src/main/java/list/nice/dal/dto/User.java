@@ -32,6 +32,7 @@ public class User {
 	private String postcode;
 	private String tokenSelector;
 	private String tokenValidator;
+	private String pictureURL;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="requesteduserID"))
@@ -53,11 +54,10 @@ public class User {
 	@WhereJoinTable(clause = "accepted = 'FALSE'")
 	private Set<User> requestsToReview = new HashSet<User>();
 
-	public User(){
-	}
+	public User(){}
 
 	public User(int userID, String firstName, String lastName, String emailAddress, String password, String salt, String city, String state,
-				String country, String postcode, String tokenSelector, String tokenValidator) {
+				String country, String postcode, String tokenSelector, String tokenValidator, String pictureURL) {
 		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -70,6 +70,7 @@ public class User {
 		this.postcode = postcode;
 		this.tokenSelector = tokenSelector;
 		this.tokenValidator = tokenValidator;
+		this.pictureURL = pictureURL;
 	}
 
 	public int getUserID() {
@@ -166,6 +167,14 @@ public class User {
 
 	public void setTokenValidator(String tokenValidator) {
 		this.tokenValidator = tokenValidator;
+	}
+
+	public String getPictureURL() {
+		return tokenValidator;
+	}
+
+	public void setPictureURL(String pictureURL) {
+		this.pictureURL = pictureURL;
 	}
 
 	public List<User> getMyFriends(){

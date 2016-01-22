@@ -31,7 +31,7 @@ public class UserInfoService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getUserFromToken(JAXBElement<Token> token) throws GeneralSecurityException, UnsupportedEncodingException {
 		Token tokenReal = token.getValue();
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(UserBLL.getUser(tokenReal.selector, tokenReal.validator)).build();
+		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(UserBLL.wipeSensitiveFields(UserBLL.getUser(tokenReal.selector, tokenReal.validator))).build();
 	}
 
 	@POST
@@ -44,7 +44,7 @@ public class UserInfoService {
 			rUser = UserBLL.getUserLogin(rUser.getEmailAddress(), rUser.getPassword());
 
 			NewCookie cook = new NewCookie("nicelist", rUser.getTokenSelector() + ":" + rUser.getTokenValidator(), "/", null, null, 3600, false );
-			return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").cookie(cook).entity(rUser).build();
+			return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").cookie(cook).entity(UserBLL.wipeSensitiveFields(rUser)).build();
 		} catch(Exception e ){
 			return null;
 		}
@@ -59,7 +59,7 @@ public class UserInfoService {
 		String validator = UserBLL.createUser(userReal);
 
 		NewCookie cook = new NewCookie("nicelist", userReal.getTokenSelector() + ":" + validator, "/", null, null, 3600, false );
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(userReal).cookie(cook).build();
+		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(UserBLL.wipeSensitiveFields(userReal)).cookie(cook).build();
 	}
 
 	@POST
@@ -82,7 +82,7 @@ public class UserInfoService {
 
 		user = UserBLL.updateUser(user, entry[0], entry[1]);
 
-		//get file
+		//get file TODO add to user
 		FormDataBodyPart filePart = form.getField("file");
 		InputStream fileInputStream = filePart.getValueAs(InputStream.class);
 		OutputStream out = new FileOutputStream(new File("C:\\Users\\Jeremy\\Desktop\\Test.jpg")); // TODO not on my desktop also correct file ext

@@ -11,6 +11,7 @@ CREATE TABLE users(
 	postcode VARCHAR(20),
 	tokenSelector VARCHAR,
 	tokenValidator VARCHAR,
+	pictureURL VARCHAR,
 	CONSTRAINT uk_email UNIQUE (emailAddress)
 );
 

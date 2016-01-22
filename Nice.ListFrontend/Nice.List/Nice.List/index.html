@@ -123,17 +123,11 @@
 
             <div id="wishlist-view" class="view" data-bind="if: status() == AppStatus.Home">
 
-                <div class="navbar navbar-default namebar namebar-full hidden-xs visible-sm visible-md visible-lg">
-                    <div class="inlineblock"><img src="img/elf-default-profile-photos-05.png" width="115" class="nav-img" /></div>
-                    <div class="inlineblock" style="vertical-align: middle;"><h1>Jill "Placeholder" Graves</h1> <p class="inlineblock">Tulsa</p></div>
+                <div class="navbar navbar-default namebar visible-xs visible-sm visible-md visible-lg">
+                    <div class="inlineblock profile-picture"><img src="img/elf-default-profile-photos-05.png" class="nav-img" /></div>
+                    <div class="inlineblock" style="vertical-align: middle;"><h1>Jeremiah Barnes</h1> <p class="inlineblock">Tulsa</p></div>
                 </div>
-                <div id="namebar-full-placeholder" class="visible-sm visible-md visible-lg">&nbsp;</div>
-
-                <div class="navbar navbar-default namebar namebar-small visible-xs hidden-sm hidden-md hidden-lg">
-                    <div class="inlineblock"><img src="img/elf-default-profile-photos-05.png" width="115" class="nav-img" /></div>
-                    <div class="inlineblock" style="vertical-align: middle;"><h3>Jill "Placeholder" Graves</h3> <p class="inlineblock">24</p> <p class="inlineblock">Tulsa</p></div>
-                </div>
-               <div id="namebar-placeholder" class="visible-xs">&nbsp;</div>
+                <div id="namebar-placeholder" class="visible-xs visible-sm visible-md visible-lg">&nbsp;</div>
 
                 <div class="row onlyrow add-gutter" >
                     <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -180,7 +174,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-10"><input type="text" class="form-control" readonly="readonly" data-bind="value: pictureURL"></div>
+                        <div class="col-md-9"><input type="text" class="form-control" readonly="readonly" data-bind="value: pictureURL"></div>
                         <div class="col-md-2"><span class="btn btn-default btn-file"> Browse <input type="file" id="file" data-bind="value: pictureURL" /></span></div>
                     </div>
 
@@ -262,10 +256,10 @@
                 </div>
 
 
-                <form class="modal-form" data-bind="submit: submitAccountChanges, with: user">
+                <form class="modal-form" data-bind="submit: createUser, with: user">
                     <input type="email" name="emailAddress" class="form-control" data-bind="value: emailAddress" placeholder="email address" required />
                     <input type="password" name="password" class="form-control" data-bind="textInput: password, css: { passwordMismatch: $root.passwordsMatch() == false}" placeholder="password" required />
-                    <input type="password" name="password" class="form-control" data-bind="textInput: $root.confirmPassword, css: { passwordMismatch: $root.passwordsMatch() == false}" placeholder="confirm password" required />
+                    <input type="password" name="password" class="form-control" data-bind="textInput: $root.passwordConfirm, css: { passwordMismatch: $root.passwordsMatch() == false}" placeholder="confirm password" required />
                     <input type="submit" class="btn btn-long blue form-control" value="Sign Up" data-bind="enable: $root.passwordsMatch" />
                 </form>
 
