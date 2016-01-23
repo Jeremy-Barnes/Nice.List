@@ -11,6 +11,9 @@
     pictureURL: string;
 
     friends: User[];
+    //friendsOf: User[];
+    pendingRequests: User[];
+    requestsToReview: User[];
 }
 
 class UserModel {

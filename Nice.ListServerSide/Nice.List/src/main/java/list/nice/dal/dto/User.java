@@ -1,7 +1,6 @@
 package list.nice.dal.dto;
 
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.WhereJoinTable;
 
@@ -35,34 +34,21 @@ public class User {
 	private String tokenValidator;
 	private String pictureURL;
 
-	@JsonSerialize
-	public List<User> getFriends() {
-		return pendingRequests;
-	}
-
-	public void setFriends(List<User> friends) {
-		pendingRequests = friends;
-	}
-
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="requesteduserID"))
 	@WhereJoinTable(clause = "accepted = 'TRUE'")
-	private List<User> friends = new ArrayList<User>();
-
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteduserID"), inverseJoinColumns = @JoinColumn(name="requesteruserID"))
-	@WhereJoinTable(clause = "accepted = 'TRUE'")
-	private Set<User> friendOf = new HashSet<User>();
+	private Set<User> friends = new HashSet<User>();
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="requesteduserID"))
 	@WhereJoinTable(clause = "accepted = 'FALSE'")
-	private List<User> pendingRequests = new ArrayList<User>();
+	private Set<User> pendingRequests = new HashSet<User>();
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteduserID"), inverseJoinColumns = @JoinColumn(name="requesteruserID"))
 	@WhereJoinTable(clause = "accepted = 'FALSE'")
 	private Set<User> requestsToReview = new HashSet<User>();
+
 
 	public User(){}
 
@@ -187,17 +173,28 @@ public class User {
 		this.pictureURL = pictureURL;
 	}
 
-	public List<User> getMyFriends(){
-		User[] myFriends = friends.toArray(new User[]{});
-		User[] friendsOfArr = friendOf.toArray(new User[]{});
-		List<User> allFriends = new ArrayList<User>();
-
-		for(User u : myFriends){
-			allFriends.add(u);
-		}
-		for(User u : friendsOfArr){
-			allFriends.add(u);
-		}
-		return allFriends;
+	public Set<User> getFriends() {
+		return friends;
 	}
+
+	public void setFriends(Set<User> friends) {
+		this.friends = friends;
+	}
+
+	public Set<User> getPendingRequests() {
+		return pendingRequests;
+	}
+
+	public void setPendingRequest(Set<User> pendingRequests) {
+		this.pendingRequests = pendingRequests;
+	}
+
+	public Set<User> getRequestsToReview() {
+		return requestsToReview;
+	}
+
+	public void setRequestsToReview(Set<User> requestsToReview) {
+		this.requestsToReview = requestsToReview;
+	}
+
 }
