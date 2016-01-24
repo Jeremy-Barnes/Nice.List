@@ -1,6 +1,7 @@
 package list.nice.ajax;
 
 import list.nice.bll.FriendshipBLL;
+import list.nice.dal.dto.Friendship;
 import list.nice.dal.dto.UserFriendAddContainer;
 
 import javax.ws.rs.Consumes;
@@ -34,4 +35,20 @@ public class FriendshipService {
 		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").build();
 	}
 
+	@POST
+	@Path("/respondToFriendRequest")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateFriendship(JAXBElement<Friendship> request,@Context HttpHeaders header) throws GeneralSecurityException, UnsupportedEncodingException {
+		String cookie = header.getCookies().get("nicelist").getValue();
+		String[] entry = cookie.split(":");
+		Friendship req = request.getValue();
+		if(req.isAccepted()){
+			FriendshipBLL.acceptFriendRequest(req, entry[0], entry[1]);
+		} else {
+			FriendshipBLL.deleteFriendRequest(req, entry[0], entry[1]);
+		}
+
+		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").build();
+	}
 }

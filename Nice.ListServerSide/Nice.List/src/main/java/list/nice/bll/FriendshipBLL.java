@@ -30,4 +30,9 @@ public class FriendshipBLL {
 		entityManager.close();
 	}
 
+	public static void acceptFriendRequest(Friendship request, String selector, String validator) {//TODO
+	}
+
+	public static void deleteFriendRequest(Friendship request, String selector, String validator) {//TODO
+	}
 }

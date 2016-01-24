@@ -31,4 +31,9 @@ var UserFriendAddContainer = (function () {
     }
     return UserFriendAddContainer;
 })();
+var Friendship = (function () {
+    function Friendship() {
+    }
+    return Friendship;
+})();
 //# sourceMappingURL=DTOs.js.map

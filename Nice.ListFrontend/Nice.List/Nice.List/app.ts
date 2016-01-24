@@ -102,7 +102,6 @@ class App {
         });
     }
 
-
     public submitAccountChanges() {
         var methodName = "";
         var dat = new FormData();
@@ -172,12 +171,39 @@ class App {
         });
     }
 
-    public switchState() {
-        if (this.status() != AppStatus.Landing) {
-            this.status(AppStatus.Landing);
-        } else {
-            this.status(AppStatus.Home);
+    public acceptFriendRequest(newFriend: UserModel, o, p, q) {
+        page.respondToFriendRequest(true, newFriend); //bug in knockout foreach makes this necessary
+    }
+
+    public rejectFriendRequest(snubbed: UserModel) {
+        page.respondToFriendRequest(false, snubbed); //bug in knockout foreach makes this necessary
+    }
+
+    private respondToFriendRequest(accepted: boolean, requester: UserModel) {
+        var req: Friendship = {
+            friendshipID: -1,
+            accepted: false,
+            requestedUserID: this.user().userID(),
+            requesterUserID: requester.userID()
         }
+        var param = JSON.stringify(req);
+
+        var settings: JQueryAjaxSettings = {
+            url: "http://localhost:8080/api/nice/friends/" + "respondToFriendRequest",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: param,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function () {
+            var deletedIndex = self.user().requestsToReview.remove(requester)
+            if (accepted) {
+                self.user().friends.push(requester);
+            }
+        }).fail(function (request: JQueryXHR) {
+            alert(request);
+        });
     }
 }
 

@@ -41,3 +41,10 @@ class UserFriendAddContainer {
     user: User;
     requestedEmailAddress: string;
 }
+
+class Friendship {
+    friendshipID: number;
+    requesterUserID: number;
+    requestedUserID: number;
+    accepted: boolean;
+}
