@@ -250,8 +250,8 @@
                         </div>
                         <br />
                         <div>
-                            <input type="button" class="btn capsule-btn yellow btn-fat centered" value="Accept" data-bind="click: page.acceptFriendRequest" />
-                            <input type="button" class="btn capsule-btn btn-fat yellow" value="Deny" data-bind="click: page.rejectFriendRequest" />
+                            <input type="button" class="btn capsule-btn yellow btn-fat centered" value="Accept" data-bind="click: $root.acceptFriendRequest.bind($root)" />
+                            <input type="button" class="btn capsule-btn btn-fat yellow" value="Deny" data-bind="click: $root.rejectFriendRequest($root)" />
                         </div>
                     </div>
                 </div>

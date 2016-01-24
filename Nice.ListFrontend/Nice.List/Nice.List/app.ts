@@ -171,12 +171,12 @@ class App {
         });
     }
 
-    public acceptFriendRequest(newFriend: UserModel, o, p, q) {
-        page.respondToFriendRequest(true, newFriend); //bug in knockout foreach makes this necessary
+    public acceptFriendRequest(newFriend: UserModel) {
+        this.respondToFriendRequest(true, newFriend);
     }
 
     public rejectFriendRequest(snubbed: UserModel) {
-        page.respondToFriendRequest(false, snubbed); //bug in knockout foreach makes this necessary
+        this.respondToFriendRequest(false, snubbed);
     }
 
     private respondToFriendRequest(accepted: boolean, requester: UserModel) {
