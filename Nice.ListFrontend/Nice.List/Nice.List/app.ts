@@ -59,7 +59,6 @@ class App {
     }
 
     public getUser(selector: string, validator: string) {
-
         var valid: Token = { selector: selector, validator: validator }
         var parameters = JSON.stringify(valid);
         var settings: JQueryAjaxSettings = {
@@ -130,7 +129,6 @@ class App {
     }
 
     public logIn() {
-
         var parameters = JSON.stringify(ko.mapping.toJS(this.user));
         var settings: JQueryAjaxSettings = {
             url: "http://localhost:8080/api/nice/users/" + "getUserFromLogin",
@@ -178,13 +176,13 @@ class App {
         if (this.status() != AppStatus.Landing) {
             this.status(AppStatus.Landing);
         } else {
-            this.status(AppStatus.Friends);
+            this.status(AppStatus.Home);
         }
     }
 }
 
 enum AppStatus {
-    Home, Account, ViewUser, Landing, Friends
+    Home, Account, ViewUser, Landing, Friends, FriendRequests
 }
 
 enum FriendAddStatus {

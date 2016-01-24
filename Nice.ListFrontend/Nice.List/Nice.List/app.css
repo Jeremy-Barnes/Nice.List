@@ -26,6 +26,34 @@ h1, h2 {
     color: #1B8395;
 }
 
+
+#user-panel {
+    max-height: 70px;
+}
+#user-panel > img{
+    width: 25%;
+    margin-bottom: 15%;
+}
+#user-panel > div {
+    width: 70%;
+}
+#user-panel > div > hr {
+    margin: -7px 0px 5px 0px;
+}
+#user-panel > div > span {
+    margin-right: 25px;
+    font-size: 20px;
+}
+@media (max-width: 1800px) {
+    #user-panel {
+        max-width: 200px;
+    }
+    #user-panel > div > span {
+        margin-right: 15px;
+        font-size: 18px;
+    }
+}
+
 .sidebar {
     position: fixed;
     z-index: 1000;
@@ -40,23 +68,29 @@ h1, h2 {
 .sidebar * {
     color: white;
 }
+.sidebar > * {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.sidebar > ul {
+    margin-top: 0px;
+    margin-bottom: 25px;
+}
   
 #lists-sidebar {
     height: 100% !important;
     background-color: #006B2E;
 }
-
 @media (min-width: 768px) {
     .view {
         width: calc(98% - 230px);
     }
     #lists-sidebar-placeholder {
-    min-width: 230px;
-    height: 100% !important;
-    display: inline-block !important;
+        min-width: 230px;
+        height: 100% !important;
+        display: inline-block !important;
     }
 }
-
 @media (max-width: 768px) {
     .view {
         width: 100%
@@ -70,7 +104,6 @@ h1, h2 {
 .namebar > div {
     margin-left: 20px;
 }
-
 .namebar {
     width: 100% ;
     margin-left: -5px;
@@ -78,11 +111,9 @@ h1, h2 {
     position:absolute;
     overflow: hidden;
 }
-
 #namebar-placeholder {
     height: 175px;
 }
-
 @media (max-width: 460px){
     #namebar-placeholder {
         height: 275px;
@@ -92,17 +123,14 @@ h1, h2 {
 #optional-topbar-placeholder {
     height: 70px;
 }
-
 .optional-topbar {
     background-color: #006B2E;
     height: 70px;
 }
-
 .optional-topbar > button {
     margin-top: 18px;
     float: left;
 }
-
 .optional-topbar > img {
     margin-top: 10px;
     margin-left: -0px
@@ -114,7 +142,6 @@ h1, h2 {
     padding: 9px 10px;
     border: none;
 }
-
 .menu-expand > .icon-bar {
     background-color: white;
     display: block;
@@ -122,7 +149,6 @@ h1, h2 {
     height: 2px;
     border-radius: 1px;
 }
-
 .menu-expand > .icon-bar + .icon-bar{
     margin-top: 2px;
 }
@@ -151,6 +177,11 @@ form > input {
     width: 100%;
 }
 
+form > .row, form > div > .row {
+    margin-top: 9px;
+    margin-bottom: 9px;
+}
+
 .passwordMismatch {
     background-color: red;
 }
@@ -164,14 +195,36 @@ form > input {
     border-radius: 2em;
     padding: 10px 20px; 
 }
-
 .btn-long {
     width: 100%;
 }
-
 .btn-narrow {
     padding: 5px 10px;
 }
+.btn-fat {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
 
 .wish-list-item {
     background-color: #ededed;
@@ -183,7 +236,6 @@ form > input {
     margin-right: 15px;
     margin-top: 15px;
 }
-
 .wish-list-item > .image-frame {
     margin: 8px 6px;
     width:94%;
@@ -191,7 +243,6 @@ form > input {
     border: inherit;
     overflow: hidden; 
 }
-
 .wish-list-item > .image-frame > img {
     width:100%;
     border: inherit;
@@ -235,31 +286,16 @@ form > input {
     height: 250px;
 }
 
-form > .row, form > div > .row {
-    margin-top: 9px;
-    margin-bottom: 9px;
+#friend-requests-view > .onlyrow {
+    margin-top: 30px;
+}
+#friend-requests-view  .profile-picture {
+    width: 110%;
+}
+#friend-requests-view .btn-fat {
+    width: 100px;
 }
 
-.btn-file {
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    outline: none;
-    background: white;
-    cursor: inherit;
-    display: block;
-}
 
 .active {
     visibility: visible;
@@ -280,3 +316,6 @@ form > .row, form > div > .row {
     min-width: 80px;
 }
 
+.link {
+    cursor: pointer;
+}

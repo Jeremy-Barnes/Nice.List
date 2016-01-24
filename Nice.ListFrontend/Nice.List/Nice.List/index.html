@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="app.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
     <script type="text/javascript" src="app.js"></script>
@@ -33,9 +34,7 @@
                     <img alt="Nice.List" src="img/nice-list-logo.png" class="nav-img" width="189" height="88">
 
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-landing-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
+                        <span class="fa fa-bars"></span>
                     </button>
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-landing-collapse">
@@ -81,43 +80,53 @@
         <div class="container-fluid">
             <nav class="centered optional-topbar navbar-fixed-top visible-xs">
                     <button type="button" class="menu-expand collapsed" data-toggle="collapse" data-target="#lists-sidebar, #lists-sidebar-placeholder">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
+                        <span class="fa fa-bars"></span>
                     </button>
                     <img src="img/nice-list-logo.png" height="55" />
                 </nav> 
             <div id="optional-topbar-placeholder" class="visible-xs">&nbsp;</div>
                 
             <div class="collapse width navbar-collapse sidebar" id="lists-sidebar">
-                    <div class="centered visible-sm visible-md visible-lg">
-                        <img alt="Nice.List" src="img/nice-list-logo.png" class="nav-img" width="189" height="88"> <br />
-                    </div>
-                    <button type="button" class="btn btn-long btn-narrow capsule-btn yellow"><span class="glyphicon glyphicon-plus-sign"></span> Add Item to Your List</button>
-
-                    <h4>My Lists</h4>
-                    <ul class="nav nav-sidebar">
-                        <li><span class="glyphicon glyphicon-list"></span> Friends</li>
-                        <li><span class="glyphicon glyphicon-list"></span> Family</li>
-                        <li><span class="glyphicon glyphicon-list"></span> A different placeholder</li>
-                    </ul>
-
-                    <h4>Friends' Lists</h4>
-                    <ul class="nav nav-sidebar">
-                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Grace</li>
-                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Jeremy</li>
-                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Dominique</li>
-                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Blake</li>
-                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> John C Placeholder</li>
-                    </ul>
-
-                    <h4>To Do</h4>
-                    <ul class="nav nav-sidebar">
-                        <li><span class="glyphicon glyphicon-check"></span> Jeremy</li>
-                        <li><span class="glyphicon glyphicon-unchecked"></span> Mom</li>
-                        <li><span class="glyphicon glyphicon-unchecked"></span> Testperson</li>
-                    </ul>
+                <div class="centered visible-sm visible-md visible-lg">
+                    <img alt="Nice.List" src="img/nice-list-logo.png" class="nav-img link" data-bind="click: function(){ status(AppStatus.Home) }" width="189" height="88"> <br />
                 </div>
+              
+                <div id="user-panel">
+                    <img class="inlineblock" src="img/elf-default-profile-photos-05.png" />
+                    <div class="inlineblock">
+                        <h4 data-bind="text: user().firstName()"></h4>
+                        <hr />
+                        <span class="fa fa-envelope link" data-bind="click: function(){ status(AppStatus.FriendRequests) }"></span>
+                        <span class="fa fa-cogs link" data-bind="click: function(){ status(AppStatus.Account) }"></span> 
+                        <span class="fa fa-sign-out link"></span>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-long btn-narrow capsule-btn yellow"><span class="fa fa-plus-circle"></span> Add Item to Your List</button>
+
+                <h4>My Lists</h4>
+                <ul class="nav nav-sidebar">
+                    <li><span class="fa fa-list-ul"></span> Friends</li>
+                    <li><span class="fa fa-list-ul"></span> Family</li>
+                    <li><span class="fa fa-list-ul"></span> A different placeholder</li>
+                </ul>
+
+                <h4>Friends' Lists</h4>
+                <ul class="nav nav-sidebar">
+                    <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Grace</li>
+                    <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Jeremy</li>
+                    <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Dominique</li>
+                    <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Blake</li>
+                    <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> John C Placeholder</li>
+                </ul>
+
+                <h4>To Do</h4>
+                <ul class="nav nav-sidebar">
+                    <li><span class="fa fa-check-square-o"></span> Jeremy</li>
+                    <li><span class="fa fa-check-square-o"></span> Mom</li>
+                    <li><span class="fa fa-square-o"></span> Testperson</li>
+                </ul>
+            </div>
             <div id="lists-sidebar-placeholder" class="visible-sm visible-md visible-lg collapse">&nbsp;</div>
 
 
@@ -202,7 +211,7 @@
 
                <h1>My friends' lists</h1>
                 <p>You can view your friends' lists below.</p>
-                <button type="button" class="btn btn-narrow capsule-btn yellow" data-toggle="modal" data-target="#add-friend"><span class="glyphicon glyphicon-plus-sign"></span> Add a friend</button>
+                <button type="button" class="btn btn-narrow capsule-btn yellow" data-toggle="modal" data-target="#add-friend"><span class="fa fa-plus-circle"></span> Add a friend</button>
 
                 <div class="row onlyrow add-gutter">
                     <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -219,8 +228,37 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <div id="friend-requests-view" class="view" data-bind="if: status() == AppStatus.FriendRequests">
+
+                <h1>Friend Requests</h1>
+                <p>View your pending friend requests.</p>
+                <button type="button" class="btn btn-narrow capsule-btn yellow" data-toggle="modal" data-target="#add-friend"><span class="fa fa-plus-circle"></span> Add a friend</button>
+
+                <div class="row onlyrow add-gutter">
+                    <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="foreach: user().requestsToReview()">
+
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-1">
+                            <img class="profile-picture" src="img/elf-default-profile-photos-05.png" />
+                            
+                        </div>
+                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-11">
+                            <h2 data-bind="text:  $data.firstName"></h2>
+                            <p data-bind="text: $data.emailAddress"></p>
+                            <span data-bind="text:  $data.city"></span>, <span data-bind="text:  $data.state"></span>
+                            
+                        </div>
+                        <br />
+                        <div>
+                            <input class="btn capsule-btn yellow btn-fat centered" value="Accept" />
+                            <input class="btn capsule-btn btn-fat yellow" value="Deny" />
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+
+        </div> <!--container-->
+    </div> <!--!Landing()-->
 
     <button data-bind="click: $root.switchState">DO</button>
 
@@ -229,7 +267,7 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span class="fa fa-times" style="font-size:16px;"></span></button>
                     <h1 class="text-center">Log In</h1>
                 </div>
 
@@ -251,7 +289,7 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span class="fa fa-times" style="font-size:16px;"></span></button>
                     <h1 class="text-center">Sign Up</h1>
                 </div>
 
@@ -276,7 +314,7 @@
 
                 <div data-bind="if: friendAddStatus() == FriendAddStatus.Waiting">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
+                        <button type="button" class="close" data-dismiss="modal"><span class="fa fa-times" style="font-size:16px;"></span></button>
                         <h1 class="text-center">Add a Friend</h1>
                     </div>
 
@@ -288,7 +326,7 @@
 
                 <div class="success" data-bind="if: friendAddStatus() == FriendAddStatus.Success">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" ><span class="glyphicon glyphicon-remove" style="font-size:16px;"></span></button>
+                        <button type="button" class="close" data-dismiss="modal" ><span class="fa fa-times" style="font-size:16px;"></span></button>
                         <h1 class="text-center">Success!</h1>
                         <br />
                         <p> Hurray! <span data-bind="text: friendEmailAddress"></span> has been added to your friends list. You can view their wishlist now.</p>
@@ -298,7 +336,7 @@
                 <div class="failure" data-bind="if: friendAddStatus() == FriendAddStatus.Failure">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">
-                            <span class="glyphicon glyphicon-remove" style="font-size:16px;"></span>
+                            <span class="fa fa-times" style="font-size:16px;"></span>
                         </button>
                         <h1 class="text-center">Oh no!</h1>
                         <br />

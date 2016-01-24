@@ -154,7 +154,7 @@ var App = (function () {
             this.status(AppStatus.Landing);
         }
         else {
-            this.status(AppStatus.Friends);
+            this.status(AppStatus.Home);
         }
     };
     return App;
@@ -166,6 +166,7 @@ var AppStatus;
     AppStatus[AppStatus["ViewUser"] = 2] = "ViewUser";
     AppStatus[AppStatus["Landing"] = 3] = "Landing";
     AppStatus[AppStatus["Friends"] = 4] = "Friends";
+    AppStatus[AppStatus["FriendRequests"] = 5] = "FriendRequests";
 })(AppStatus || (AppStatus = {}));
 var FriendAddStatus;
 (function (FriendAddStatus) {
