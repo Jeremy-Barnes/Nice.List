@@ -15,7 +15,8 @@ $(document).ready(function () {
 
 class App {
 
-    public user: KnockoutObservable<UserModel>;
+    public user: KnockoutObservable<UserModel> = ko.observable(new UserModel());
+    public topFriends: KnockoutObservableArray<UserModel> = ko.observableArray<UserModel>(null);
     public status: KnockoutObservable<AppStatus> = ko.observable(AppStatus.Home);
     public passwordConfirm: KnockoutObservable<string> = ko.observable("");
     public passwordsMatch: KnockoutComputed<boolean>;
@@ -24,11 +25,19 @@ class App {
     public friendAddStatus : KnockoutObservable<FriendAddStatus> = ko.observable(FriendAddStatus.Waiting);
 
     constructor() {
-
-        this.user = ko.observable(new UserModel());
         this.passwordsMatch = ko.pureComputed(() => {
             var passwordCo = this.passwordConfirm();
             return this.user().password() == this.passwordConfirm();
+        }, this);
+
+        ko.computed(() => {
+            var user = this.user();
+            if (user != null && user.friends() != null) {
+                var max = this.user().friends().length < 5 ? this.user().friends().length : 5;
+                for (let i = 0; i < max; i++) {
+                    this.topFriends.push(user.friends()[i]);
+                }
+            }
         }, this);
         this.initUser();
 

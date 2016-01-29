@@ -11,14 +11,24 @@ $(document).ready(function () {
 var App = (function () {
     function App() {
         var _this = this;
+        this.user = ko.observable(new UserModel());
+        this.topFriends = ko.observableArray(null);
         this.status = ko.observable(AppStatus.Home);
         this.passwordConfirm = ko.observable("");
         this.friendEmailAddress = ko.observable("");
         this.friendAddStatus = ko.observable(FriendAddStatus.Waiting);
-        this.user = ko.observable(new UserModel());
         this.passwordsMatch = ko.pureComputed(function () {
             var passwordCo = _this.passwordConfirm();
             return _this.user().password() == _this.passwordConfirm();
+        }, this);
+        ko.computed(function () {
+            var user = _this.user();
+            if (user != null && user.friends() != null) {
+                var max = _this.user().friends().length < 5 ? _this.user().friends().length : 5;
+                for (var i = 0; i < max; i++) {
+                    _this.topFriends.push(user.friends()[i]);
+                }
+            }
         }, this);
         this.initUser();
         jQuery('#add-friend').on('hidden.bs.modal', function (e) { _this.friendAddStatus(FriendAddStatus.Waiting); _this.friendEmailAddress(""); }); //I'm not happy about this, either
@@ -149,11 +159,11 @@ var App = (function () {
             self.friendAddStatus(FriendAddStatus.Failure);
         });
     };
-    App.prototype.acceptFriendRequest = function (newFriend, o, p, q) {
-        page.respondToFriendRequest(true, newFriend); //bug in knockout foreach makes this necessary
+    App.prototype.acceptFriendRequest = function (newFriend) {
+        this.respondToFriendRequest(true, newFriend);
     };
     App.prototype.rejectFriendRequest = function (snubbed) {
-        page.respondToFriendRequest(false, snubbed); //bug in knockout foreach makes this necessary
+        this.respondToFriendRequest(false, snubbed);
     };
     App.prototype.respondToFriendRequest = function (accepted, requester) {
         var req = {

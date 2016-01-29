@@ -153,6 +153,13 @@ h1, h2 {
     margin-top: 2px;
 }
 
+.see-more-list {
+    color: #3CAF6D;
+    padding: 0px !important;
+    margin: 0px !important;
+    text-decoration: underline;
+}
+
 .no-gutter {
     padding: 0;
 }

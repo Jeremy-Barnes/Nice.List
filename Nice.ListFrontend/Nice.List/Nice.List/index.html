@@ -94,10 +94,10 @@
                 <div id="user-panel">
                     <img class="inlineblock" src="img/elf-default-profile-photos-05.png" />
                     <div class="inlineblock">
-                        <h4 data-bind="text: user().firstName()"></h4>
+                        <h4 data-bind="text: user().firstName"></h4>
                         <hr />
-                        <span class="fa fa-envelope link" data-bind="click: function(){ status(AppStatus.FriendRequests) }"></span>
-                        <span class="fa fa-cogs link" data-bind="click: function(){ status(AppStatus.Account) }"></span> 
+                        <span class="fa fa-envelope link" data-bind="click: function(){ status(AppStatus.FriendRequests); }"></span>
+                        <span class="fa fa-cogs link" data-bind="click: function(){ status(AppStatus.Account); }"></span> 
                         <span class="fa fa-sign-out link"></span>
                     </div>
                 </div>
@@ -113,11 +113,10 @@
 
                 <h4>Friends' Lists</h4>
                 <ul class="nav nav-sidebar">
-                    <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Grace</li>
-                    <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Jeremy</li>
-                    <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Dominique</li>
-                    <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> Blake</li>
-                    <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> John C Placeholder</li>
+                    <!-- ko foreach: topFriends -->
+                        <li><img src="img/elf-default-profile-photos-05.png" width="42" height="42" /> <span data-bind="text: $data.firstName"></span></li>
+                    <!-- /ko -->
+                    <li><a class="see-more-list link" data-bind="click: function() { status(AppStatus.Friends); }">see more...</a></li>
                 </ul>
 
                 <h4>To Do</h4>
