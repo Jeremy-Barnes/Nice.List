@@ -11,12 +11,16 @@ $(document).ready(function () {
 var App = (function () {
     function App() {
         var _this = this;
+        /******** App status tracking *******/
+        this.status = ko.observable(AppStatus.Home);
+        this.friendAddStatus = ko.observable(FriendAddStatus.Waiting);
+        /******** Active user data ******/
         this.user = ko.observable(new UserModel());
         this.topFriends = ko.observableArray(null);
-        this.status = ko.observable(AppStatus.Home);
-        this.passwordConfirm = ko.observable("");
+        /******** Form Field Bind Vars *******/
         this.friendEmailAddress = ko.observable("");
-        this.friendAddStatus = ko.observable(FriendAddStatus.Waiting);
+        this.editWishListItem = ko.observable(new WishListItemModel());
+        this.passwordConfirm = ko.observable("");
         this.passwordsMatch = ko.pureComputed(function () {
             var passwordCo = _this.passwordConfirm();
             return _this.user().password() == _this.passwordConfirm();
@@ -24,6 +28,7 @@ var App = (function () {
         ko.computed(function () {
             var user = _this.user();
             if (user != null && user.friends() != null) {
+                _this.topFriends.removeAll();
                 var max = _this.user().friends().length < 5 ? _this.user().friends().length : 5;
                 for (var i = 0; i < max; i++) {
                     _this.topFriends.push(user.friends()[i]);
@@ -189,6 +194,12 @@ var App = (function () {
         }).fail(function (request) {
             alert(request);
         });
+    };
+    App.prototype.addWishListItem = function () {
+        //todo
+    };
+    App.prototype.updateWishListItem = function () {
+        //todo
     };
     return App;
 })();

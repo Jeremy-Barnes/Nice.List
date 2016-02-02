@@ -102,7 +102,7 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-long btn-narrow capsule-btn yellow"><span class="fa fa-plus-circle"></span> Add Item to Your List</button>
+                <button type="button" class="btn btn-long btn-narrow capsule-btn yellow" data-toggle="modal" data-target="#add-item"><span class="fa fa-plus-circle"></span> Add Item to Your List</button>
 
                 <h4>My Lists</h4>
                 <ul class="nav nav-sidebar">
@@ -208,21 +208,21 @@
 
             <div id="friends-view" class="view" data-bind="if: status() == AppStatus.Friends">
 
-               <h1>My friends' lists</h1>
+                <h1>My friends' lists</h1>
                 <p>You can view your friends' lists below.</p>
                 <button type="button" class="btn btn-narrow capsule-btn yellow" data-toggle="modal" data-target="#add-friend"><span class="fa fa-plus-circle"></span> Add a friend</button>
 
-                <div class="row onlyrow add-gutter">
-                    <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="row onlyrow add-gutter" data-bind="with: user">
+                    <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="foreach: friends">
 
-                        <div class="wish-list-item">
-                            <div class="image-frame">
-                                <img src="img/scarf.jpg" width="265" />
+                        <div class="friends-list-item centered">
+                            <div class="profile-image-frame">
+                                <img src="img/scarf.jpg"/>
                             </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
+                            <h2><span data-bind="text: $data.firstName() + ' ' + $data.lastName()"></span></h2>
+                            <p><span data-bind="text: $data.city() + ', ' + $data.state()"></span></p>
+                            <p>5 items on list</p>
+                            <div><input type="button" class="btn yellow" value="View List"/></div>
                         </div>
                     </div>
                 </div>
@@ -234,12 +234,11 @@
                 <p>View your pending friend requests.</p>
                 <button type="button" class="btn btn-narrow capsule-btn yellow" data-toggle="modal" data-target="#add-friend"><span class="fa fa-plus-circle"></span> Add a friend</button>
 
-                <div class="row onlyrow add-gutter" data-bind="with: page.user">
+                <div class="row onlyrow add-gutter" data-bind="with: user">
                     <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="foreach: requestsToReview">
 
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-1">
                             <img class="profile-picture" src="img/elf-default-profile-photos-05.png" />
-
                         </div>
                         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-11">
                             <h2 data-bind="text:  $data.firstName"></h2>
@@ -250,12 +249,11 @@
                         <br />
                         <div>
                             <input type="button" class="btn capsule-btn yellow btn-fat centered" value="Accept" data-bind="click: $root.acceptFriendRequest.bind($root)" />
-                            <input type="button" class="btn capsule-btn btn-fat yellow" value="Deny" data-bind="click: $root.rejectFriendRequest($root)" />
+                            <input type="button" class="btn capsule-btn btn-fat yellow" value="Deny" data-bind="click: $root.rejectFriendRequest.bind($root)" />
                         </div>
                     </div>
                 </div>
             </div>
-
         </div> <!--container-->
     </div> <!--!Landing()-->
 
@@ -342,6 +340,52 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <div id="add-item" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span class="fa fa-times" style="font-size:16px;"></span></button>
+                    <h1 class="text-center">Add an Item</h1>
+                </div>
+
+
+                <form class="modal-form" data-bind="submit: addWishListItem, with: editWishListItem">
+                    <input type="text" name="itemURL" class="form-control" data-bind="value: URL" placeholder="item URL" required />
+                    <input type="submit" class="btn btn-long blue form-control" value="Submit" />
+                </form>
+
+                <div class="modal-footer">
+                    <p class="text-center">No URL? <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#edit-item">Enter manually.</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-item" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span class="fa fa-times" style="font-size:16px;"></span></button>
+                    <h1 class="text-center">Edit Item Info</h1>
+                </div>
+
+
+                <form class="modal-form" data-bind="submit: updateWishListItem, with: editWishListItem">
+                    <input type="text" name="itemURL" class="form-control" data-bind="value: URL" placeholder="item URL" required />
+                    <input type="text" name="itemURL" class="form-control" data-bind="value: itemName" placeholder="item name" required />
+                    <input type="text" name="itemURL" class="form-control" data-bind="value: price" placeholder="price" required />
+                    <input type="text" name="itemURL" class="form-control" data-bind="value: comment" placeholder="notes (quantity, color, size, etc)" required />
+
+                    <input type="submit" class="btn btn-long blue form-control" value="Submit" />
+                </form>
+
+                <div class="modal-footer">
+                    <p class="text-center">No URL? <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#edit-item">Enter manually.</a></p>
+                </div>
             </div>
         </div>
     </div>

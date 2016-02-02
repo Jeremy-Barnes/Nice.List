@@ -15,14 +15,19 @@ $(document).ready(function () {
 
 class App {
 
+    /******** App status tracking *******/
+    public status: KnockoutObservable<AppStatus> = ko.observable(AppStatus.Home);
+    public friendAddStatus: KnockoutObservable<FriendAddStatus> = ko.observable(FriendAddStatus.Waiting);
+
+    /******** Active user data ******/
     public user: KnockoutObservable<UserModel> = ko.observable(new UserModel());
     public topFriends: KnockoutObservableArray<UserModel> = ko.observableArray<UserModel>(null);
-    public status: KnockoutObservable<AppStatus> = ko.observable(AppStatus.Home);
+
+    /******** Form Field Bind Vars *******/
+    public friendEmailAddress: KnockoutObservable<string> = ko.observable("");
+    public editWishListItem: KnockoutObservable<WishListItemModel> = ko.observable(new WishListItemModel());
     public passwordConfirm: KnockoutObservable<string> = ko.observable("");
     public passwordsMatch: KnockoutComputed<boolean>;
-
-    public friendEmailAddress: KnockoutObservable<string> = ko.observable("");
-    public friendAddStatus : KnockoutObservable<FriendAddStatus> = ko.observable(FriendAddStatus.Waiting);
 
     constructor() {
         this.passwordsMatch = ko.pureComputed(() => {
@@ -33,6 +38,7 @@ class App {
         ko.computed(() => {
             var user = this.user();
             if (user != null && user.friends() != null) {
+                this.topFriends.removeAll();
                 var max = this.user().friends().length < 5 ? this.user().friends().length : 5;
                 for (let i = 0; i < max; i++) {
                     this.topFriends.push(user.friends()[i]);
@@ -213,6 +219,14 @@ class App {
         }).fail(function (request: JQueryXHR) {
             alert(request);
         });
+    }
+
+    public addWishListItem() {
+        //todo
+    }
+
+    public updateWishListItem() {
+        //todo
     }
 }
 

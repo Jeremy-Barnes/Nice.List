@@ -233,7 +233,7 @@ form > .row, form > div > .row {
 }
 
 
-.wish-list-item {
+.wish-list-item, .friends-list-item {
     background-color: #ededed;
     border: solid 2px #e1e1e1;
     border-radius: 10px;
@@ -250,9 +250,24 @@ form > .row, form > div > .row {
     border: inherit;
     overflow: hidden; 
 }
-.wish-list-item > .image-frame > img {
+.wish-list-item > .image-frame > img, .profile-image-frame > img {
     width:100%;
     border: inherit;
+    overflow: hidden; 
+}
+
+.friends-list-item > .profile-image-frame {
+   width: 50%;
+   height: 33%;
+   margin: 6px 25%;
+}
+
+
+
+.profile-image-frame {
+    border-radius: 50%;
+    border: 7px solid white;
+    background-color: white;
     overflow: hidden; 
 }
 

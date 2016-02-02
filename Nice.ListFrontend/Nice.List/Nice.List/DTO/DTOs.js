@@ -36,4 +36,26 @@ var Friendship = (function () {
     }
     return Friendship;
 })();
+var WishListItem = (function () {
+    function WishListItem() {
+    }
+    return WishListItem;
+})();
+var WishListItemModel = (function () {
+    function WishListItemModel() {
+        this.wishListItemID = ko.observable(0);
+        this.requesterUserID = ko.observable(0);
+        this.URL = ko.observable(null);
+        this.imageURL = ko.observable(null);
+        this.itemName = ko.observable(null);
+        this.comment = ko.observable(null);
+        this.isBought = ko.observable(false);
+        this.purchaserUserID = ko.observable(0);
+        this.dateAdded = ko.observable(null);
+        this.price = ko.observable(null);
+        this.want = ko.observable(0);
+    }
+    ;
+    return WishListItemModel;
+})();
 //# sourceMappingURL=DTOs.js.map
