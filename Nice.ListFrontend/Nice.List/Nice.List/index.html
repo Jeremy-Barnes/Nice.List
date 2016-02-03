@@ -375,6 +375,21 @@
 
 
                 <form class="modal-form" data-bind="submit: updateWishListItem, with: editWishListItem">
+                    <div>
+                        <div class="image-frame inlineblock">
+                            <img src="" />
+                        </div>
+                        <p>Item Photo</p>
+                        
+                    </div>
+                    <div class="imgUpload">
+                        <div id="edit-item-img-filePathBox" class="inlineblock">
+                            <input type="text" class="form-control shrink" readonly="readonly" placeholder="file on your computer..." data-bind="value: imageURL">
+                        </div>
+                        <div class="inlineblock">
+                            <span class="btn btn-default btn-file"> Browse <input type="file" id="file" data-bind="value: imageURL" /></span>
+                        </div>
+                    </div>
                     <input type="text" name="itemURL" class="form-control" data-bind="value: URL" placeholder="item URL" required />
                     <input type="text" name="itemURL" class="form-control" data-bind="value: itemName" placeholder="item name" required />
                     <input type="text" name="itemURL" class="form-control" data-bind="value: price" placeholder="price" required />
@@ -384,7 +399,6 @@
                 </form>
 
                 <div class="modal-footer">
-                    <p class="text-center">No URL? <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#edit-item">Enter manually.</a></p>
                 </div>
             </div>
         </div>

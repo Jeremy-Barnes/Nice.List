@@ -262,8 +262,6 @@ form > .row, form > div > .row {
    margin: 6px 25%;
 }
 
-
-
 .profile-image-frame {
     border-radius: 50%;
     border: 7px solid white;
@@ -318,6 +316,33 @@ form > .row, form > div > .row {
     width: 100px;
 }
 
+#edit-item .inlineblock {
+    float: left;
+}
+#edit-item .imgUpload {
+    width: 100%;
+}
+#edit-item #edit-item-img-filePathBox {
+    width: 70%;
+    margin-right: 10px;
+    margin-bottom: 16px;
+}
+#edit-item .image-frame {
+    background-color: #e1e1e1;
+    width: 115px;
+    height: 115px;
+    margin-bottom: 16px;
+    margin-right: 20px;
+}
+#edit-item img {
+    width: 100%;
+    height: 100%;
+}
+#edit-item p {
+    padding-top: 45px;
+    text-align: left;
+}
+
 
 .active {
     visibility: visible;
@@ -341,3 +366,4 @@ form > .row, form > div > .row {
 .link {
     cursor: pointer;
 }
+
