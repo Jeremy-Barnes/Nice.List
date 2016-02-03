@@ -49,6 +49,9 @@ public class User {
 	@WhereJoinTable(clause = "accepted = 'FALSE'")
 	private Set<User> requestsToReview = new HashSet<User>();
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "wishlistitems", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="userID"))
+	private Set<WishListItem> wishList = new HashSet<WishListItem>();
 
 	public User(){}
 
@@ -197,4 +200,11 @@ public class User {
 		this.requestsToReview = requestsToReview;
 	}
 
+	public void setWishList(Set<WishListItem> wishList) {
+		this.wishList = wishList;
+	}
+
+	public Set<WishListItem> getWishList() {
+		return wishList;
+	}
 }

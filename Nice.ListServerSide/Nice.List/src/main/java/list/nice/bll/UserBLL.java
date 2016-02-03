@@ -91,6 +91,7 @@ public class UserBLL {
 			User u2 = getUser(selector, validator);
 			user.setPassword(u2.getPassword());
 			user.setSalt(u2.getSalt());
+			user.setFriends(u2.getFriends());
 		}
 		entityManager.merge(user);
 		entityManager.getTransaction().commit();
