@@ -154,7 +154,7 @@ class App {
         };
         var self = this;
         jQuery.ajax(settings).then(function (o: User) {
-            self.user(ko.mapping.fromJS(o));
+            -self.user(ko.mapping.fromJS(o));
             (<any>$("#log-in")).modal('hide'); 
            if (o.firstName.length && o.lastName.length) {
                 self.status(AppStatus.Home);
@@ -222,7 +222,23 @@ class App {
     }
 
     public addWishListItem() {
-        //todo
+        this.editWishListItem().price(0);
+        var parameters = JSON.stringify(ko.mapping.toJS(this.editWishListItem));
+        var settings: JQueryAjaxSettings = {
+            url: "http://localhost:8080/api/nice/wishlist/" + "addListItem",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (item: WishListItem) {
+            self.user().wishList.push(ko.mapping.fromJS(item));
+            self.editWishListItem(new WishListItemModel());
+        }).fail(function (request: JQueryXHR) {
+            self.editWishListItem(new WishListItemModel());
+            alert(request);
+        });
     }
 
     public updateWishListItem() {

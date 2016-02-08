@@ -16,6 +16,7 @@ public class WishListItem {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name="increment", strategy = "increment")
 	private int wishListItemID;
+
 	private int requesterUserID;
 	private String URL;
 	private String imageURL;
@@ -27,6 +28,10 @@ public class WishListItem {
 	private Date dateAdded;
 	private double price;
 	private int want;
+
+	@ManyToOne
+	@JoinColumn(name="requesteruserID")
+	private User requester;
 
 	public WishListItem(){
 

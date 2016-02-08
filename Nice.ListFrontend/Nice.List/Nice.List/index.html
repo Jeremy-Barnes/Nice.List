@@ -353,7 +353,7 @@
                 </div>
 
 
-                <form class="modal-form" data-bind="submit: addWishListItem, with: editWishListItem">
+                <form class="modal-form" data-bind="submit: $root.addWishListItem, with: editWishListItem">
                     <input type="text" name="itemURL" class="form-control" data-bind="value: URL" placeholder="item URL" required />
                     <input type="submit" class="btn btn-long blue form-control" value="Submit" />
                 </form>

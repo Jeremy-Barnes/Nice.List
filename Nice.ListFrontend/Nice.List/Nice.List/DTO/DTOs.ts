@@ -13,6 +13,7 @@
     friends: User[];
     pendingRequests: User[];
     requestsToReview: User[];
+    wishList: WishListItem[];
 }
 
 class UserModel {
@@ -30,6 +31,7 @@ class UserModel {
     friends: KnockoutObservableArray<UserModel> = ko.observableArray<UserModel>(null);
     pendingRequests: KnockoutObservableArray<UserModel> = ko.observableArray<UserModel>(null);
     requestsToReview: KnockoutObservableArray<UserModel> = ko.observableArray<UserModel>(null);
+    wishList: KnockoutObservableArray<WishListItemModel> = ko.observableArray<WishListItemModel>(null);
 }
 
 class Token {
