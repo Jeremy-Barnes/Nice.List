@@ -18,6 +18,7 @@ var UserModel = (function () {
         this.friends = ko.observableArray(null);
         this.pendingRequests = ko.observableArray(null);
         this.requestsToReview = ko.observableArray(null);
+        this.wishList = ko.observableArray(null);
     }
     return UserModel;
 })();
@@ -50,7 +51,7 @@ var WishListItemModel = (function () {
         this.itemName = ko.observable(null);
         this.comment = ko.observable(null);
         this.isBought = ko.observable(false);
-        this.purchaserUserID = ko.observable(0);
+        this.purchaserUserID = ko.observable(null);
         this.dateAdded = ko.observable(null);
         this.price = ko.observable(null);
         this.want = ko.observable(0);

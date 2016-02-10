@@ -49,7 +49,7 @@ public class User {
 	@WhereJoinTable(clause = "accepted = 'FALSE'")
 	private Set<User> requestsToReview = new HashSet<User>();
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "requester")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "requesterUserID")
 	private Set<WishListItem> wishList = new HashSet<WishListItem>();
 
 	public User(){}

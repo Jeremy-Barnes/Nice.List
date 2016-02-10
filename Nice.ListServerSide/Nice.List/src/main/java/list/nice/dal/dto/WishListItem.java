@@ -1,6 +1,8 @@
 package list.nice.dal.dto;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.postgresql.util.PGmoney;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,26 +20,21 @@ public class WishListItem {
 	private int wishListItemID;
 
 	private int requesterUserID;
+	private Integer purchaserUserID;
 	private String URL;
 	private String imageURL;
 	private String itemName;
 	private String comment;
 	private boolean isBought;
-	private int purchaserUserID;
 	@Temporal(TemporalType.DATE)
 	private Date dateAdded;
 	private double price;
 	private int want;
 
-	@ManyToOne
-	@JoinColumn(name="requesteruserID")
-	private User requester;
 
-	public WishListItem(){
+	public WishListItem(){}
 
-	}
-
-	public WishListItem(int wishListItemID, int requesterUserID, String URL, String imageURL, String itemName, String comment, boolean isBought, int purchaserUserID, Date dateAdded, double price, int want) {
+	public WishListItem(int wishListItemID, int requesterUserID, String URL, String imageURL, String itemName, String comment, boolean isBought, Integer purchaserUserID, Date dateAdded, double price, int want) {
 		this.wishListItemID = wishListItemID;
 		this.requesterUserID = requesterUserID;
 		this.URL = URL;
@@ -65,6 +62,14 @@ public class WishListItem {
 
 	public void setRequesterUserID(int requesterUserID) {
 		this.requesterUserID = requesterUserID;
+	}
+
+	public Integer getPurchaserUserID() {
+		return purchaserUserID;
+	}
+
+	public void setPurchaserUserID(Integer purchaserUserID) {
+		this.purchaserUserID = purchaserUserID;
 	}
 
 	public String getURL() {
@@ -105,14 +110,6 @@ public class WishListItem {
 
 	public void setIsBought(boolean isBought) {
 		this.isBought = isBought;
-	}
-
-	public int getPurchaserUserID() {
-		return purchaserUserID;
-	}
-
-	public void setPurchaserUserID(int purchaserUserID) {
-		this.purchaserUserID = purchaserUserID;
 	}
 
 	public Date getDateAdded() {

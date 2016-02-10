@@ -23,10 +23,10 @@ CREATE TABLE wishlistItems(
 	itemName VARCHAR(200),
 	comment VARCHAR(500),
 	isBought BOOLEAN NOT NULL,
-	purchaserUserID INT NOT NULL REFERENCES users(userID),
+	purchaserUserID INT REFERENCES users(userID),
 	dateAdded DATE NOT NULL,
-	price MONEY,
-	want INT NOT NULL
+	price NUMERIC(6,2),
+	want INT
 );
 
 CREATE TABLE friendships(

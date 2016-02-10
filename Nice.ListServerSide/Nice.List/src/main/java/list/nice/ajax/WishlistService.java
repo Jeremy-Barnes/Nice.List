@@ -29,8 +29,7 @@ public class WishlistService {
 		String cookie = header.getCookies().get("nicelist").getValue();
 		String[] entry = cookie.split(":");
 		WishListItem wish = item.getValue();
-		WishListBLL.addWishListItem(wish, entry[0], entry[1]);
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").build();
+		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(WishListBLL.addWishListItem(wish, entry[0], entry[1])).build();
 	}
 }
