@@ -242,7 +242,24 @@ class App {
     }
 
     public updateWishListItem() {
-        //todo
+        if (this.editWishListItem().price(0) == null) this.editWishListItem().price(0);
+
+        var parameters = JSON.stringify(ko.mapping.toJS(this.editWishListItem));
+        var settings: JQueryAjaxSettings = {
+            url: "http://localhost:8080/api/nice/wishlist/" + "editListItem",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (item: WishListItem) {
+            self.user().wishList.push(ko.mapping.fromJS(item));
+            self.editWishListItem(new WishListItemModel());
+        }).fail(function (request: JQueryXHR) {
+            self.editWishListItem(new WishListItemModel());
+            alert(request);
+        });
     }
 }
 

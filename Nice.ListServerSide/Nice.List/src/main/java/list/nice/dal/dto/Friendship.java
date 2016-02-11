@@ -33,11 +33,11 @@ public class Friendship {
 		this.accepted = accepted;
 	}
 
-	public int getUserID() {
+	public int getFriendshipID() {
 		return friendshipID;
 	}
 
-	public void setUserID(int friendshipID) {
+	public void setFriendshipID(int friendshipID) {
 		this.friendshipID = friendshipID;
 	}
 

@@ -32,4 +32,16 @@ public class WishlistService {
 
 		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(WishListBLL.addWishListItem(wish, entry[0], entry[1])).build();
 	}
+
+	@POST
+	@Path("/editListItem")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response editListItem(JAXBElement<WishListItem> item, @Context HttpHeaders header) throws GeneralSecurityException, UnsupportedEncodingException {
+		String cookie = header.getCookies().get("nicelist").getValue();
+		String[] entry = cookie.split(":");
+		WishListItem wish = item.getValue();
+
+		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(WishListBLL.updateWishListItem(wish, entry[0], entry[1])).build();
+	}
 }
