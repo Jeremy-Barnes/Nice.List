@@ -4,7 +4,6 @@ import com.lambdaworks.codec.Base64;
 import com.lambdaworks.crypto.SCrypt;
 import list.nice.dal.HibernateUtil;
 import list.nice.dal.dto.User;
-import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import java.io.UnsupportedEncodingException;
@@ -46,8 +45,6 @@ public class UserBLL {
 		User user = (User) entityManager.createQuery("from User where tokenSelector = :selector").setParameter("selector", selector).getSingleResult();
 
 		if(verifyValidator(validator, user)) {
-
-			Hibernate.initialize(user.getWishList());
 			user.initWishList();//fight Hibernate's stupid lazy loading
 			entityManager.close();
 
