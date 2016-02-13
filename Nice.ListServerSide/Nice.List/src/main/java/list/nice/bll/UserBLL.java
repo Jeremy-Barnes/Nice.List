@@ -4,6 +4,7 @@ import com.lambdaworks.codec.Base64;
 import com.lambdaworks.crypto.SCrypt;
 import list.nice.dal.HibernateUtil;
 import list.nice.dal.dto.User;
+import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import java.io.UnsupportedEncodingException;
@@ -34,7 +35,7 @@ public class UserBLL {
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 
 		User user = (User) entityManager.createQuery("from User where UPPER(emailAddress) = :emailAddress").setParameter("emailAddress", emailAddress.toUpperCase()).getSingleResult();
-
+		user.initWishList();//fight Hibernate's stupid lazy loading
 		entityManager.close();
 		return wipeSensitiveFields(user); //email is not a secure getter - don't give passwords hashes out to friends.
 	}
@@ -44,10 +45,15 @@ public class UserBLL {
 
 		User user = (User) entityManager.createQuery("from User where tokenSelector = :selector").setParameter("selector", selector).getSingleResult();
 
-		entityManager.close();
 		if(verifyValidator(validator, user)) {
+
+			Hibernate.initialize(user.getWishList());
+			user.initWishList();//fight Hibernate's stupid lazy loading
+			entityManager.close();
+
 			return user;
 		} else {
+			entityManager.close();
 			return null;
 		}
 	}
@@ -61,6 +67,7 @@ public class UserBLL {
 		String validator = null;
 		if(checkLogin(user.getPassword(), password, user.getSalt())) {
 			validator = createSelectorAndHashValidator(user);
+			user.initWishList(); //fight Hibernate's stupid lazy loading
 
 			entityManager.getTransaction().commit();
 			entityManager.close();

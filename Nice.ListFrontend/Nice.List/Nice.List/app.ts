@@ -154,7 +154,7 @@ class App {
         };
         var self = this;
         jQuery.ajax(settings).then(function (o: User) {
-            -self.user(ko.mapping.fromJS(o));
+            self.user(ko.mapping.fromJS(o));
             (<any>$("#log-in")).modal('hide'); 
            if (o.firstName.length && o.lastName.length) {
                 self.status(AppStatus.Home);

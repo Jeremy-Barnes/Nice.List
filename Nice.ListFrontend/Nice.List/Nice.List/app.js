@@ -134,7 +134,7 @@ var App = (function () {
         };
         var self = this;
         jQuery.ajax(settings).then(function (o) {
-            -self.user(ko.mapping.fromJS(o));
+            self.user(ko.mapping.fromJS(o));
             $("#log-in").modal('hide');
             if (o.firstName.length && o.lastName.length) {
                 self.status(AppStatus.Home);
@@ -215,7 +215,24 @@ var App = (function () {
         });
     };
     App.prototype.updateWishListItem = function () {
-        //todo
+        if (this.editWishListItem().price(0) == null)
+            this.editWishListItem().price(0);
+        var parameters = JSON.stringify(ko.mapping.toJS(this.editWishListItem));
+        var settings = {
+            url: "http://localhost:8080/api/nice/wishlist/" + "editListItem",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (item) {
+            self.user().wishList.push(ko.mapping.fromJS(item));
+            self.editWishListItem(new WishListItemModel());
+        }).fail(function (request) {
+            self.editWishListItem(new WishListItemModel());
+            alert(request);
+        });
     };
     return App;
 })();

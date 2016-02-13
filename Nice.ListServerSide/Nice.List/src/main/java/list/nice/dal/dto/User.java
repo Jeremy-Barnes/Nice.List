@@ -3,11 +3,11 @@ package list.nice.dal.dto;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.WhereJoinTable;
+import org.hibernate.collection.internal.PersistentSet;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -34,6 +34,7 @@ public class User {
 	private String tokenValidator;
 	private String pictureURL;
 
+
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="requesteduserID"))
 	@WhereJoinTable(clause = "accepted = 'TRUE'")
@@ -49,8 +50,15 @@ public class User {
 	@WhereJoinTable(clause = "accepted = 'FALSE'")
 	private Set<User> requestsToReview = new HashSet<User>();
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "requesterUserID")
-	private Set<WishListItem> wishList = new HashSet<WishListItem>();
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "requesterUserID")
+	private Set<WishListItem> wishList; //a sacrificial offering to the Hibernate demons
+
+	@Transient
+	private Set<WishListItem> wishListSnapshot;
+
+	@Transient
+	private boolean wishListInitialized = false;
+
 
 	public User(){}
 
@@ -200,10 +208,18 @@ public class User {
 	}
 
 	public void setWishList(Set<WishListItem> wishList) {
+		this.wishListInitialized = false;
+		this.wishListSnapshot = null;
 		this.wishList = wishList;
 	}
 
 	public Set<WishListItem> getWishList() {
-		return wishList;
+		return wishListSnapshot;
+	}
+
+	public void initWishList(){
+		((PersistentSet)wishList).forceInitialization();
+		this.wishListSnapshot = ((Map<WishListItem, ?>)((PersistentSet) wishList).getStoredSnapshot()).keySet();
+		this.wishListInitialized = true;
 	}
 }
