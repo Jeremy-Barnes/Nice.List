@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Jeremy on 1/5/2016.
@@ -35,8 +36,6 @@ public class WishListBLL {
 
 		User cookieUser = UserBLL.getUser(selector, validator);
 
-		//WishListItem dbItem = (WishListItem) entityManager.createQuery("from WishListItem where wishListItemID = :id").setParameter("id", item.getWishListItemID()).getSingleResult();
-
 		if(item.getRequesterUserID() == cookieUser.getUserID()){
 			entityManager.persist(item);
 		} else {
@@ -47,5 +46,22 @@ public class WishListBLL {
 		entityManager.close();
 
 		return item;
+	}
+
+	public static List<WishListItem> getFriendsWishList(int activeUserID, int wishListUserID, String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
+		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
+		entityManager.getTransaction().begin();
+
+		User cookieUser = UserBLL.getUser(selector, validator);
+		List<WishListItem> dbItems;
+		if(activeUserID == cookieUser.getUserID()) {
+			dbItems = (List<WishListItem>) entityManager.createQuery("from WishListItem where requesterUserID = :id").setParameter("id", wishListUserID).getResultList();
+		} else {
+			throw new GeneralSecurityException();
+		}
+
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return dbItems;
 	}
 }

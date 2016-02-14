@@ -28,6 +28,7 @@ class App {
     public editWishListItem: KnockoutObservable<WishListItemModel> = ko.observable(new WishListItemModel());
     public passwordConfirm: KnockoutObservable<string> = ko.observable("");
     public passwordsMatch: KnockoutComputed<boolean>;
+    public wishUser: KnockoutObservable<UserModel> = ko.observable(new UserModel());
 
     constructor() {
         this.passwordsMatch = ko.pureComputed(() => {
@@ -87,6 +88,7 @@ class App {
         var self = this;
         jQuery.ajax(settings).then(function (o: User) {
             self.user(ko.mapping.fromJS(o));
+            self.wishUser(self.user());
             self.status(AppStatus.Home);
         }).fail(function (request: JQueryXHR) {
             alert(request);
@@ -155,6 +157,7 @@ class App {
         var self = this;
         jQuery.ajax(settings).then(function (o: User) {
             self.user(ko.mapping.fromJS(o));
+            self.wishUser(self.user());
             (<any>$("#log-in")).modal('hide'); 
            if (o.firstName.length && o.lastName.length) {
                 self.status(AppStatus.Home);
@@ -260,6 +263,11 @@ class App {
             self.editWishListItem(new WishListItemModel());
             alert(request);
         });
+    }
+
+    public selectFriend(friend: UserModel) {
+        this.wishUser(friend);
+        this.status(AppStatus.Home);
     }
 }
 

@@ -54,7 +54,7 @@ public class User {
 	private Set<WishListItem> wishList; //a sacrificial offering to the Hibernate demons
 
 	@Transient
-	private Set<WishListItem> wishListSnapshot;
+	private Set<WishListItem> wishListSnapshot = new HashSet<WishListItem>();
 
 	@Transient
 	private boolean wishListInitialized = false;
@@ -209,7 +209,7 @@ public class User {
 
 	public void setWishList(Set<WishListItem> wishList) {
 		this.wishListInitialized = false;
-		this.wishListSnapshot = null;
+		this.wishListSnapshot = new HashSet<WishListItem>();
 		this.wishList = wishList;
 	}
 

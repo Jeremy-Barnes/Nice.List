@@ -21,6 +21,7 @@ var App = (function () {
         this.friendEmailAddress = ko.observable("");
         this.editWishListItem = ko.observable(new WishListItemModel());
         this.passwordConfirm = ko.observable("");
+        this.wishUser = ko.observable(new UserModel());
         this.passwordsMatch = ko.pureComputed(function () {
             var passwordCo = _this.passwordConfirm();
             return _this.user().password() == _this.passwordConfirm();
@@ -72,6 +73,7 @@ var App = (function () {
         var self = this;
         jQuery.ajax(settings).then(function (o) {
             self.user(ko.mapping.fromJS(o));
+            self.wishUser(self.user());
             self.status(AppStatus.Home);
         }).fail(function (request) {
             alert(request);
@@ -135,6 +137,7 @@ var App = (function () {
         var self = this;
         jQuery.ajax(settings).then(function (o) {
             self.user(ko.mapping.fromJS(o));
+            self.wishUser(self.user());
             $("#log-in").modal('hide');
             if (o.firstName.length && o.lastName.length) {
                 self.status(AppStatus.Home);
@@ -233,6 +236,10 @@ var App = (function () {
             self.editWishListItem(new WishListItemModel());
             alert(request);
         });
+    };
+    App.prototype.selectFriend = function (friend) {
+        this.wishUser(friend);
+        this.status(AppStatus.Home);
     };
     return App;
 })();

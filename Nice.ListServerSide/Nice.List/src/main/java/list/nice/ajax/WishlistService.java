@@ -1,6 +1,7 @@
 package list.nice.ajax;
 
 import list.nice.bll.WishListBLL;
+import list.nice.dal.dto.Friendship;
 import list.nice.dal.dto.WishListItem;
 
 import javax.ws.rs.Consumes;
@@ -43,5 +44,18 @@ public class WishlistService {
 		WishListItem wish = item.getValue();
 
 		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(WishListBLL.updateWishListItem(wish, entry[0], entry[1])).build();
+	}
+
+	@POST
+	@Path("/getUserWishList")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUserWishList(JAXBElement<Friendship> relationship, @Context HttpHeaders header) throws GeneralSecurityException, UnsupportedEncodingException {
+		String cookie = header.getCookies().get("nicelist").getValue();
+		String[] entry = cookie.split(":");
+		Friendship friendship = relationship.getValue();
+
+		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*")
+					   .entity(WishListBLL.getFriendsWishList(friendship.getRequesterUserID(), friendship.getRequestedUserID(), entry[0], entry[1])).build();
 	}
 }

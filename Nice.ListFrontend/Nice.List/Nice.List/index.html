@@ -129,16 +129,18 @@
             <div id="lists-sidebar-placeholder" class="visible-sm visible-md visible-lg collapse">&nbsp;</div>
 
 
-            <div id="wishlist-view" class="view" data-bind="if: status() == AppStatus.Home">
-
-                <div class="navbar navbar-default namebar visible-xs visible-sm visible-md visible-lg">
+            <div id="wishlist-view" class="view" data-bind="if: status() == AppStatus.Home ">
+                <div class="navbar navbar-default namebar visible-xs visible-sm visible-md visible-lg" data-bind="with: wishUser">
                     <div class="inlineblock profile-picture"><img src="img/elf-default-profile-photos-05.png" class="nav-img" /></div>
-                    <div class="inlineblock" style="vertical-align: middle;"><h1>Jeremiah Barnes</h1> <p class="inlineblock">Tulsa</p></div>
+                    <div class="inlineblock" style="vertical-align: middle;">
+                        <h1><span data-bind="text: firstName() + ' ' + lastName()"></span></h1>
+                        <p class="inlineblock"><span data-bind="text: city"></span></p>
+                    </div>
                 </div>
                 <div id="namebar-placeholder" class="visible-xs visible-sm visible-md visible-lg">&nbsp;</div>
 
-                <div class="row onlyrow add-gutter" >
-                    <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="row onlyrow add-gutter" data-bind="with: wishUser">
+                    <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="foreach: wishList">
 
                         <p>Sort By: Desire Price Date Added</p>
 
@@ -154,7 +156,7 @@
                         </div>
 
                     </div>
-                </div> 
+                </div>
             </div>
 
             <div id="account-view" class="view" data-bind="if: status() == AppStatus.Account, css: { main: status() == AppStatus.Account }">
@@ -222,7 +224,7 @@
                             <h2><span data-bind="text: $data.firstName() + ' ' + $data.lastName()"></span></h2>
                             <p><span data-bind="text: $data.city() + ', ' + $data.state()"></span></p>
                             <p>5 items on list</p>
-                            <div><input type="button" class="btn yellow" value="View List"/></div>
+                            <div><input type="button" class="btn yellow" value="View List" data-bind="click: $root.selectFriend.bind($root)"/></div>
                         </div>
                     </div>
                 </div>
