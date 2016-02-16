@@ -197,10 +197,10 @@ class App {
         this.respondToFriendRequest(false, snubbed);
     }
 
-    private respondToFriendRequest(accepted: boolean, requester: UserModel) {
+    private respondToFriendRequest(acceptedRequest: boolean, requester: UserModel) {
         var req: Friendship = {
             friendshipID: -1,
-            accepted: false,
+            accepted: acceptedRequest,
             requestedUserID: this.user().userID(),
             requesterUserID: requester.userID()
         }
@@ -216,7 +216,7 @@ class App {
         var self = this;
         jQuery.ajax(settings).then(function () {
             var deletedIndex = self.user().requestsToReview.remove(requester)
-            if (accepted) {
+            if (acceptedRequest) {
                 self.user().friends.push(requester);
             }
         }).fail(function (request: JQueryXHR) {

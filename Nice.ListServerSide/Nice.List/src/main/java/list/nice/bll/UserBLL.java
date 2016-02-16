@@ -84,18 +84,17 @@ public class UserBLL {
 		if(confirmUser == null || confirmUser.getUserID() != user.getUserID()){
 			throw new GeneralSecurityException("Invalid Cookie");
 		}
-		user.setTokenSelector(selector);
-		user.setTokenValidator(validator);
+		user.setTokenSelector(confirmUser.getTokenSelector());
+		user.setTokenValidator(confirmUser.getTokenValidator());
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
 		if(user.getPassword() != null && !user.getPassword().isEmpty()) {
 			hashAndSaltPassword(user);
 		} else {
-			User u2 = getUser(selector, validator);
-			user.setPassword(u2.getPassword());
-			user.setSalt(u2.getSalt());
-			user.setFriends(u2.getFriends());
+			user.setPassword(confirmUser.getPassword());
+			user.setSalt(confirmUser.getSalt());
+			user.setFriends(confirmUser.getFriends());
 		}
 		entityManager.merge(user);
 		entityManager.getTransaction().commit();

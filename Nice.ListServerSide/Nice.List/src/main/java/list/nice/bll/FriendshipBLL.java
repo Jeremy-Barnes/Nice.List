@@ -36,17 +36,17 @@ public class FriendshipBLL {
 
 		User cookieUser = UserBLL.getUser(selector, validator);
 		if(cookieUser.getUserID() == request.getRequestedUserID()) {
-			Friendship dbReq = (Friendship) entityManager.createQuery("from Friendship where friendshipID = :id").setParameter("id", request.getFriendshipID()).getSingleResult();
+			Friendship dbReq = (Friendship) entityManager.createQuery("from Friendship where requesterUserID = :req and requestedUserID = :friend")
+														 .setParameter("req", request.getRequesterUserID()).setParameter("friend", request.getRequestedUserID())
+														 .getSingleResult();
 
-			if (dbReq.getFriendshipID() == request.getFriendshipID()) {
-				entityManager.persist(request);
-			} else {
-				entityManager.getTransaction().commit();
-				entityManager.close();
-				throw new GeneralSecurityException("Invalid cookie supplied");
-			}
-		} else {
+
+			dbReq.setAccepted(true);
 			entityManager.getTransaction().commit();
+			entityManager.close();
+			request.setFriendshipID(dbReq.getFriendshipID());
+
+		} else {
 			entityManager.close();
 			throw new GeneralSecurityException("Invalid cookie supplied");
 		}
@@ -58,17 +58,14 @@ public class FriendshipBLL {
 
 		User cookieUser = UserBLL.getUser(selector, validator);
 		if(cookieUser.getUserID() == request.getRequestedUserID()) {
-			Friendship dbReq = (Friendship) entityManager.createQuery("from Friendship where friendshipID = :id").setParameter("id", request.getFriendshipID()).getSingleResult();
+			Friendship dbReq = (Friendship) entityManager.createQuery("from Friendship where requesterUserID = :req and requestedUserID = :friend")
+														 .setParameter("req", request.getRequesterUserID()).setParameter("friend", request.getRequestedUserID())
+														 .getSingleResult();
 
-			if (dbReq.getFriendshipID() == request.getFriendshipID()) {
-				entityManager.remove(request);
-			} else {
+				entityManager.remove(dbReq);
 				entityManager.getTransaction().commit();
 				entityManager.close();
-				throw new GeneralSecurityException("Invalid cookie supplied");
-			}
 		} else {
-			entityManager.getTransaction().commit();
 			entityManager.close();
 			throw new GeneralSecurityException("Invalid cookie supplied");
 		}

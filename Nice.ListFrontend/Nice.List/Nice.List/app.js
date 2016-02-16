@@ -173,10 +173,10 @@ var App = (function () {
     App.prototype.rejectFriendRequest = function (snubbed) {
         this.respondToFriendRequest(false, snubbed);
     };
-    App.prototype.respondToFriendRequest = function (accepted, requester) {
+    App.prototype.respondToFriendRequest = function (acceptedRequest, requester) {
         var req = {
             friendshipID: -1,
-            accepted: false,
+            accepted: acceptedRequest,
             requestedUserID: this.user().userID(),
             requesterUserID: requester.userID()
         };
@@ -191,7 +191,7 @@ var App = (function () {
         var self = this;
         jQuery.ajax(settings).then(function () {
             var deletedIndex = self.user().requestsToReview.remove(requester);
-            if (accepted) {
+            if (acceptedRequest) {
                 self.user().friends.push(requester);
             }
         }).fail(function (request) {
