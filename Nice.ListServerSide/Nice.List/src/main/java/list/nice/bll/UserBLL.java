@@ -46,6 +46,7 @@ public class UserBLL {
 
 		if(verifyValidator(validator, user)) {
 			user.initWishList();//fight Hibernate's stupid lazy loading
+			user.initFriendsList();
 			entityManager.close();
 
 			return user;
@@ -65,6 +66,7 @@ public class UserBLL {
 		if(checkLogin(user.getPassword(), password, user.getSalt())) {
 			validator = createSelectorAndHashValidator(user);
 			user.initWishList(); //fight Hibernate's stupid lazy loading
+			user.initFriendsList();
 
 			entityManager.getTransaction().commit();
 			entityManager.close();

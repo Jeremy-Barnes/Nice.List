@@ -35,17 +35,22 @@ public class User {
 	private String pictureURL;
 
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="requesteduserID"))
 	@WhereJoinTable(clause = "accepted = 'TRUE'")
 	private Set<User> friends = new HashSet<User>();
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteduserID"), inverseJoinColumns = @JoinColumn(name="requesteruserID"))
+	@WhereJoinTable(clause = "accepted = 'TRUE'")
+	private Set<User> friendsOf = new HashSet<User>();
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="requesteduserID"))
 	@WhereJoinTable(clause = "accepted = 'FALSE'")
 	private Set<User> pendingRequests = new HashSet<User>();
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteduserID"), inverseJoinColumns = @JoinColumn(name="requesteruserID"))
 	@WhereJoinTable(clause = "accepted = 'FALSE'")
 	private Set<User> requestsToReview = new HashSet<User>();
@@ -55,10 +60,21 @@ public class User {
 
 	@Transient
 	private Set<WishListItem> wishListSnapshot = new HashSet<WishListItem>();
+	@Transient
+	private Set<User> friendsSnapshot = new HashSet<User>();
+	@Transient
+	private Set<User> friendsOfSnapshot = new HashSet<User>();
+	@Transient
+	private Set<User> requestsToReviewSnapshot = new HashSet<User>();
+	@Transient
+	private Set<User> pendingRequestsSnapshot = new HashSet<User>();
 
 	@Transient
 	private boolean wishListInitialized = false;
-
+	@Transient
+	private boolean friendsInitialized = false;
+	@Transient
+	private boolean friendRequestsInitialized = false;
 
 	public User(){}
 
@@ -184,27 +200,48 @@ public class User {
 	}
 
 	public Set<User> getFriends() {
-		return friends;
+		Set friendsList = new HashSet<User>();
+		friendsList.addAll(friendsSnapshot);
+		friendsList.addAll(friendsOfSnapshot);
+		return friendsList;
 	}
 
 	public void setFriends(Set<User> friends) {
 		this.friends = friends;
+		this.friendsInitialized = false;
+		this.friendsSnapshot = new HashSet<User>();
+		this.requestsToReviewSnapshot = new HashSet<User>();
+		this.friendsOfSnapshot = new HashSet<User>();
+	}
+
+	public void setFriendsOf(Set<User> friendsOf) {
+		this.friendsOf = friendsOf;
+		this.friendsInitialized = false;
+		this.friendsOfSnapshot = new HashSet<User>();
+		this.friendsSnapshot = new HashSet<User>();
+		this.requestsToReviewSnapshot = new HashSet<User>();
 	}
 
 	public Set<User> getPendingRequests() {
-		return pendingRequests;
+		return pendingRequestsSnapshot;
 	}
 
 	public void setPendingRequest(Set<User> pendingRequests) {
 		this.pendingRequests = pendingRequests;
+		this.friendRequestsInitialized = false;
+		this.pendingRequestsSnapshot = new HashSet<User>();
 	}
 
 	public Set<User> getRequestsToReview() {
-		return requestsToReview;
+		return requestsToReviewSnapshot;
 	}
 
 	public void setRequestsToReview(Set<User> requestsToReview) {
 		this.requestsToReview = requestsToReview;
+		this.friendsInitialized = false;
+		this.friendsSnapshot = new HashSet<User>();
+		this.friendsOfSnapshot = new HashSet<User>();
+		this.requestsToReviewSnapshot = new HashSet<User>();
 	}
 
 	public void setWishList(Set<WishListItem> wishList) {
@@ -221,5 +258,19 @@ public class User {
 		((PersistentSet)wishList).forceInitialization();
 		this.wishListSnapshot = ((Map<WishListItem, ?>)((PersistentSet) wishList).getStoredSnapshot()).keySet();
 		this.wishListInitialized = true;
+	}
+
+	public void initFriendsList(){
+		((PersistentSet)friends).forceInitialization();
+		((PersistentSet)friendsOf).forceInitialization();
+		((PersistentSet)requestsToReview).forceInitialization();
+		this.friendsSnapshot = ((Map<User, ?>)((PersistentSet) friends).getStoredSnapshot()).keySet();
+		this.friendsOfSnapshot = ((Map<User, ?>)((PersistentSet) friendsOf).getStoredSnapshot()).keySet();
+		this.requestsToReviewSnapshot = ((Map<User, ?>)((PersistentSet) requestsToReview).getStoredSnapshot()).keySet();
+	}
+
+	public void initSentFriendRequests() {
+		((PersistentSet)pendingRequests).forceInitialization();
+		this.pendingRequestsSnapshot = ((Map<User, ?>)((PersistentSet) pendingRequests).getStoredSnapshot()).keySet();
 	}
 }
