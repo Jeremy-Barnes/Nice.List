@@ -140,19 +140,26 @@
                 <div id="namebar-placeholder" class="visible-xs visible-sm visible-md visible-lg">&nbsp;</div>
 
                 <div class="row onlyrow add-gutter" data-bind="with: wishUser">
+                    <p>Sort By: Desire Price Date Added</p>
+
+
                     <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="foreach: wishList">
 
-                        <p>Sort By: Desire Price Date Added</p>
-
-
-                        <div class="wish-list-item col-xs-12 col-sm-6 col-md-6 col-lg-3">
+        
+                        <div class="wish-list-item centered col-xs-12 col-sm-6 col-md-6 col-lg-3">
                             <div class="image-frame">
                                 <img src="img/scarf.jpg" />
                             </div>
-                            <p>Red Cashmere Scarf</p>
-                            <p>$19.99</p>
-                            <p>Notes:</p>
-                            <p>Qty 1 Color Red Size Small</p>
+                            <p><span data-bind="text: $data.itemName"></span></p>
+                            <p><span data-bind="text: $data.price"></span></p>
+                            <div class="notes">
+                                <p>Notes:</p> <p><span data-bind="text: $data.comment"></span></p>
+                            </div>
+                            <div>
+                                <button class="btn yellow" data-bind="click: $root.selectFriend.bind($root)"><span class="fa fa-external-link"></span> View</button>
+                                <button class="btn green" data-bind="click: $root.selectFriend.bind($root)"><span class="fa fa-usd"></span> Buy</button>
+                                <button class="btn blue" data-bind="click: $root.selectFriend.bind($root)"><span class="fa fa-check-square-o"></span> Check</button>
+                            </div>
                         </div>
 
                     </div>

@@ -283,6 +283,17 @@ form > .row, form > div > .row {
     color: white;
 }
 
+.green {
+    background-color: #006B2E;
+    color: white;
+}
+
+.notes {
+    background-color: #FFEFC4;
+    width: 100%;
+    text-align: left;
+}
+
 .nav > li{
     padding-left: 5px;
     padding-right: 5px;
