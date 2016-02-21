@@ -54,10 +54,10 @@ class Friendship {
 class WishListItem {
     wishListItemID: number;
     requesterUserID: number;
-    URL: String;
-    imageURL: String;
-    itemName: String;
-    comment: String;
+    URL: string;
+    imageURL: string;
+    itemName: string = "";
+    comment: string;
     isBought: boolean;
     purchaserUserID: number;
     dateAdded: Date;
@@ -68,10 +68,10 @@ class WishListItem {
 class WishListItemModel {
     wishListItemID: KnockoutObservable<number> = ko.observable(0);
     requesterUserID: KnockoutObservable<number> = ko.observable(0);
-    URL: KnockoutObservable<String> = ko.observable(null);;
-    imageURL: KnockoutObservable<String> = ko.observable(null);
-    itemName: KnockoutObservable<String> = ko.observable(null);
-    comment: KnockoutObservable<String> = ko.observable(null);
+    URL: KnockoutObservable<string> = ko.observable(null);
+    imageURL: KnockoutObservable<string> = ko.observable(null);
+    itemName: KnockoutObservable<string> = ko.observable(null);
+    comment: KnockoutObservable<string> = ko.observable(null);
     isBought: KnockoutObservable<boolean> = ko.observable(false);
     purchaserUserID: KnockoutObservable<number> = ko.observable(null);
     dateAdded: KnockoutObservable<Date> = ko.observable(null);

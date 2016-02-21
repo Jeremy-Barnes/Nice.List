@@ -237,6 +237,14 @@ var App = (function () {
             alert(request);
         });
     };
+    App.prototype.markWishListItemAsBought = function (item) {
+        this.editWishListItem(item);
+        this.updateWishListItem();
+    };
+    App.prototype.buyWishListItem = function (item) {
+        this.markWishListItemAsBought(item);
+        window.open(item.URL());
+    };
     App.prototype.selectFriend = function (friend) {
         this.wishUser(friend);
         this.status(AppStatus.Home);

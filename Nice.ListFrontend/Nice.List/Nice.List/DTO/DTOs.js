@@ -39,6 +39,7 @@ var Friendship = (function () {
 })();
 var WishListItem = (function () {
     function WishListItem() {
+        this.itemName = "";
     }
     return WishListItem;
 })();
@@ -56,7 +57,6 @@ var WishListItemModel = (function () {
         this.price = ko.observable(null);
         this.want = ko.observable(0);
     }
-    ;
     return WishListItemModel;
 })();
 //# sourceMappingURL=DTOs.js.map

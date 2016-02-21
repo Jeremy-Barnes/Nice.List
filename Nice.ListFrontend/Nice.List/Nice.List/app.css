@@ -231,8 +231,13 @@ form > .row, form > div > .row {
     cursor: inherit;
     display: block;
 }
+a.btn {
+    text-decoration: none !important;
+}
 
-
+.wish-list-item{
+    padding: 0px !important;
+}
 .wish-list-item, .friends-list-item {
     background-color: #ededed;
     border: solid 2px #e1e1e1;
@@ -244,7 +249,7 @@ form > .row, form > div > .row {
     margin-top: 15px;
 }
 .wish-list-item > .image-frame {
-    margin: 8px 6px;
+    margin: 8px 8px;
     width:94%;
     height:175px;
     border: inherit;

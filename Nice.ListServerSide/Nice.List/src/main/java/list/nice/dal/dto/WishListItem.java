@@ -1,10 +1,9 @@
 package list.nice.dal.dto;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-import org.postgresql.util.PGmoney;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.Date;
 
 /**
@@ -20,16 +19,17 @@ public class WishListItem {
 	private int wishListItemID;
 
 	private int requesterUserID;
-	private Integer purchaserUserID;
+	private Integer purchaserUserID = null;
 	private String URL;
 	private String imageURL;
+	@XmlElement(nillable=true)
 	private String itemName;
 	private String comment;
-	private boolean isBought;
+	private boolean isBought = false;
 	@Temporal(TemporalType.DATE)
 	private Date dateAdded;
 	private double price;
-	private int want;
+	private int want = 0;
 
 
 	public WishListItem(){}

@@ -265,6 +265,16 @@ class App {
         });
     }
 
+    public markWishListItemAsBought(item: WishListItemModel) {
+        this.editWishListItem(item);
+        this.updateWishListItem();
+    }
+
+    public buyWishListItem(item: WishListItemModel) {
+        this.markWishListItemAsBought(item);
+        window.open(item.URL());
+    }
+
     public selectFriend(friend: UserModel) {
         this.wishUser(friend);
         this.status(AppStatus.Home);

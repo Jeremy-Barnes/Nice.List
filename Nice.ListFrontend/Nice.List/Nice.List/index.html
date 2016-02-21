@@ -148,17 +148,17 @@
         
                         <div class="wish-list-item centered col-xs-12 col-sm-6 col-md-6 col-lg-3">
                             <div class="image-frame">
-                                <img src="img/scarf.jpg" />
+                                <img src="img/scarf.jpg" data-bind="attr: { src: $data.imageURL, alt: 'A product image should be here.'}"/>
                             </div>
                             <p><span data-bind="text: $data.itemName"></span></p>
                             <p><span data-bind="text: $data.price"></span></p>
                             <div class="notes">
-                                <p>Notes:</p> <p><span data-bind="text: $data.comment"></span></p>
+                                <p>Notes:</p> <p><span data-bind="text: $data.URL"></span></p>
                             </div>
                             <div>
-                                <button class="btn yellow" data-bind="click: $root.selectFriend.bind($root)"><span class="fa fa-external-link"></span> View</button>
-                                <button class="btn green" data-bind="click: $root.selectFriend.bind($root)"><span class="fa fa-usd"></span> Buy</button>
-                                <button class="btn blue" data-bind="click: $root.selectFriend.bind($root)"><span class="fa fa-check-square-o"></span> Check</button>
+                                <a class="btn yellow" data-bind="attr: { href: $data.URL }"><span class="fa fa-external-link"></span> View</a>
+                                <button class="btn green" data-bind="click: $root.buyWishListItem.bind($root)"><span class="fa fa-usd"></span> Buy</button>
+                                <a class="btn blue" data-bind="click: $root.markWishListItemAsBought.bind($root)"><span class="fa fa-check-square-o"></span> Check</a>
                             </div>
                         </div>
 
