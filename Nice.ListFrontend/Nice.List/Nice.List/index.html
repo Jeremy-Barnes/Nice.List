@@ -155,7 +155,7 @@
                             <div class="notes">
                                 <p>Notes:</p> <p><span data-bind="text: $data.URL"></span></p>
                             </div>
-                            <div>
+                            <div data-bind="if: $root.wishUser().emailAddress() != $root.user().emailAddress()">
                                 <a class="btn yellow" data-bind="attr: { href: $data.URL }"><span class="fa fa-external-link"></span> View</a>
                                 <button class="btn green" data-bind="click: $root.buyWishListItem.bind($root)"><span class="fa fa-usd"></span> Buy</button>
                                 <a class="btn blue" data-bind="click: $root.markWishListItemAsBought.bind($root)"><span class="fa fa-check-square-o"></span> Check</a>

@@ -257,7 +257,9 @@ class App {
         };
         var self = this;
         jQuery.ajax(settings).then(function (item: WishListItem) {
-            self.user().wishList.push(ko.mapping.fromJS(item));
+            if (!(self.editWishListItem().wishListItemID() > 0)) {
+                self.user().wishList.push(ko.mapping.fromJS(item));
+            }
             self.editWishListItem(new WishListItemModel());
         }).fail(function (request: JQueryXHR) {
             self.editWishListItem(new WishListItemModel());
@@ -266,6 +268,7 @@ class App {
     }
 
     public markWishListItemAsBought(item: WishListItemModel) {
+        item.isBought(true);
         this.editWishListItem(item);
         this.updateWishListItem();
     }
@@ -276,6 +279,30 @@ class App {
     }
 
     public selectFriend(friend: UserModel) {
+        var req: Friendship = {
+            accepted: true,
+            friendshipID: -1,
+            requesterUserID: this.user().userID(),
+            requestedUserID: friend.userID(),
+        }
+        var parameters = JSON.stringify(req);
+        var settings: JQueryAjaxSettings = {
+            url: "http://localhost:8080/api/nice/wishlist/" + "getUserWishList",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (item: WishListItem) {
+            if (!(self.editWishListItem().wishListItemID() > 0)) {
+                self.user().wishList.push(ko.mapping.fromJS(item));
+            }
+            self.editWishListItem(new WishListItemModel());
+        }).fail(function (request: JQueryXHR) {
+            self.editWishListItem(new WishListItemModel());
+            alert(request);
+        });
         this.wishUser(friend);
         this.status(AppStatus.Home);
     }

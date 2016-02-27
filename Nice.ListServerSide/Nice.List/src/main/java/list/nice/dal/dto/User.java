@@ -245,9 +245,15 @@ public class User {
 	}
 
 	public void setWishList(Set<WishListItem> wishList) {
-		this.wishListInitialized = false;
-		this.wishListSnapshot = new HashSet<WishListItem>();
-		this.wishList = wishList;
+		if(wishList instanceof PersistentSet) {
+			this.wishListInitialized = false;
+			this.wishListSnapshot = new HashSet<WishListItem>();
+			this.wishList = wishList;
+		} else {
+			this.wishListInitialized = true;
+			this.wishListSnapshot = wishList;
+			this.wishList = wishList;
+		}
 	}
 
 	public Set<WishListItem> getWishList() {

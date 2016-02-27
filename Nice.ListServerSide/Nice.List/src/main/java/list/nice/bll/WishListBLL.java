@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Jeremy on 1/5/2016.
@@ -37,7 +38,7 @@ public class WishListBLL {
 		User cookieUser = UserBLL.getUser(selector, validator);
 
 		if(item.getRequesterUserID() == cookieUser.getUserID()){
-			entityManager.persist(item);
+			entityManager.merge(item);
 		} else {
 			throw new GeneralSecurityException();
 		}
@@ -55,7 +56,7 @@ public class WishListBLL {
 		User cookieUser = UserBLL.getUser(selector, validator);
 		List<WishListItem> dbItems;
 		if(activeUserID == cookieUser.getUserID()) {
-			dbItems = (List<WishListItem>) entityManager.createQuery("from WishListItem where requesterUserID = :id").setParameter("id", wishListUserID).getResultList();
+			dbItems = (List<WishListItem>) entityManager.createQuery("from WishListItem where requesterUserID = :id and isBought = false").setParameter("id", wishListUserID).getResultList();
 		} else {
 			throw new GeneralSecurityException();
 		}
@@ -63,5 +64,13 @@ public class WishListBLL {
 		entityManager.getTransaction().commit();
 		entityManager.close();
 		return dbItems;
+	}
+
+	public static Set<WishListItem> removeSensitivePresentData(Set<WishListItem> presents){
+		for(WishListItem present : presents){
+			present.setIsBought(false);
+			present.setPurchaserUserID(-1);
+		}
+		return presents;
 	}
 }

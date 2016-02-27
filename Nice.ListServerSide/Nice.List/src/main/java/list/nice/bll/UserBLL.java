@@ -46,6 +46,7 @@ public class UserBLL {
 
 		if(verifyValidator(validator, user)) {
 			user.initWishList();//fight Hibernate's stupid lazy loading
+			user.setWishList(WishListBLL.removeSensitivePresentData(user.getWishList()));
 			user.initFriendsList();
 			entityManager.close();
 

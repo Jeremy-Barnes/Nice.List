@@ -230,7 +230,9 @@ var App = (function () {
         };
         var self = this;
         jQuery.ajax(settings).then(function (item) {
-            self.user().wishList.push(ko.mapping.fromJS(item));
+            if (!(self.editWishListItem().wishListItemID() > 0)) {
+                self.user().wishList.push(ko.mapping.fromJS(item));
+            }
             self.editWishListItem(new WishListItemModel());
         }).fail(function (request) {
             self.editWishListItem(new WishListItemModel());
@@ -238,6 +240,7 @@ var App = (function () {
         });
     };
     App.prototype.markWishListItemAsBought = function (item) {
+        item.isBought(true);
         this.editWishListItem(item);
         this.updateWishListItem();
     };
@@ -246,6 +249,30 @@ var App = (function () {
         window.open(item.URL());
     };
     App.prototype.selectFriend = function (friend) {
+        var req = {
+            accepted: true,
+            friendshipID: -1,
+            requesterUserID: this.user().userID(),
+            requestedUserID: friend.userID(),
+        };
+        var parameters = JSON.stringify(req);
+        var settings = {
+            url: "http://localhost:8080/api/nice/wishlist/" + "getUserWishList",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: parameters,
+            crossDomain: true
+        };
+        var self = this;
+        jQuery.ajax(settings).then(function (item) {
+            if (!(self.editWishListItem().wishListItemID() > 0)) {
+                self.user().wishList.push(ko.mapping.fromJS(item));
+            }
+            self.editWishListItem(new WishListItemModel());
+        }).fail(function (request) {
+            self.editWishListItem(new WishListItemModel());
+            alert(request);
+        });
         this.wishUser(friend);
         this.status(AppStatus.Home);
     };
