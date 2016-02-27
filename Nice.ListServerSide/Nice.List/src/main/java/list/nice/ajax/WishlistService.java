@@ -8,13 +8,11 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.xml.bind.JAXBElement;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.util.List;
 
 /**
  * Created by Jeremy on 1/20/2016.
@@ -56,6 +54,6 @@ public class WishlistService {
 		Friendship friendship = relationship.getValue();
 
 		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*")
-					   .entity(WishListBLL.getFriendsWishList(friendship.getRequesterUserID(), friendship.getRequestedUserID(), entry[0], entry[1])).build();
+					   .entity(new GenericEntity<List<WishListItem>>(WishListBLL.getFriendsWishList(friendship.getRequesterUserID(), friendship.getRequestedUserID(), entry[0], entry[1])) {}).build();
 	}
 }

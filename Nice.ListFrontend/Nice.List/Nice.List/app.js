@@ -266,7 +266,9 @@ var App = (function () {
         var self = this;
         jQuery.ajax(settings).then(function (item) {
             if (!(self.editWishListItem().wishListItemID() > 0)) {
-                self.user().wishList.push(ko.mapping.fromJS(item));
+                self.wishUser().wishList(ko.mapping.fromJS(item)());
+                var x = self.wishUser().wishList();
+                var y = self;
             }
             self.editWishListItem(new WishListItemModel());
         }).fail(function (request) {
