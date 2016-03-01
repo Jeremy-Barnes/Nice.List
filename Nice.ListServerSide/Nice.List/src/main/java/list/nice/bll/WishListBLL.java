@@ -37,7 +37,7 @@ public class WishListBLL {
 
 		User cookieUser = UserBLL.getUser(selector, validator);
 
-		if(item.getRequesterUserID() == cookieUser.getUserID()){
+		if(item.getRequesterUserID() == cookieUser.getUserID() || item.getPurchaserUserID() == cookieUser.getUserID()){
 			entityManager.merge(item);
 		} else {
 			throw new GeneralSecurityException();

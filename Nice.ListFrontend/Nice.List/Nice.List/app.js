@@ -60,18 +60,8 @@ var App = (function () {
         }
     };
     App.prototype.getUser = function (selector, validator) {
-        var valid = { selector: selector, validator: validator };
-        var parameters = JSON.stringify(valid);
-        var settings = {
-            url: "http://localhost:8080/api/nice/users/" + "getUserFromToken",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: parameters,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (o) {
+        ServiceMethods.getUserFromToken(selector, validator).then(function (o) {
             self.user(ko.mapping.fromJS(o));
             self.wishUser(self.user());
             self.status(AppStatus.Home);
@@ -80,18 +70,8 @@ var App = (function () {
         });
     };
     App.prototype.createUser = function () {
-        var methodName = "";
-        var param = JSON.stringify(ko.toJS(this.user()));
-        var settings = {
-            url: "http://localhost:8080/api/nice/users/" + "createUser",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: param,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (updatedUser) {
+        ServiceMethods.createUser(this.user()).then(function (updatedUser) {
             var us = ko.mapping.fromJS(updatedUser);
             self.user(us);
             self.passwordConfirm("");
@@ -102,21 +82,8 @@ var App = (function () {
         });
     };
     App.prototype.submitAccountChanges = function () {
-        var methodName = "";
-        var dat = new FormData();
-        dat.append("user", JSON.stringify(ko.toJS(this.user())));
-        dat.append("file", jQuery("#file")[0].files[0]);
-        var settings = {
-            url: "http://localhost:8080/api/nice/users/" + "changeUserInformation",
-            type: "POST",
-            contentType: false,
-            processData: false,
-            dataType: "json",
-            data: dat,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (updatedUser) {
+        ServiceMethods.changeUserInformation(this.user()).then(function (updatedUser) {
             var us = ko.mapping.fromJS(updatedUser);
             self.user(us);
             self.status(AppStatus.Home);
@@ -125,17 +92,8 @@ var App = (function () {
         });
     };
     App.prototype.logIn = function () {
-        var parameters = JSON.stringify(ko.mapping.toJS(this.user));
-        var settings = {
-            url: "http://localhost:8080/api/nice/users/" + "getUserFromLogin",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: parameters,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (o) {
+        ServiceMethods.logIn(this.user()).then(function (o) {
             self.user(ko.mapping.fromJS(o));
             self.wishUser(self.user());
             $("#log-in").modal('hide');
@@ -150,18 +108,8 @@ var App = (function () {
         });
     };
     App.prototype.addFriend = function () {
-        var parameters = {};
-        parameters["user"] = ko.mapping.toJS(this.user);
-        parameters["requestedEmailAddress"] = this.friendEmailAddress();
-        var settings = {
-            url: "http://localhost:8080/api/nice/friends/" + "createFriendship",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(parameters),
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function () {
+        ServiceMethods.addFriend(this.user(), this.friendEmailAddress()).then(function () {
             self.friendAddStatus(FriendAddStatus.Success);
         }).fail(function (request) {
             self.friendAddStatus(FriendAddStatus.Failure);
@@ -174,22 +122,8 @@ var App = (function () {
         this.respondToFriendRequest(false, snubbed);
     };
     App.prototype.respondToFriendRequest = function (acceptedRequest, requester) {
-        var req = {
-            friendshipID: -1,
-            accepted: acceptedRequest,
-            requestedUserID: this.user().userID(),
-            requesterUserID: requester.userID()
-        };
-        var param = JSON.stringify(req);
-        var settings = {
-            url: "http://localhost:8080/api/nice/friends/" + "respondToFriendRequest",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function () {
+        ServiceMethods.respondToFriendRequest(acceptedRequest, requester, this.user()).then(function () {
             var deletedIndex = self.user().requestsToReview.remove(requester);
             if (acceptedRequest) {
                 self.user().friends.push(requester);
@@ -200,16 +134,8 @@ var App = (function () {
     };
     App.prototype.addWishListItem = function () {
         this.editWishListItem().price(0);
-        var parameters = JSON.stringify(ko.mapping.toJS(this.editWishListItem));
-        var settings = {
-            url: "http://localhost:8080/api/nice/wishlist/" + "addListItem",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: parameters,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (item) {
+        ServiceMethods.addWishListItem(this.editWishListItem()).then(function (item) {
             self.user().wishList.push(ko.mapping.fromJS(item));
             self.editWishListItem(new WishListItemModel());
         }).fail(function (request) {
@@ -220,16 +146,8 @@ var App = (function () {
     App.prototype.updateWishListItem = function () {
         if (this.editWishListItem().price(0) == null)
             this.editWishListItem().price(0);
-        var parameters = JSON.stringify(ko.mapping.toJS(this.editWishListItem));
-        var settings = {
-            url: "http://localhost:8080/api/nice/wishlist/" + "editListItem",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: parameters,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (item) {
+        ServiceMethods.updateWishListItem(this.editWishListItem()).then(function (item) {
             if (!(self.editWishListItem().wishListItemID() > 0)) {
                 self.user().wishList.push(ko.mapping.fromJS(item));
             }
@@ -241,6 +159,7 @@ var App = (function () {
     };
     App.prototype.markWishListItemAsBought = function (item) {
         item.isBought(true);
+        item.purchaserUserID(this.user().userID());
         this.editWishListItem(item);
         this.updateWishListItem();
     };
@@ -249,30 +168,13 @@ var App = (function () {
         window.open(item.URL());
     };
     App.prototype.selectFriend = function (friend) {
-        var req = {
-            accepted: true,
-            friendshipID: -1,
-            requesterUserID: this.user().userID(),
-            requestedUserID: friend.userID(),
-        };
-        var parameters = JSON.stringify(req);
-        var settings = {
-            url: "http://localhost:8080/api/nice/wishlist/" + "getUserWishList",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: parameters,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (item) {
+        ServiceMethods.getUserWishList(this.user(), friend).then(function (item) {
             if (!(self.editWishListItem().wishListItemID() > 0)) {
                 self.wishUser().wishList(ko.mapping.fromJS(item)());
-                var x = self.wishUser().wishList();
-                var y = self;
             }
             self.editWishListItem(new WishListItemModel());
         }).fail(function (request) {
-            self.editWishListItem(new WishListItemModel());
             alert(request);
         });
         this.wishUser(friend);

@@ -19,11 +19,15 @@ public class WishListItem {
 	private int wishListItemID;
 
 	private int requesterUserID;
+	@XmlElement(nillable=true)
 	private Integer purchaserUserID = null;
+	@XmlElement(nillable=true)
 	private String URL;
+	@XmlElement(nillable=true)
 	private String imageURL;
 	@XmlElement(nillable=true)
 	private String itemName;
+	@XmlElement(nillable=true)
 	private String comment;
 	private boolean isBought = false;
 	@Temporal(TemporalType.DATE)

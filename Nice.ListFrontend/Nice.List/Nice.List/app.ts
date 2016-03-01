@@ -3,7 +3,6 @@
 /// <reference path="Scripts/typings/knockout/knockout.d.ts" />
 /// <reference path="Scripts/typings/knockout.mapping/knockout.mapping.d.ts" />
 
-
 var page: App;
 
 $(document).ready(function () {
@@ -75,18 +74,8 @@ class App {
     }
 
     public getUser(selector: string, validator: string) {
-        var valid: Token = { selector: selector, validator: validator }
-        var parameters = JSON.stringify(valid);
-        var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/users/" + "getUserFromToken",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: parameters,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (o: User) {
+        ServiceMethods.getUserFromToken(selector, validator).then(function (o: User) {
             self.user(ko.mapping.fromJS(o));
             self.wishUser(self.user());
             self.status(AppStatus.Home);
@@ -96,19 +85,8 @@ class App {
     }
 
     public createUser() {
-        var methodName = "";
-        var param = JSON.stringify(ko.toJS(this.user()));
- 
-        var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/users/" + "createUser",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: param,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (updatedUser: User) {
+        ServiceMethods.createUser(this.user()).then(function (updatedUser: User) {
             var us = ko.mapping.fromJS(updatedUser);
             self.user(us);
             self.passwordConfirm("");
@@ -120,22 +98,8 @@ class App {
     }
 
     public submitAccountChanges() {
-        var methodName = "";
-        var dat = new FormData();
-            dat.append("user", JSON.stringify(ko.toJS(this.user())));
-            dat.append("file", (<any>jQuery("#file")[0]).files[0]);
-        
-        var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/users/" + "changeUserInformation",
-            type: "POST",
-            contentType: false,
-            processData: false,
-           dataType: "json", 
-            data: dat,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (updatedUser: User) {
+        ServiceMethods.changeUserInformation(this.user()).then(function (updatedUser: User) {
             var us = ko.mapping.fromJS(updatedUser); 
             self.user(us);
             self.status(AppStatus.Home);
@@ -145,17 +109,8 @@ class App {
     }
 
     public logIn() {
-        var parameters = JSON.stringify(ko.mapping.toJS(this.user));
-        var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/users/" + "getUserFromLogin",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: parameters,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (o: User) {
+        ServiceMethods.logIn(this.user()).then(function (o: User) {
             self.user(ko.mapping.fromJS(o));
             self.wishUser(self.user());
             (<any>$("#log-in")).modal('hide'); 
@@ -170,19 +125,8 @@ class App {
     }
 
     public addFriend() {
-
-        var parameters = {};
-        parameters["user"] = ko.mapping.toJS(this.user);
-        parameters["requestedEmailAddress"] = this.friendEmailAddress();
-        var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/friends/" + "createFriendship",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(parameters),
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function () {
+        ServiceMethods.addFriend(this.user(), this.friendEmailAddress()).then(function () {
             self.friendAddStatus(FriendAddStatus.Success);
         }).fail(function (request: JQueryXHR) {
             self.friendAddStatus(FriendAddStatus.Failure);
@@ -198,23 +142,8 @@ class App {
     }
 
     private respondToFriendRequest(acceptedRequest: boolean, requester: UserModel) {
-        var req: Friendship = {
-            friendshipID: -1,
-            accepted: acceptedRequest,
-            requestedUserID: this.user().userID(),
-            requesterUserID: requester.userID()
-        }
-        var param = JSON.stringify(req);
-
-        var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/friends/" + "respondToFriendRequest",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: param,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function () {
+        ServiceMethods.respondToFriendRequest(acceptedRequest, requester, this.user()).then(function () {
             var deletedIndex = self.user().requestsToReview.remove(requester)
             if (acceptedRequest) {
                 self.user().friends.push(requester);
@@ -226,16 +155,8 @@ class App {
 
     public addWishListItem() {
         this.editWishListItem().price(0);
-        var parameters = JSON.stringify(ko.mapping.toJS(this.editWishListItem));
-        var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/wishlist/" + "addListItem",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: parameters,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (item: WishListItem) {
+        ServiceMethods.addWishListItem(this.editWishListItem()).then(function (item: WishListItem) {
             self.user().wishList.push(ko.mapping.fromJS(item));
             self.editWishListItem(new WishListItemModel());
         }).fail(function (request: JQueryXHR) {
@@ -246,17 +167,8 @@ class App {
 
     public updateWishListItem() {
         if (this.editWishListItem().price(0) == null) this.editWishListItem().price(0);
-
-        var parameters = JSON.stringify(ko.mapping.toJS(this.editWishListItem));
-        var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/wishlist/" + "editListItem",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: parameters,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (item: WishListItem) {
+        ServiceMethods.updateWishListItem(this.editWishListItem()).then(function (item: WishListItem) {
             if (!(self.editWishListItem().wishListItemID() > 0)) {
                 self.user().wishList.push(ko.mapping.fromJS(item));
             }
@@ -269,6 +181,7 @@ class App {
 
     public markWishListItemAsBought(item: WishListItemModel) {
         item.isBought(true);
+        item.purchaserUserID(this.user().userID());
         this.editWishListItem(item);
         this.updateWishListItem();
     }
@@ -279,30 +192,13 @@ class App {
     }
 
     public selectFriend(friend: UserModel) {
-        var req: Friendship = {
-            accepted: true,
-            friendshipID: -1,
-            requesterUserID: this.user().userID(),
-            requestedUserID: friend.userID(),
-        }
-        var parameters = JSON.stringify(req);
-        var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/wishlist/" + "getUserWishList",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: parameters,
-            crossDomain: true
-        };
         var self = this;
-        jQuery.ajax(settings).then(function (item: WishListItem[]) {
+        ServiceMethods.getUserWishList(this.user(), friend).then(function (item: WishListItem[]) {
             if (!(self.editWishListItem().wishListItemID() > 0)) {
                 self.wishUser().wishList(ko.mapping.fromJS(item)());
-                var x = self.wishUser().wishList();
-                var y = self;
             }
             self.editWishListItem(new WishListItemModel());
         }).fail(function (request: JQueryXHR) {
-            self.editWishListItem(new WishListItemModel());
             alert(request);
         });
         this.wishUser(friend);
