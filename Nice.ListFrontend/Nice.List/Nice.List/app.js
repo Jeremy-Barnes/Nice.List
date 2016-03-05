@@ -143,6 +143,10 @@ var App = (function () {
             alert(request);
         });
     };
+    App.prototype.editItem = function (item) {
+        this.editWishListItem(item);
+        $("#edit-item").modal('show');
+    };
     App.prototype.updateWishListItem = function () {
         if (this.editWishListItem().price(0) == null)
             this.editWishListItem().price(0);

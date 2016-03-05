@@ -33,7 +33,8 @@ public class User {
 	private String tokenSelector;
 	private String tokenValidator;
 	private String pictureURL;
-
+	@Transient
+	private int wishListCount;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "friendships", joinColumns = @JoinColumn(name="requesteruserID"), inverseJoinColumns = @JoinColumn(name="requesteduserID"))
@@ -260,6 +261,18 @@ public class User {
 		return wishListSnapshot;
 	}
 
+	public void initWishListCount() {
+		wishListCount = wishList.size();
+	}
+
+	public void setWishListCount(int wishListCount){
+		this.wishListCount = wishListCount;
+	}
+
+	public int getWishListCount(){
+		return wishListCount;
+	}
+
 	public void initWishList(){
 		((PersistentSet)wishList).forceInitialization();
 		this.wishListSnapshot = ((Map<WishListItem, ?>)((PersistentSet) wishList).getStoredSnapshot()).keySet();
@@ -273,10 +286,13 @@ public class User {
 		this.friendsSnapshot = ((Map<User, ?>)((PersistentSet) friends).getStoredSnapshot()).keySet();
 		this.friendsOfSnapshot = ((Map<User, ?>)((PersistentSet) friendsOf).getStoredSnapshot()).keySet();
 		this.requestsToReviewSnapshot = ((Map<User, ?>)((PersistentSet) requestsToReview).getStoredSnapshot()).keySet();
+		this.friendsSnapshot.stream().forEach(f -> f.initWishListCount());
+		this.friendsOfSnapshot.stream().forEach(f -> f.initWishListCount());
 	}
 
 	public void initSentFriendRequests() {
 		((PersistentSet)pendingRequests).forceInitialization();
 		this.pendingRequestsSnapshot = ((Map<User, ?>)((PersistentSet) pendingRequests).getStoredSnapshot()).keySet();
 	}
+
 }

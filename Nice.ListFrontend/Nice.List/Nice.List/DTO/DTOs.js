@@ -15,6 +15,7 @@ var UserModel = (function () {
         this.country = ko.observable("");
         this.postcode = ko.observable("");
         this.pictureURL = ko.observable("");
+        this.wishListCount = ko.observable(0);
         this.friends = ko.observableArray(null);
         this.pendingRequests = ko.observableArray(null);
         this.requestsToReview = ko.observableArray(null);

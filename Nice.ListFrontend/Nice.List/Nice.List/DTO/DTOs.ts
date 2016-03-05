@@ -10,6 +10,8 @@
     postcode: string;
     pictureURL: string;
 
+    wishListCount: number;
+
     friends: User[];
     pendingRequests: User[];
     requestsToReview: User[];
@@ -27,6 +29,8 @@ class UserModel {
     country: KnockoutObservable<string> = ko.observable("");
     postcode: KnockoutObservable<string> = ko.observable("");
     pictureURL: KnockoutObservable<string> = ko.observable("");
+
+    wishListCount: KnockoutObservable<number> = ko.observable(0);
 
     friends: KnockoutObservableArray<UserModel> = ko.observableArray<UserModel>(null);
     pendingRequests: KnockoutObservableArray<UserModel> = ko.observableArray<UserModel>(null);

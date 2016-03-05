@@ -165,6 +165,11 @@ class App {
         });
     }
 
+    public editItem(item: WishListItemModel) {
+        this.editWishListItem(item);
+        (<any>$("#edit-item")).modal('show'); 
+    }
+
     public updateWishListItem() {
         if (this.editWishListItem().price(0) == null) this.editWishListItem().price(0);
         var self = this;
