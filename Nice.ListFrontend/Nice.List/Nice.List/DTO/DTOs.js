@@ -55,7 +55,7 @@ var WishListItemModel = (function () {
         this.isBought = ko.observable(false);
         this.purchaserUserID = ko.observable(null);
         this.dateAdded = ko.observable(null);
-        this.price = ko.observable(null);
+        this.price = ko.observable(0);
         this.want = ko.observable(0);
     }
     return WishListItemModel;

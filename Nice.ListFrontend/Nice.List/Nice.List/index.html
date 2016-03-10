@@ -147,10 +147,10 @@
                             <div class="image-frame">
                                 <img src="img/scarf.jpg" data-bind="attr: { src: $data.imageURL, alt: 'A product image should be here.'}"/>
                             </div>
-                            <p><span data-bind="text: $data.itemName"></span> &nbsp;</p>
+                            <p><a href="" data-bind="attr: { href: $data.URL }"><span data-bind="text: $data.itemName"></span></a> &nbsp;</p>
                             <p><span data-bind="text: '$' + $data.price().toFixed(2)"></span></p>
                             <div class="notes">
-                                <p>Notes:</p> <p><span data-bind="text: $data.URL"></span></p>
+                                <p>Notes:</p> <p><span data-bind="text: $data.comment"></span></p>
                             </div>
                             <div data-bind="if: $root.wishUser().emailAddress() != $root.user().emailAddress()">
                                 <a class="btn yellow" data-bind="attr: { href: $data.URL }"><span class="fa fa-external-link"></span> View</a>
@@ -401,7 +401,7 @@
                     </div>
                     <input type="text" name="itemURL" class="form-control" data-bind="value: URL" placeholder="item URL" required />
                     <input type="text" name="itemURL" class="form-control" data-bind="value: itemName" placeholder="item name" required />
-                    <input type="text" name="itemURL" class="form-control" data-bind="value: price" placeholder="price" required />
+                    <input type="text" name="itemURL" class="form-control" data-bind="value: price().toFixed(2)" placeholder="price" required />
                     <input type="text" name="itemURL" class="form-control" data-bind="value: comment" placeholder="notes (quantity, color, size, etc)" required />
 
                     <input type="submit" class="btn btn-long blue form-control" value="Submit" />

@@ -21,6 +21,7 @@ public class WishListBLL {
 		entityManager.getTransaction().begin();
 
 		User cookieUser = UserBLL.getUser(selector, validator);
+		correctURLs(item);
 		item.setRequesterUserID(cookieUser.getUserID());
 		item.setDateAdded(Calendar.getInstance().getTime());
 		entityManager.persist(item);
@@ -36,7 +37,7 @@ public class WishListBLL {
 		entityManager.getTransaction().begin();
 
 		User cookieUser = UserBLL.getUser(selector, validator);
-
+		correctURLs(item);
 		if(item.getPurchaserUserID() != null && item.getPurchaserUserID() == cookieUser.getUserID()){
 			entityManager.merge(item);
 		} else if(item.getRequesterUserID() == cookieUser.getUserID()) {
@@ -77,5 +78,26 @@ public class WishListBLL {
 			present.setPurchaserUserID(-1);
 		}
 		return presents;
+	}
+
+	private static void correctURLs(WishListItem item){
+		String correctedURL = item.getURL();
+
+		if(correctedURL.toUpperCase().contains("HTTP://") || correctedURL.toUpperCase().contains("HTTPS://")) {
+			return;
+		} else {
+			correctedURL = "http://" + correctedURL;
+		}
+		item.setURL(correctedURL);
+
+		String correctedImgURL = item.getImageURL();
+
+		if(correctedImgURL.toUpperCase().contains("HTTP://") || correctedImgURL.toUpperCase().contains("HTTPS://")) {
+			return;
+		} else {
+			correctedImgURL = "http://" + correctedImgURL;
+		}
+		item.setImageURL(correctedImgURL);
+
 	}
 }

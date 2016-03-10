@@ -79,6 +79,6 @@ class WishListItemModel {
     isBought: KnockoutObservable<boolean> = ko.observable(false);
     purchaserUserID: KnockoutObservable<number> = ko.observable(null);
     dateAdded: KnockoutObservable<Date> = ko.observable(null);
-    price: KnockoutObservable<number> = ko.observable(null);
+    price: KnockoutObservable<number> = ko.observable(0);
     want: KnockoutObservable<number> = ko.observable(0);
 }
