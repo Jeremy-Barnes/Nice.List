@@ -37,7 +37,12 @@ public class WishListBLL {
 
 		User cookieUser = UserBLL.getUser(selector, validator);
 
-		if(item.getRequesterUserID() == cookieUser.getUserID() || item.getPurchaserUserID() == cookieUser.getUserID()){
+		if(item.getPurchaserUserID() != null && item.getPurchaserUserID() == cookieUser.getUserID()){
+			entityManager.merge(item);
+		} else if(item.getRequesterUserID() == cookieUser.getUserID()) {
+			WishListItem dbItem = (WishListItem) entityManager.createQuery("from WishListItem where wishListItemID = :id").setParameter("id", item.getWishListItemID()).getSingleResult();
+			item.setPurchaserUserID(dbItem.getPurchaserUserID());
+			item.setIsBought(dbItem.getIsBought());
 			entityManager.merge(item);
 		} else {
 			throw new GeneralSecurityException();

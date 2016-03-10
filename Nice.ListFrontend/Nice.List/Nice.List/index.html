@@ -147,8 +147,8 @@
                             <div class="image-frame">
                                 <img src="img/scarf.jpg" data-bind="attr: { src: $data.imageURL, alt: 'A product image should be here.'}"/>
                             </div>
-                            <p><span data-bind="text: $data.itemName"></span></p>
-                            <p><span data-bind="text: $data.price"></span></p>
+                            <p><span data-bind="text: $data.itemName"></span> &nbsp;</p>
+                            <p><span data-bind="text: '$' + $data.price().toFixed(2)"></span></p>
                             <div class="notes">
                                 <p>Notes:</p> <p><span data-bind="text: $data.URL"></span></p>
                             </div>
