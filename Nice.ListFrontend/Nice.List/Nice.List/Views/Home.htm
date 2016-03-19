@@ -1,0 +1,35 @@
+﻿<div id="wishlist-view" class="view" data-bind="if: status() == AppStatus.Home ">
+    <div class="navbar navbar-default namebar visible-xs visible-sm visible-md visible-lg" data-bind="with: wishUser">
+        <div class="inlineblock profile-picture"><img src="img/elf-default-profile-photos-05.png" class="nav-img" /></div>
+        <div class="inlineblock" style="vertical-align: middle;">
+            <h1><span data-bind="text: firstName() + ' ' + lastName()"></span></h1>
+            <p class="inlineblock"><span data-bind="text: city"></span></p>
+        </div>
+    </div>
+    <div id="namebar-placeholder" class="visible-xs visible-sm visible-md visible-lg">&nbsp;</div>
+
+    <div class="row onlyrow add-gutter" data-bind="with: wishUser">
+        <p>Sort By: Desire Price Date Added</p>
+        <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="foreach: wishList">
+            <div class="wish-list-item centered col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                <div class="image-frame">
+                    <img src="img/scarf.jpg" data-bind="attr: { src: $data.imageURL, alt: 'A product image should be here.'}" />
+                </div>
+                <p><a href="" data-bind="attr: { href: $data.URL }"><span data-bind="text: $data.itemName"></span></a> &nbsp;</p>
+                <p><span data-bind="text: '$' + $data.price().toFixed(2)"></span></p>
+                <div class="notes">
+                    <p>Notes:</p> <p><span data-bind="text: $data.comment"></span></p>
+                </div>
+                <div data-bind="if: $root.wishUser().emailAddress() != $root.user().emailAddress()">
+                    <a class="btn yellow" data-bind="attr: { href: $data.URL }"><span class="fa fa-external-link"></span> View</a>
+                    <button class="btn green" data-bind="click: $root.buyWishListItem.bind($root)"><span class="fa fa-usd"></span> Buy</button>
+                    <a class="btn blue" data-bind="click: $root.markWishListItemAsBought.bind($root)"><span class="fa fa-check-square-o"></span> Check</a>
+                </div>
+                <div data-bind="if: $root.wishUser().emailAddress() == $root.user().emailAddress()">
+                    <button class="btn blue" data-bind="click: $root.editItem.bind($root)"><span class="fa fa-usd"></span> Edit Item</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

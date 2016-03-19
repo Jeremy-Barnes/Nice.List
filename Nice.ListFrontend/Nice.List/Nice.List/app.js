@@ -12,8 +12,9 @@ var App = (function () {
     function App() {
         var _this = this;
         /******** App status tracking *******/
-        this.status = ko.observable(AppStatus.Home);
+        this.status = ko.observable(AppStatus.Landing);
         this.friendAddStatus = ko.observable(FriendAddStatus.Waiting);
+        this.loadedHTML = new Array();
         /******** Active user data ******/
         this.user = ko.observable(new UserModel());
         this.topFriends = ko.observableArray(null);
@@ -34,6 +35,12 @@ var App = (function () {
                 for (var i = 0; i < max; i++) {
                     _this.topFriends.push(user.friends()[i]);
                 }
+            }
+        }, this);
+        ko.computed(function () {
+            if (_this.status() != AppStatus.Landing && !_this.loadedHTML[_this.status().toString()]) {
+                _this.loadedHTML[_this.status().toString()] = true;
+                _this.getTemplateHTML(AppStatus[_this.status()]);
             }
         }, this);
         this.initUser();
@@ -184,16 +191,28 @@ var App = (function () {
         this.wishUser(friend);
         this.status(AppStatus.Home);
     };
+    App.prototype.getTemplateHTML = function (page) {
+        var opts = {
+            url: location.origin + "/Views/" + page + ".htm",
+            type: "GET",
+            dataType: "html",
+            contentType: "text/html"
+        };
+        var self = this;
+        return jQuery.ajax(opts).done(function (html) {
+            jQuery("#bindDIV").append(html);
+            ko.applyBindings(self, jQuery("#" + jQuery(html)[0].id)[0]);
+        });
+    };
     return App;
 })();
 var AppStatus;
 (function (AppStatus) {
     AppStatus[AppStatus["Home"] = 0] = "Home";
     AppStatus[AppStatus["Account"] = 1] = "Account";
-    AppStatus[AppStatus["ViewUser"] = 2] = "ViewUser";
-    AppStatus[AppStatus["Landing"] = 3] = "Landing";
-    AppStatus[AppStatus["Friends"] = 4] = "Friends";
-    AppStatus[AppStatus["FriendRequests"] = 5] = "FriendRequests";
+    AppStatus[AppStatus["Landing"] = 2] = "Landing";
+    AppStatus[AppStatus["Friends"] = 3] = "Friends";
+    AppStatus[AppStatus["FriendRequests"] = 4] = "FriendRequests";
 })(AppStatus || (AppStatus = {}));
 var FriendAddStatus;
 (function (FriendAddStatus) {

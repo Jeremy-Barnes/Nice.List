@@ -15,8 +15,9 @@ $(document).ready(function () {
 class App {
 
     /******** App status tracking *******/
-    public status: KnockoutObservable<AppStatus> = ko.observable(AppStatus.Home);
+    public status: KnockoutObservable<AppStatus> = ko.observable(AppStatus.Landing);
     public friendAddStatus: KnockoutObservable<FriendAddStatus> = ko.observable(FriendAddStatus.Waiting);
+    public loadedHTML: boolean[] = new Array<boolean>();
 
     /******** Active user data ******/
     public user: KnockoutObservable<UserModel> = ko.observable(new UserModel());
@@ -43,6 +44,13 @@ class App {
                 for (let i = 0; i < max; i++) {
                     this.topFriends.push(user.friends()[i]);
                 }
+            }
+        }, this);
+
+        ko.computed(() => {
+            if (this.status() != AppStatus.Landing && !this.loadedHTML[this.status().toString()]) {
+                this.loadedHTML[this.status().toString()] = true;
+                this.getTemplateHTML(AppStatus[this.status()]);
             }
         }, this);
         this.initUser();
@@ -209,10 +217,24 @@ class App {
         this.wishUser(friend);
         this.status(AppStatus.Home);
     }
+
+    private getTemplateHTML(page: String): JQueryPromise<void> {
+        var opts: JQueryAjaxSettings = {
+            url: location.origin + "/Views/" + page + ".htm",
+            type: "GET",
+            dataType: "html",
+            contentType: "text/html"
+        };
+        var self = this;
+        return jQuery.ajax(opts).done((html: any) => {
+            jQuery("#bindDIV").append(html);
+            ko.applyBindings(self, jQuery("#" + jQuery(html)[0].id)[0]); 
+        });
+    }
 }
 
 enum AppStatus {
-    Home, Account, ViewUser, Landing, Friends, FriendRequests
+    Home, Account, Landing, Friends, FriendRequests
 }
 
 enum FriendAddStatus {

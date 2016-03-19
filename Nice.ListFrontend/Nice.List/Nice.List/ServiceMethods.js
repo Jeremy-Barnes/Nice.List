@@ -40,7 +40,7 @@ var ServiceMethods = (function () {
         var parameters = {};
         parameters["user"] = ko.mapping.toJS(user);
         parameters["requestedEmailAddress"] = friendEmailAddress;
-        return ServiceMethods.doAjax("createFriendShip", "friends", parameters);
+        return ServiceMethods.doAjax("createFriendship", "friends", parameters);
     };
     ServiceMethods.respondToFriendRequest = function (acceptedRequest, requester, user) {
         var req = {

@@ -1,0 +1,21 @@
+﻿<div id="friends-view" class="view" data-bind="if: status() == AppStatus.Friends">
+
+    <h1>My friends' lists</h1>
+    <p>You can view your friends' lists below.</p>
+    <button type="button" class="btn btn-narrow capsule-btn yellow" data-toggle="modal" data-target="#add-friend"><span class="fa fa-plus-circle"></span> Add a friend</button>
+
+    <div class="row onlyrow add-gutter" data-bind="with: user">
+        <div class="list col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="foreach: friends">
+
+            <div class="friends-list-item centered">
+                <div class="profile-image-frame">
+                    <img src="img/scarf.jpg" />
+                </div>
+                <h2><span data-bind="text: $data.firstName() + ' ' + $data.lastName()"></span></h2>
+                <p><span data-bind="text: $data.city() + ', ' + $data.state()"></span></p>
+                <p><span data-bind="text: $data.wishListCount"></span> item<span data-bind="if: $data.wishListCount() > 1">s</span> on list</p>
+                <div><input type="button" class="btn yellow" value="View List" data-bind="click: $root.selectFriend.bind($root)" /></div>
+            </div>
+        </div>
+    </div>
+</div>

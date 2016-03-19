@@ -19,6 +19,7 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Views\Account.htm" />
     <Content Include="app.css" />
     <Content Include="bootstrap\dist\css\bootstrap-theme.css" />
     <Content Include="bootstrap\dist\css\bootstrap-theme.min.css" />
@@ -147,6 +148,9 @@
     <Content Include="bootstrap\LICENSE" />
     <Content Include="bootstrap\package.json" />
     <Content Include="bootstrap\_config.yml" />
+    <Content Include="Views\FriendRequests.htm" />
+    <Content Include="Views\Friends.htm" />
+    <Content Include="Views\Home.htm" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />

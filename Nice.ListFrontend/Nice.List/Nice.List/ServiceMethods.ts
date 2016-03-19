@@ -45,7 +45,7 @@
         var parameters = {};
         parameters["user"] = ko.mapping.toJS(user);
         parameters["requestedEmailAddress"] = friendEmailAddress;
-        return ServiceMethods.doAjax("createFriendShip", "friends", parameters);
+        return ServiceMethods.doAjax("createFriendship", "friends", parameters);
     }
 
     public static respondToFriendRequest(acceptedRequest: boolean, requester: UserModel, user: UserModel): JQueryPromise<void> {

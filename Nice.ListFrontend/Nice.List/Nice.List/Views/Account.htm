@@ -1,0 +1,48 @@
+﻿<div id="account-view" class="view" data-bind="if: status() == AppStatus.Account, css: { main: status() == AppStatus.Account }">
+    <form id="account-settings" class="add-gutter" data-bind="submit: submitAccountChanges, with: user">
+        <h1>Account Settings</h1>
+        <p>Finish your profile so friends can find you.</p>
+        <div class="row">
+            <div class="col-md-6"><input type="text" class="form-control" name="firstName" placeholder="first name" data-bind="value: firstName" required /></div>
+            <div class="col-md-6"><input type="text" class="form-control" name="lastName" placeholder="last name" data-bind="value: lastName" required /></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12"><input type="text" class="form-control" name="city" placeholder="city" data-bind="value: city" required /></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><input type="text" class="form-control" name="state" placeholder="state" data-bind="value: state" required /></div>
+            <div class="col-md-6"><input type="text" class="form-control" name="postcode" placeholder="zip" data-bind="value: postcode" required /></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"><input type="text" class="form-control" name="country" placeholder="country" data-bind="value: country" required /></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12"><img src="img/elf-default-profile-photos-05.png" width="100" /> Add a profile photo</div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9"><input type="text" class="form-control" readonly="readonly" data-bind="value: pictureURL"></div>
+            <div class="col-md-2"><span class="btn btn-default btn-file"> Browse <input type="file" id="file" data-bind="value: pictureURL" /></span></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12"><input type="email" class="form-control" name="emailAddress" placeholder="change email" data-bind="value: emailAddress" /></div>
+        </div>
+
+        <div data-bind="css: { passwordMismatch: $root.passwordsMatch() == false}">
+            <div class="row">
+                <div class="col-md-12"><input type="password" class="form-control" placeholder="change password" name="password" data-bind="textInput: password" /></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><input type="password" class="form-control" placeholder="confirm new password" data-bind="textInput: $root.passwordConfirm" /></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <input type="submit" class="btn form-control blue" value="Submit" data-bind="enable: $root.passwordsMatch" />
+            </div>
+        </div>
+    </form>
+</div>
