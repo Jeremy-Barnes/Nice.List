@@ -193,7 +193,7 @@ public class User {
 	}
 
 	public String getPictureURL() {
-		return tokenValidator;
+		return pictureURL;
 	}
 
 	public void setPictureURL(String pictureURL) {

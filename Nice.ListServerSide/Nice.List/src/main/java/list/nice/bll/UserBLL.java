@@ -5,7 +5,13 @@ import com.lambdaworks.crypto.SCrypt;
 import list.nice.dal.HibernateUtil;
 import list.nice.dal.dto.User;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
+import javax.swing.filechooser.FileSystemView;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
@@ -46,7 +52,6 @@ public class UserBLL {
 
 		if(verifyValidator(validator, user)) {
 			user.initWishList();//fight Hibernate's stupid lazy loading
-			user.setWishList(WishListBLL.removeSensitivePresentData(user.getWishList()));
 			user.initFriendsList();
 			entityManager.close();
 
@@ -94,23 +99,55 @@ public class UserBLL {
 
 		if(user.getPassword() != null && !user.getPassword().isEmpty()) {
 			hashAndSaltPassword(user);
+			confirmUser.setPassword(user.getPassword());
+			confirmUser.setSalt(user.getSalt());
 		} else {
 			user.setPassword(confirmUser.getPassword());
 			user.setSalt(confirmUser.getSalt());
-			user.setFriends(confirmUser.getFriends());
 		}
-		entityManager.merge(user);
+		confirmUser.setFirstName(user.getFirstName());
+		confirmUser.setLastName(user.getLastName());
+		confirmUser.setCity(user.getCity());
+		confirmUser.setState(user.getState());
+		confirmUser.setPostcode(user.getPostcode());
+		confirmUser.setCountry(user.getCountry());
+		confirmUser.setPictureURL(user.getPictureURL());
+		confirmUser.setEmailAddress(user.getEmailAddress());
+
+		entityManager.merge(confirmUser);
 		entityManager.getTransaction().commit();
 		entityManager.close();
 		return user;
 	}
 
 	public static User wipeSensitiveFields(User user) {
+		user.setWishList(WishListBLL.removeSensitivePresentData(user.getWishList()));
 		user.setSalt("");
 		user.setPassword("");
 		user.setTokenSelector("");
 		user.setTokenValidator("");
 		return user;
+	}
+
+	public static String saveUserImage(BufferedImage img) throws IOException {
+		double aspectRatio = (img.getWidth(null) * 1.0) / img.getHeight(null);
+
+		int newWidth = 0;
+		int newHeight = 0;
+
+		if(aspectRatio > 1) { //wider than it is tall
+			newHeight = 540; //270 (default profile picture size) * 2
+			newWidth = (int) (newHeight/ aspectRatio);
+		} else { //taller than it is wide
+			newWidth = 540;
+			newHeight = (int) (newWidth / aspectRatio);
+		}
+
+		img.getScaledInstance(newWidth, newHeight, Image.SCALE_FAST);
+		String path = "\\UserContent\\" + System.currentTimeMillis() + ".png";
+
+		ImageIO.write(img, "png", new File(FileSystemView.getFileSystemView().getHomeDirectory() + path));
+		return path;
 	}
 
 	private static void hashAndSaltPassword(User user) throws GeneralSecurityException, UnsupportedEncodingException {
@@ -149,4 +186,6 @@ public class UserBLL {
 		String hashedCookieValidator = new String(Base64.encode(hashByte));
 		return hashedCookieValidator.equals(dbUser.getTokenValidator());
 	}
+
+
 }
