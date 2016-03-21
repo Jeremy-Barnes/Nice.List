@@ -16,7 +16,10 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 
@@ -80,20 +83,16 @@ public class UserInfoService {
 		unmarshaller.setProperty("eclipselink.json.include-root", false);
 		User user = unmarshaller.unmarshal(new StreamSource(new StringReader(userString)), User.class).getValue();
 
+		try {
+			FormDataBodyPart filePart = form.getField("file");
+			BufferedImage img = filePart.getValueAs(BufferedImage.class);
+
+			user.setPictureURL(UserBLL.saveUserImage(img));
+		} catch(Exception e) { //swallow exception, merely indicates bad file or no file, either way, no action required.
+		}
+
 		user = UserBLL.updateUser(user, entry[0], entry[1]);
 
-		//get file TODO add to user
-		FormDataBodyPart filePart = form.getField("file");
-		InputStream fileInputStream = filePart.getValueAs(InputStream.class);
-		OutputStream out = new FileOutputStream(new File("C:\\Users\\Jeremy\\Desktop\\Test.jpg")); // TODO not on my desktop also correct file ext
-		int read = 0;
-		byte[] bytes = new byte[1024];
-
-		while ((read = fileInputStream.read(bytes)) != -1) {
-			out.write(bytes, 0, read);
-		}
-		out.flush();
-		out.close();
 
 		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(user).build();
 	}
