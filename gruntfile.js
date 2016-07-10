@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 				flatten: false,
 				ext: '.css'
 			}
-		},
+		}
 	});
 
 grunt.loadNpmTasks('grunt-contrib-uglify');
