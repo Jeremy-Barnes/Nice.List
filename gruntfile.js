@@ -17,14 +17,12 @@ module.exports = function (grunt) {
 				flatten: false,
 				ext: '.css'
 			}
-		}
+		},
 	});
 
 grunt.loadNpmTasks('grunt-contrib-uglify');
 grunt.loadNpmTasks('grunt-contrib-cssmin');
 	
-grunt.registerTask('default', [ 'uglify' ]);
-grunt.registerTask('second', [ 'cssmin' ]);
-
+grunt.registerTask('default', [ 'uglify', 'cssmin' ]);
 
 };
