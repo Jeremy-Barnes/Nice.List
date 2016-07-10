@@ -5,6 +5,6 @@
 		"shrinkwrap": "0.4.0",
 		"grunt": "~1.0.1",
 		"grunt-contrib-uglify": "~1.0.1",
-		"grunt-contrib-cssmin": "~1.0.1",
+		"grunt-contrib-cssmin": "~1.0.1"
 	}
 }
