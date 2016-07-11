@@ -1,9 +1,11 @@
 ﻿class ServiceMethods {
+    static baseURL: string = "http://52.32.150.194/api/nice/"; //http://localhost:8080/api/nice/
+
 
     public static doAjax(functionName: string, functionService: string, parameters: any): JQueryPromise<any> {
         var param = JSON.stringify(parameters);
         var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/" + functionService + "/" + functionName,
+            url: ServiceMethods.baseURL + functionService + "/" + functionName,
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: param,
@@ -26,7 +28,7 @@
         dat.append("file", (<any>jQuery("#file")[0]).files[0]);
 
         var settings: JQueryAjaxSettings = {
-            url: "http://localhost:8080/api/nice/users/" + "changeUserInformation",
+            url: ServiceMethods.baseURL + "users/changeUserInformation",
             type: "POST",
             contentType: false,
             processData: false,

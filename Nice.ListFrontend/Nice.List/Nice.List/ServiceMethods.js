@@ -4,7 +4,7 @@ var ServiceMethods = (function () {
     ServiceMethods.doAjax = function (functionName, functionService, parameters) {
         var param = JSON.stringify(parameters);
         var settings = {
-            url: "http://localhost:8080/api/nice/" + functionService + "/" + functionName,
+            url: ServiceMethods.baseURL + functionService + "/" + functionName,
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: param,
@@ -23,7 +23,7 @@ var ServiceMethods = (function () {
         dat.append("user", JSON.stringify(ko.toJS(user)));
         dat.append("file", jQuery("#file")[0].files[0]);
         var settings = {
-            url: "http://localhost:8080/api/nice/users/" + "changeUserInformation",
+            url: ServiceMethods.baseURL + "users/changeUserInformation",
             type: "POST",
             contentType: false,
             processData: false,
@@ -67,6 +67,7 @@ var ServiceMethods = (function () {
         };
         return ServiceMethods.doAjax("getUserWishList", "wishlist", req);
     };
+    ServiceMethods.baseURL = "http://52.32.150.194/api/nice/"; //http://localhost:8080/api/nice/
     return ServiceMethods;
 })();
 //# sourceMappingURL=ServiceMethods.js.map
