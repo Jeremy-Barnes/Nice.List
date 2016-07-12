@@ -1,5 +1,5 @@
 ﻿class ServiceMethods {
-    static baseURL: string = "http://52.32.150.194/api/nice/"; //http://localhost:8080/api/nice/
+    static baseURL: string = "http://52.32.150.194:8080/api/nice/"; //http://localhost:8080/api/nice/
 
 
     public static doAjax(functionName: string, functionService: string, parameters: any): JQueryPromise<any> {
