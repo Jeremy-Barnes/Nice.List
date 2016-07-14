@@ -47,7 +47,7 @@ public class UserInfoService {
 			rUser = UserBLL.getUserLogin(rUser.getEmailAddress(), rUser.getPassword());
 
 			NewCookie cook = new NewCookie("nicelist", rUser.getTokenSelector() + ":" + rUser.getTokenValidator(), "/", null, null, 3600, false );
-			return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").cookie(cook).entity(UserBLL.wipeSensitiveFields(rUser)).build();
+			return Response.status(Response.Status.OK).cookie(cook).entity(UserBLL.wipeSensitiveFields(rUser)).build();
 		} catch(Exception e ){
 			return null;
 		}
@@ -62,7 +62,7 @@ public class UserInfoService {
 		String validator = UserBLL.createUser(userReal);
 
 		NewCookie cook = new NewCookie("nicelist", userReal.getTokenSelector() + ":" + validator, "/", null, null, 3600, false );
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(UserBLL.wipeSensitiveFields(userReal)).cookie(cook).build();
+		return Response.status(Response.Status.OK).entity(UserBLL.wipeSensitiveFields(userReal)).cookie(cook).build();
 	}
 
 	@POST
