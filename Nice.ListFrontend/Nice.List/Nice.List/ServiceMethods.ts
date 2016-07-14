@@ -7,7 +7,7 @@
         var settings: JQueryAjaxSettings = {
             url: ServiceMethods.baseURL + functionService + "/" + functionName,
             type: "POST",
-            contentType: "application/json; charset=utf-8",
+            contentType: "application/json",
             data: param,
             crossDomain: true
         };

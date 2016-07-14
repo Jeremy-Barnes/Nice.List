@@ -34,7 +34,7 @@ public class UserInfoService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getUserFromToken(JAXBElement<Token> token) throws GeneralSecurityException, UnsupportedEncodingException {
 		Token tokenReal = token.getValue();
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(UserBLL.wipeSensitiveFields(UserBLL.getUser(tokenReal.selector, tokenReal.validator))).build();
+		return Response.status(Response.Status.OK).entity(UserBLL.wipeSensitiveFields(UserBLL.getUser(tokenReal.selector, tokenReal.validator))).build();
 	}
 
 	@POST
@@ -94,7 +94,7 @@ public class UserInfoService {
 		user = UserBLL.updateUser(user, entry[0], entry[1]);
 
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(user).build();
+		return Response.status(Response.Status.OK).entity(user).build();
 	}
 
 

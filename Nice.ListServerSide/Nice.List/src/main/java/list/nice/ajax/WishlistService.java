@@ -29,7 +29,7 @@ public class WishlistService {
 		String[] entry = cookie.split(":");
 		WishListItem wish = item.getValue();
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(WishListBLL.addWishListItem(wish, entry[0], entry[1])).build();
+		return Response.status(Response.Status.OK).entity(WishListBLL.addWishListItem(wish, entry[0], entry[1])).build();
 	}
 
 	@POST
@@ -41,7 +41,7 @@ public class WishlistService {
 		String[] entry = cookie.split(":");
 		WishListItem wish = item.getValue();
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(WishListBLL.updateWishListItem(wish, entry[0], entry[1])).build();
+		return Response.status(Response.Status.OK).entity(WishListBLL.updateWishListItem(wish, entry[0], entry[1])).build();
 	}
 
 	@POST
@@ -53,7 +53,7 @@ public class WishlistService {
 		String[] entry = cookie.split(":");
 		Friendship friendship = relationship.getValue();
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*")
+		return Response.status(Response.Status.OK)
 					   .entity(new GenericEntity<List<WishListItem>>(WishListBLL.getFriendsWishList(friendship.getRequesterUserID(), friendship.getRequestedUserID(), entry[0], entry[1])) {}).build();
 	}
 }

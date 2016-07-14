@@ -32,7 +32,7 @@ public class FriendshipService {
 		UserFriendAddContainer req = request.getValue();
 		FriendshipBLL.createFriendship(req.getUser(), req.getRequestedEmailAddress(), entry[0], entry[1]);
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").build();
+		return Response.status(Response.Status.OK).build();
 	}
 
 	@POST
@@ -49,6 +49,6 @@ public class FriendshipService {
 			FriendshipBLL.deleteFriendRequest(req, entry[0], entry[1]);
 		}
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").build();
+		return Response.status(Response.Status.OK).build();
 	}
 }
