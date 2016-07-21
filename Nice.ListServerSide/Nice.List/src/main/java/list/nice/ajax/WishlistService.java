@@ -18,18 +18,17 @@ import java.util.List;
  * Created by Jeremy on 1/20/2016.
  */
 @Path("/wishlist")
-public class WishlistService {
+public class WishlistService extends AjaxService {
 
 	@POST
 	@Path("/addListItem")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addListItem(JAXBElement<WishListItem> item, @Context HttpHeaders header) throws GeneralSecurityException, UnsupportedEncodingException {
-		String cookie = header.getCookies().get("nicelist").getValue();
-		String[] entry = cookie.split(":");
-		WishListItem wish = item.getValue();
+		String[] entry = getHeaderSelectorValidatorArray(header);
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(WishListBLL.addWishListItem(wish, entry[0], entry[1])).build();
+		WishListItem wish = item.getValue();
+		return Response.status(Response.Status.OK).entity(WishListBLL.addWishListItem(wish, entry[0], entry[1])).build();
 	}
 
 	@POST
@@ -37,11 +36,10 @@ public class WishlistService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response editListItem(JAXBElement<WishListItem> item, @Context HttpHeaders header) throws GeneralSecurityException, UnsupportedEncodingException {
-		String cookie = header.getCookies().get("nicelist").getValue();
-		String[] entry = cookie.split(":");
+		String[] entry = getHeaderSelectorValidatorArray(header);
 		WishListItem wish = item.getValue();
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(WishListBLL.updateWishListItem(wish, entry[0], entry[1])).build();
+		return Response.status(Response.Status.OK).entity(WishListBLL.updateWishListItem(wish, entry[0], entry[1])).build();
 	}
 
 	@POST
@@ -49,11 +47,12 @@ public class WishlistService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUserWishList(JAXBElement<Friendship> relationship, @Context HttpHeaders header) throws GeneralSecurityException, UnsupportedEncodingException {
-		String cookie = header.getCookies().get("nicelist").getValue();
-		String[] entry = cookie.split(":");
+		String[] entry = getHeaderSelectorValidatorArray(header);
 		Friendship friendship = relationship.getValue();
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*")
-					   .entity(new GenericEntity<List<WishListItem>>(WishListBLL.getFriendsWishList(friendship.getRequesterUserID(), friendship.getRequestedUserID(), entry[0], entry[1])) {}).build();
+		return Response.status(Response.Status.OK)
+					   .entity(new GenericEntity<List<WishListItem>>(
+								   WishListBLL.getFriendsWishList(friendship.getRequesterUserID(), friendship.getRequestedUserID(), entry[0], entry[1])
+					   ) {}).build();
 	}
 }

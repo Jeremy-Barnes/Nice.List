@@ -20,19 +20,18 @@ import java.security.GeneralSecurityException;
  * Created by Jeremy on 1/20/2016.
  */
 @Path("/friends")
-public class FriendshipService {
+public class FriendshipService extends AjaxService {
 
 	@POST
 	@Path("/createFriendship")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createFriendship(JAXBElement<UserFriendAddContainer> request,@Context HttpHeaders header) throws GeneralSecurityException, UnsupportedEncodingException {
-		String cookie = header.getCookies().get("nicelist").getValue();
-		String[] entry = cookie.split(":");
+		String[] entry = getHeaderSelectorValidatorArray(header);
 		UserFriendAddContainer req = request.getValue();
 		FriendshipBLL.createFriendship(req.getUser(), req.getRequestedEmailAddress(), entry[0], entry[1]);
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").build();
+		return Response.status(Response.Status.OK).build();
 	}
 
 	@POST
@@ -40,8 +39,7 @@ public class FriendshipService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateFriendship(JAXBElement<Friendship> request,@Context HttpHeaders header) throws GeneralSecurityException, UnsupportedEncodingException {
-		String cookie = header.getCookies().get("nicelist").getValue();
-		String[] entry = cookie.split(":");
+		String[] entry = getHeaderSelectorValidatorArray(header);
 		Friendship req = request.getValue();
 		if(req.isAccepted()){
 			FriendshipBLL.acceptFriendRequest(req, entry[0], entry[1]);
@@ -49,6 +47,6 @@ public class FriendshipService {
 			FriendshipBLL.deleteFriendRequest(req, entry[0], entry[1]);
 		}
 
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").build();
+		return Response.status(Response.Status.OK).build();
 	}
 }

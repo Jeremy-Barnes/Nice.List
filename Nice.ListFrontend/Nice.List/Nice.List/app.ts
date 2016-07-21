@@ -62,11 +62,11 @@ class App {
     private initUser(): void {
 
         let siteCookie: string = this.findCookie();
-        if (siteCookie == null) { //no user or too many users
+        if (siteCookie == null && ServiceMethods.selectorValidator == null) { //no user or too many users
             //TODO kill these cookies
             this.status(AppStatus.Landing);
         } else {
-            let selectorValidator = siteCookie.split(":");
+            let selectorValidator = siteCookie ? siteCookie.split(":") : ServiceMethods.selectorValidator;
             this.getUser(selectorValidator[0], selectorValidator[1]);
         }
     }

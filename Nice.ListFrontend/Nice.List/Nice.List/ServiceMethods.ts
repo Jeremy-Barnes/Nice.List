@@ -1,17 +1,25 @@
 ﻿class ServiceMethods {
     static baseURL: string = "http://52.32.150.194:8080/api/nice/"; //http://localhost:8080/api/nice/
-
+    static selectorValidator: string[];
 
     public static doAjax(functionName: string, functionService: string, parameters: any): JQueryPromise<any> {
         var param = JSON.stringify(parameters);
         var settings: JQueryAjaxSettings = {
             url: ServiceMethods.baseURL + functionService + "/" + functionName,
             type: "POST",
-            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
             data: param,
-            crossDomain: true
+            contentType: "application/json",
+            headers: {
+                SelectorValidator: ServiceMethods.selectorValidator ? ServiceMethods.selectorValidator[0] + ':' + ServiceMethods.selectorValidator[1] : null,
+            },
+            success: (json, status, args) => {
+                if (args.getResponseHeader("SelectorValidator")) {
+                    ServiceMethods.selectorValidator = args.getResponseHeader("SelectorValidator").split(":");
+                }
+            }
         };
-        return jQuery.ajax(settings);
+        return jQuery.ajax(settings);       
     }
 
     public static createUser(user: UserModel): JQueryPromise<User> {

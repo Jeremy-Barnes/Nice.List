@@ -48,12 +48,12 @@ var App = (function () {
     } //ctor
     App.prototype.initUser = function () {
         var siteCookie = this.findCookie();
-        if (siteCookie == null) {
+        if (siteCookie == null && ServiceMethods.selectorValidator == null) {
             //TODO kill these cookies
             this.status(AppStatus.Landing);
         }
         else {
-            var selectorValidator = siteCookie.split(":");
+            var selectorValidator = siteCookie ? siteCookie.split(":") : ServiceMethods.selectorValidator;
             this.getUser(selectorValidator[0], selectorValidator[1]);
         }
     };

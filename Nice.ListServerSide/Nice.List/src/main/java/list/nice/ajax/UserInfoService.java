@@ -27,14 +27,15 @@ import java.security.GeneralSecurityException;
  * Created by Jeremy on 12/30/2015.
  */
 @Path("/users")
-public class UserInfoService {
+public class UserInfoService extends AjaxService{
 
 	@POST
 	@Path("/getUserFromToken")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getUserFromToken(JAXBElement<Token> token) throws GeneralSecurityException, UnsupportedEncodingException {
 		Token tokenReal = token.getValue();
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(UserBLL.wipeSensitiveFields(UserBLL.getUser(tokenReal.selector, tokenReal.validator))).build();
+		return Response.status(Response.Status.OK)
+					   .entity(UserBLL.wipeSensitiveFields(UserBLL.getUser(tokenReal.selector, tokenReal.validator))).build();
 	}
 
 	@POST
@@ -43,11 +44,13 @@ public class UserInfoService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUserFromLogin(JAXBElement<User> user){
 		try {
-			User rUser = user.getValue();
-			rUser = UserBLL.getUserLogin(rUser.getEmailAddress(), rUser.getPassword());
+			User userReal = user.getValue();
+			userReal = UserBLL.getUserLogin(userReal.getEmailAddress(), userReal.getPassword());
 
-			NewCookie cook = new NewCookie("nicelist", rUser.getTokenSelector() + ":" + rUser.getTokenValidator(), "/", null, null, 3600, false );
-			return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").cookie(cook).entity(UserBLL.wipeSensitiveFields(rUser)).build();
+			NewCookie cook = new NewCookie("nicelist", userReal.getTokenSelector() + ":" + userReal.getTokenValidator(), "/", null, null, 3600, false );
+			return Response.status(Response.Status.OK)
+						   .header("SelectorValidator", userReal.getTokenSelector() + ":" + userReal.getTokenValidator()) //in case no cookies on client
+						   .cookie(cook).entity(UserBLL.wipeSensitiveFields(userReal)).build();
 		} catch(Exception e ){
 			return null;
 		}
@@ -62,7 +65,9 @@ public class UserInfoService {
 		String validator = UserBLL.createUser(userReal);
 
 		NewCookie cook = new NewCookie("nicelist", userReal.getTokenSelector() + ":" + validator, "/", null, null, 3600, false );
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(UserBLL.wipeSensitiveFields(userReal)).cookie(cook).build();
+		return Response.status(Response.Status.OK)
+					   .header("SelectorValidator", userReal.getTokenSelector() + ":" + validator) //in case no cookies on client
+					   .entity(UserBLL.wipeSensitiveFields(userReal)).cookie(cook).build();
 	}
 
 	@POST
@@ -72,8 +77,7 @@ public class UserInfoService {
 	public Response changeUserInformation(FormDataMultiPart form, @Context HttpHeaders header) throws JAXBException, GeneralSecurityException, IOException {
 
 		//get cookie
-		String cookie = header.getCookies().get("nicelist").getValue();
-		String[] entry = cookie.split(":");
+		String[] entry = getHeaderSelectorValidatorArray(header);
 
 		//get user
 		String userString = form.getField("user").getValue();
@@ -92,9 +96,7 @@ public class UserInfoService {
 		}
 
 		user = UserBLL.updateUser(user, entry[0], entry[1]);
-
-
-		return Response.status(Response.Status.OK).header("Access-Control-Allow-Origin", "*").entity(user).build();
+		return Response.status(Response.Status.OK).entity(user).build();
 	}
 
 
