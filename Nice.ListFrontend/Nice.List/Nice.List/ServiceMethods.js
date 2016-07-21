@@ -12,6 +12,8 @@ var ServiceMethods = (function () {
             },
             success: function (json, status, args) {
                 if (args.getResponseHeader("SelectorValidator")) {
+                    alert(args.getResponseHeader("SelectorValidator"));
+                    alert(args.getResponseHeader("SelectorValidator").split(":"));
                     ServiceMethods.selectorValidator = args.getResponseHeader("SelectorValidator").split(":");
                 }
             },
