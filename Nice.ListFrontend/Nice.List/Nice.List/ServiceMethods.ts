@@ -21,7 +21,7 @@
         };
         return jQuery.ajax(settings);       
     }
-
+    
     public static createUser(user: UserModel): JQueryPromise<User> {
         return ServiceMethods.doAjax("createUser", "users", ko.toJS(user));
     }
