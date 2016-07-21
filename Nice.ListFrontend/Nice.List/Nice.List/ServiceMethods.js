@@ -6,8 +6,6 @@ var ServiceMethods = (function () {
         var settings = {
             url: ServiceMethods.baseURL + functionService + "/" + functionName,
             type: "POST",
-            crossDomain: true,
-            data: param,
             contentType: "application/json",
             headers: {
                 SelectorValidator: ServiceMethods.selectorValidator ? ServiceMethods.selectorValidator[0] + ':' + ServiceMethods.selectorValidator[1] : null,
@@ -16,7 +14,9 @@ var ServiceMethods = (function () {
                 if (args.getResponseHeader("SelectorValidator")) {
                     ServiceMethods.selectorValidator = args.getResponseHeader("SelectorValidator").split(":");
                 }
-            }
+            },
+            data: param,
+            crossDomain: true,
         };
         return jQuery.ajax(settings);
     };
