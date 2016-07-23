@@ -13,14 +13,10 @@ public class CORSFilter implements ContainerResponseFilter {
 	public void filter(ContainerRequestContext request,
 					   ContainerResponseContext response) throws IOException {
 		response.getHeaders().add("Access-Control-Allow-Origin", "*");
-		response.getHeaders().add("Access-Control-Allow-Headers",
-								  "origin, content-type, accept, authorization");
+		response.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
 		response.getHeaders().add("Access-Control-Allow-Credentials", "true");
-		response.getHeaders().add("Access-Control-Allow-Methods",
-								  "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-		response.getHeaders().add("Access-Control-Allow-Headers",
-								  "origin, content-type, accept, authorization, selectorvalidator");
-								  //header('Access-Control-Expose-Headers: Custom-Header');
+		response.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+		response.getHeaders().add("Access-Control-Allow-Headers",  "origin, content-type, accept, authorization, selectorvalidator");
 		response.getHeaders().add("Access-Control-Expose-Headers", "SelectorValidator");
 	}
 }

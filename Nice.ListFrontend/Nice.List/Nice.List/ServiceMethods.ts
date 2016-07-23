@@ -41,9 +41,18 @@
             type: "POST",
             contentType: false,
             processData: false,
-            dataType: "json",
+            contentType: "application/json",
             data: dat,
-            crossDomain: true
+            crossDomain: true,
+
+            headers: {
+                SelectorValidator: ServiceMethods.selectorValidator ? ServiceMethods.selectorValidator[0] + ':' + ServiceMethods.selectorValidator[1] : null,
+            },
+            success: (json, status, args) => {
+                if (args.getResponseHeader("SelectorValidator")) {
+                    ServiceMethods.selectorValidator = args.getResponseHeader("SelectorValidator").split(":");
+                }
+            },
         };
         return jQuery.ajax(settings);
     }

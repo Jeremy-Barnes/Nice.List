@@ -12,8 +12,6 @@ var ServiceMethods = (function () {
             },
             success: function (json, status, args) {
                 if (args.getResponseHeader("SelectorValidator")) {
-                    alert(args.getResponseHeader("SelectorValidator"));
-                    alert(args.getResponseHeader("SelectorValidator").split(":"));
                     ServiceMethods.selectorValidator = args.getResponseHeader("SelectorValidator").split(":");
                 }
             },
@@ -39,7 +37,15 @@ var ServiceMethods = (function () {
             processData: false,
             dataType: "json",
             data: dat,
-            crossDomain: true
+            crossDomain: true,
+            headers: {
+                SelectorValidator: ServiceMethods.selectorValidator ? ServiceMethods.selectorValidator[0] + ':' + ServiceMethods.selectorValidator[1] : null,
+            },
+            success: function (json, status, args) {
+                if (args.getResponseHeader("SelectorValidator")) {
+                    ServiceMethods.selectorValidator = args.getResponseHeader("SelectorValidator").split(":");
+                }
+            },
         };
         return jQuery.ajax(settings);
     };
