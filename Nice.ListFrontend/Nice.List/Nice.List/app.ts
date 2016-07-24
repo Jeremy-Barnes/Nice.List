@@ -32,7 +32,6 @@ class App {
 
     constructor() {
         this.passwordsMatch = ko.pureComputed(() => {
-            var passwordCo = this.passwordConfirm();
             return this.user().password() == this.passwordConfirm();
         }, this);
 
@@ -121,6 +120,7 @@ class App {
         ServiceMethods.logIn(this.user()).then(function (o: User) {
             self.user(ko.mapping.fromJS(o));
             self.wishUser(self.user());
+            self.passwordConfirm("");
             (<any>$("#log-in")).modal('hide'); 
            if (o.firstName.length && o.lastName.length) {
                 self.status(AppStatus.Home);

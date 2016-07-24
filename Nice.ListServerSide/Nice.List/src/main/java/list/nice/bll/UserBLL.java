@@ -126,6 +126,12 @@ public class UserBLL {
 		user.setPassword("");
 		user.setTokenSelector("");
 		user.setTokenValidator("");
+		for(User friend : user.getFriends()){
+			friend.setSalt("");
+			friend.setPassword("");
+			friend.setTokenSelector("");
+			friend.setTokenValidator("");
+		}
 		return user;
 	}
 

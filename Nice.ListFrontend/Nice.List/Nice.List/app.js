@@ -24,7 +24,6 @@ var App = (function () {
         this.passwordConfirm = ko.observable("");
         this.wishUser = ko.observable(new UserModel());
         this.passwordsMatch = ko.pureComputed(function () {
-            var passwordCo = _this.passwordConfirm();
             return _this.user().password() == _this.passwordConfirm();
         }, this);
         ko.computed(function () {
@@ -103,6 +102,7 @@ var App = (function () {
         ServiceMethods.logIn(this.user()).then(function (o) {
             self.user(ko.mapping.fromJS(o));
             self.wishUser(self.user());
+            self.passwordConfirm("");
             $("#log-in").modal('hide');
             if (o.firstName.length && o.lastName.length) {
                 self.status(AppStatus.Home);
