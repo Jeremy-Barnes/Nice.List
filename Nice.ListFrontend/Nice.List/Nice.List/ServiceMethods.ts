@@ -39,7 +39,6 @@
         var settings: JQueryAjaxSettings = {
             url: ServiceMethods.baseURL + "users/changeUserInformation",
             type: "POST",
-            contentType: false,
             processData: false,
             contentType: "application/json",
             data: dat,

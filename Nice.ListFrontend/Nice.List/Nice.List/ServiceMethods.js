@@ -33,9 +33,8 @@ var ServiceMethods = (function () {
         var settings = {
             url: ServiceMethods.baseURL + "users/changeUserInformation",
             type: "POST",
-            contentType: false,
             processData: false,
-            dataType: "json",
+            contentType: "application/json",
             data: dat,
             crossDomain: true,
             headers: {
