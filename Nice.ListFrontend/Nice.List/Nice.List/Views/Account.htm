@@ -33,7 +33,7 @@
 
         <div data-bind="css: { passwordMismatch: $root.passwordsMatch() == false}">
             <div class="row">
-                <div class="col-md-12"><input type="password" class="form-control" placeholder="change password" name="changePassword" data-bind="textInput: password" /></div>
+                <div class="col-md-12"><input type="password" class="form-control" placeholder="change password" name="password" data-bind="textInput: password" autocomplete="new-password" /></div>
             </div>
             <div class="row">
                 <div class="col-md-12"><input type="password" class="form-control" placeholder="confirm new password" data-bind="textInput: $root.passwordConfirm" /></div>
