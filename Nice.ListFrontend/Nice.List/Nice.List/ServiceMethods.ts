@@ -40,7 +40,7 @@
             url: ServiceMethods.baseURL + "users/changeUserInformation",
             type: "POST",
             processData: false,
-            contentType: "application/json",
+            contentType: false,
             data: dat,
             crossDomain: true,
 
