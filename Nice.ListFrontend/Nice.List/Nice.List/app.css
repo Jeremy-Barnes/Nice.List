@@ -190,7 +190,7 @@ form > .row, form > div > .row {
 }
 
 .passwordMismatch {
-    background-color: red;
+    border-color: #EF4137;
 }
 
 .promo {
