@@ -304,14 +304,53 @@ a.btn {
     padding-right: 5px;
 }
 
+.nav > li > button {
+    margin-bottom: 10px;
+}
+
+.navbar-collapse > ul >  li {
+    text-align: center;
+}
+
 .nav-img {
-    margin-top: 12%;
-    margin-bottom: 12%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 45%;
+    display: inline;
+    vertical-align: middle;
+}
+
+.navbar-toggle {
+    vertical-align: middle;
+    height: 100%;
+    margin-top: 25px;
+    margin-bottom: 0px;
+    width: 15%;
 }
 
 #landingPage {
     background-image: url(/img/snowflake-pattern-blue.png);
     height:100%;
+}
+@media (min-width: 800px) {
+    #landingPage .mainText {
+        padding-top: 45%;
+    }
+
+    #landingPage .mainText .promo {
+        display: inline-block;
+        margin-bottom: -5%;
+    }
+
+    #landingPage .mainText .promoButtons {
+        margin-top: -20px;
+    }
+}
+
+@media (max-width: 800px) {
+    #landingPage .mainText .promoButtons {
+        text-align: center;
+    }
 }
 
 #features, #about{

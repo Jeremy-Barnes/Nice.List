@@ -26,13 +26,11 @@
     <![endif]-->
 </head>
 <body>
-   
-
     <div data-bind="if: status() == AppStatus.Landing, css: { main: status() == AppStatus.Landing}">
         <nav class="navbar navbar-default ">
             <div class="container">
                 <div class="navbar-header">
-                    <img alt="Nice.List" src="img/nice-list-logo.png" class="nav-img" width="189" height="88">
+                    <img alt="Nice.List" src="img/nice-list-logo.png" class="img-responsive nav-img">
 
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-landing-collapse">
                         <span class="fa fa-bars"></span>
@@ -52,16 +50,19 @@
         <div id="landingPage">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6">
-                        <img src="/img/gift.png" width="504px" height="521px" style="margin-top:10%" />
-                    </div>
-                    <div class="col-md-6">
-                        <div style="margin-top:45%; margin-left:-5%;">
-                            <p class="promo" style="margin-bottom:-5%;">Say goodbye to crappy gifts.</p>
-                            <button type="button" class="btn navbar-btn btn-lg capsule-btn blue">Learn More</button>
-                            <button type="button" class="btn navbar-btn btn-lg capsule-btn yellow" data-toggle="modal" data-target="#sign-up">Sign Up</button>
+                    <div class="col-md-6" style="float: right;">
+                        <div class="mainText">
+                            <p class="promo" >Say goodbye to crappy gifts.</p>
+                            <div class="promoButtons">
+                                <button type="button" class="btn navbar-btn btn-lg capsule-btn blue">Learn More</button>
+                                <button type="button" class="btn navbar-btn btn-lg capsule-btn yellow" data-toggle="modal" data-target="#sign-up">Sign Up</button>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-md-6" style="float: left;">
+                        <img src="/img/gift.png" width="504px" height="521px" class="img-responsive" style="margin-top:10%" />
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -69,11 +70,6 @@
         <div id="features"><div class="container"></div></div>
         <div id="about" class="blue"><div class="container"></div></div>
     </div>
-
-
-
-
-
 
     <div data-bind="if: status() != AppStatus.Landing, css: { main: status() != AppStatus.Landing}">
         <div class="container-fluid" id="bindDIV">
@@ -286,8 +282,5 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
     <script src="bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
-
-   
-
 </body>
 </html>
