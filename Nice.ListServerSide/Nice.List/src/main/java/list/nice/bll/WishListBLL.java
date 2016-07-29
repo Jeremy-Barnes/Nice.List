@@ -16,13 +16,12 @@ import java.util.Set;
  */
 public class WishListBLL {
 
-	public static WishListItem addWishListItem(WishListItem item, String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
+	public static WishListItem addWishListItem(WishListItem item, User user) throws GeneralSecurityException, UnsupportedEncodingException {
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
-		User cookieUser = UserBLL.getUser(selector, validator);
 		correctURLs(item);
-		item.setRequesterUserID(cookieUser.getUserID());
+		item.setRequesterUserID(user.getUserID());
 		item.setDateAdded(Calendar.getInstance().getTime());
 		entityManager.persist(item);
 
@@ -32,15 +31,14 @@ public class WishListBLL {
 		return item;
 	}
 
-	public static WishListItem updateWishListItem(WishListItem item, String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
+	public static WishListItem updateWishListItem(WishListItem item, User user) throws GeneralSecurityException, UnsupportedEncodingException {
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
-		User cookieUser = UserBLL.getUser(selector, validator);
 		correctURLs(item);
-		if(item.getPurchaserUserID() != null && item.getPurchaserUserID() == cookieUser.getUserID()){
+		if(item.getPurchaserUserID() != null && item.getPurchaserUserID() == user.getUserID()){
 			entityManager.merge(item);
-		} else if(item.getRequesterUserID() == cookieUser.getUserID()) {
+		} else if(item.getRequesterUserID() == user.getUserID()) {
 			WishListItem dbItem = (WishListItem) entityManager.createQuery("from WishListItem where wishListItemID = :id").setParameter("id", item.getWishListItemID()).getSingleResult();
 			item.setPurchaserUserID(dbItem.getPurchaserUserID());
 			item.setIsBought(dbItem.getIsBought());
@@ -55,13 +53,12 @@ public class WishListBLL {
 		return item;
 	}
 
-	public static List<WishListItem> getFriendsWishList(int activeUserID, int wishListUserID, String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
+	public static List<WishListItem> getFriendsWishList(int activeUserID, int wishListUserID, User user) throws GeneralSecurityException, UnsupportedEncodingException {
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
-		User cookieUser = UserBLL.getUser(selector, validator);
 		List<WishListItem> dbItems;
-		if(activeUserID == cookieUser.getUserID()) {
+		if(activeUserID == user.getUserID()) {
 			dbItems = (List<WishListItem>) entityManager.createQuery("from WishListItem where requesterUserID = :id and isBought = false").setParameter("id", wishListUserID).getResultList();
 		} else {
 			throw new GeneralSecurityException();
@@ -83,7 +80,7 @@ public class WishListBLL {
 	private static void correctURLs(WishListItem item){
 		String correctedURL = item.getURL();
 
-		if(correctedURL.toUpperCase().contains("HTTP://") || correctedURL.toUpperCase().contains("HTTPS://")) {
+		if(correctedURL == null || correctedURL.isEmpty() || correctedURL.toUpperCase().contains("HTTP://") || correctedURL.toUpperCase().contains("HTTPS://")) {
 			return;
 		} else {
 			correctedURL = "http://" + correctedURL;

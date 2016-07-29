@@ -8,6 +8,7 @@ import list.nice.dal.dto.User;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.swing.filechooser.FileSystemView;
+import javax.ws.rs.core.Context;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
+import java.util.UUID;
 
 
 /**
@@ -22,7 +24,9 @@ import java.security.SecureRandom;
  */
 public class UserBLL {
 
-	public static String createUser(User user) throws GeneralSecurityException, UnsupportedEncodingException {
+	@Context
+
+	public static String createUserReturnUnHashedValidator(User user) throws GeneralSecurityException, UnsupportedEncodingException {
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
@@ -87,37 +91,23 @@ public class UserBLL {
 		return user;
 	}
 
-	public static User updateUser(User user, String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
-		User confirmUser = getUser(selector, validator);
-		if(confirmUser == null || confirmUser.getUserID() != user.getUserID()){
-			throw new GeneralSecurityException("Invalid Cookie");
-		}
-		user.setTokenSelector(confirmUser.getTokenSelector());
-		user.setTokenValidator(confirmUser.getTokenValidator());
+	public static User updateUser(User changeUser, User sessionUser) throws GeneralSecurityException, UnsupportedEncodingException {
+
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
-		if(user.getPassword() != null && !user.getPassword().isEmpty()) {
-			hashAndSaltPassword(user);
-			confirmUser.setPassword(user.getPassword());
-			confirmUser.setSalt(user.getSalt());
+		if(changeUser.getPassword() != null && !changeUser.getPassword().isEmpty()) {
+			hashAndSaltPassword(changeUser);
+			sessionUser.setPassword(changeUser.getPassword());
+			sessionUser.setSalt(changeUser.getSalt());
 		} else {
-			user.setPassword(confirmUser.getPassword());
-			user.setSalt(confirmUser.getSalt());
+			changeUser.setPassword(sessionUser.getPassword());
+			changeUser.setSalt(sessionUser.getSalt());
 		}
-		confirmUser.setFirstName(user.getFirstName());
-		confirmUser.setLastName(user.getLastName());
-		confirmUser.setCity(user.getCity());
-		confirmUser.setState(user.getState());
-		confirmUser.setPostcode(user.getPostcode());
-		confirmUser.setCountry(user.getCountry());
-		confirmUser.setPictureURL(user.getPictureURL());
-		confirmUser.setEmailAddress(user.getEmailAddress());
-
-		entityManager.merge(confirmUser);
+		entityManager.merge(changeUser);
 		entityManager.getTransaction().commit();
 		entityManager.close();
-		return user;
+		return changeUser;
 	}
 
 	public static User wipeSensitiveFields(User user) {
@@ -180,11 +170,10 @@ public class UserBLL {
 		String validatorStr = new String(Base64.encode(validatorByte)); //Get in UTF
 		byte[] hashedValidatorByte = SCrypt.scrypt(validatorStr.getBytes("UTF-8"), validatorStr.getBytes("UTF-8"), 16384, 8, 1, 64);
 
-		byte[] selectorByte = SCrypt.scrypt(user.getEmailAddress().getBytes("UTF-8"), user.getEmailAddress().getBytes("UTF-8"), 16384, 8, 1, 64);
-		user.setTokenSelector(new String(Base64.encode(selectorByte)));
+		user.setTokenSelector(UUID.randomUUID().toString());
 		user.setTokenValidator(new String(Base64.encode(hashedValidatorByte)));
-
-		return validatorStr; //TODO make this actually unique
+		String uuid = UUID.randomUUID().toString();
+		return validatorStr;
 	}
 
 	protected static boolean verifyValidator(String suppliedValidator, User dbUser) throws GeneralSecurityException, UnsupportedEncodingException {

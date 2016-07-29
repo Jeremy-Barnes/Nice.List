@@ -62,7 +62,6 @@ class App {
 
         let siteCookie: string = this.findCookie();
         if (siteCookie == null && ServiceMethods.selectorValidator == null) { //no user or too many users
-            //TODO kill these cookies
             this.status(AppStatus.Landing);
         } else {
             let selectorValidator = siteCookie ? siteCookie.split(":") : ServiceMethods.selectorValidator;
@@ -74,7 +73,7 @@ class App {
 
         let usefulCookies = ("; " + document.cookie).split("; nicelist="); //everyone else's garbage ; mine
         if (usefulCookies.length == 2) {
-            return usefulCookies[1];
+            return usefulCookies[1].split(";")[0]; //mine; other garbage
         } else {
             return null;
         }
@@ -179,8 +178,14 @@ class App {
     }
 
     public updateWishListItem() {
+        if (!this.editWishListItem().wishListItemID()) {
+            this.addWishListItem();
+            return;
+        }
+
         if (this.editWishListItem().price(0) == null) this.editWishListItem().price(0);
         var self = this;
+        
         ServiceMethods.updateWishListItem(this.editWishListItem()).then(function (item: WishListItem) {
             if (!(self.editWishListItem().wishListItemID() > 0)) {
                 self.user().wishList.push(ko.mapping.fromJS(item));

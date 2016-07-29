@@ -13,14 +13,13 @@ import java.security.GeneralSecurityException;
  */
 public class FriendshipBLL {
 
-	public static void createFriendship(User requester, String requesteeEmail, String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
+	public static void createFriendship(User requester, String requesteeEmail, User user) throws GeneralSecurityException, UnsupportedEncodingException {
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
-		User cookieUser = UserBLL.getUser(selector, validator);
 		User requestedFriend = UserBLL.getUser(requesteeEmail);
-		if(cookieUser.getEmailAddress().equalsIgnoreCase(requester.getEmailAddress())){
-			Friendship request = new Friendship(cookieUser.getUserID(), requestedFriend.getUserID(),false);
+		if(user.getEmailAddress().equalsIgnoreCase(requester.getEmailAddress())){
+			Friendship request = new Friendship(user.getUserID(), requestedFriend.getUserID(),false);
 			entityManager.persist(request);
 		} else {
 			throw new GeneralSecurityException("Invalid cookie supplied");
@@ -30,12 +29,11 @@ public class FriendshipBLL {
 		entityManager.close();
 	}
 
-	public static void acceptFriendRequest(Friendship request, String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
+	public static void acceptFriendRequest(Friendship request, User user) throws GeneralSecurityException, UnsupportedEncodingException {
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
-		User cookieUser = UserBLL.getUser(selector, validator);
-		if(cookieUser.getUserID() == request.getRequestedUserID()) {
+		if(user.getUserID() == request.getRequestedUserID()) {
 			Friendship dbReq = (Friendship) entityManager.createQuery("from Friendship where requesterUserID = :req and requestedUserID = :friend")
 														 .setParameter("req", request.getRequesterUserID()).setParameter("friend", request.getRequestedUserID())
 														 .getSingleResult();
@@ -52,12 +50,11 @@ public class FriendshipBLL {
 		}
 	}
 
-	public static void deleteFriendRequest(Friendship request, String selector, String validator) throws GeneralSecurityException, UnsupportedEncodingException {
+	public static void deleteFriendRequest(Friendship request, User user) throws GeneralSecurityException, UnsupportedEncodingException {
 		EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
-		User cookieUser = UserBLL.getUser(selector, validator);
-		if(cookieUser.getUserID() == request.getRequestedUserID()) {
+		if(user.getUserID() == request.getRequestedUserID()) {
 			Friendship dbReq = (Friendship) entityManager.createQuery("from Friendship where requesterUserID = :req and requestedUserID = :friend")
 														 .setParameter("req", request.getRequesterUserID()).setParameter("friend", request.getRequestedUserID())
 														 .getSingleResult();

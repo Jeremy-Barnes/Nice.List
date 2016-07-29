@@ -2,6 +2,7 @@ package list.nice.ajax;
 
 import list.nice.bll.WishListBLL;
 import list.nice.dal.dto.Friendship;
+import list.nice.dal.dto.User;
 import list.nice.dal.dto.WishListItem;
 
 import javax.ws.rs.Consumes;
@@ -25,10 +26,13 @@ public class WishlistService extends AjaxService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addListItem(JAXBElement<WishListItem> item, @Context HttpHeaders header) throws GeneralSecurityException, UnsupportedEncodingException {
-		String[] entry = getHeaderSelectorValidatorArray(header);
+		User loggedInUser = (User) httpRequest.getSession().getAttribute("user");
+		if(loggedInUser == null) {
+			return Response.status(Response.Status.UNAUTHORIZED).entity("You need to log in first!").build();
+		}
 
 		WishListItem wish = item.getValue();
-		return Response.status(Response.Status.OK).entity(WishListBLL.addWishListItem(wish, entry[0], entry[1])).build();
+		return Response.status(Response.Status.OK).entity(WishListBLL.addWishListItem(wish, loggedInUser)).build();
 	}
 
 	@POST
@@ -36,10 +40,14 @@ public class WishlistService extends AjaxService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response editListItem(JAXBElement<WishListItem> item, @Context HttpHeaders header) throws GeneralSecurityException, UnsupportedEncodingException {
-		String[] entry = getHeaderSelectorValidatorArray(header);
+		User loggedInUser = (User) httpRequest.getSession().getAttribute("user");
+		if(loggedInUser == null) {
+			return Response.status(Response.Status.UNAUTHORIZED).entity("You need to log in first!").build();
+		}
+
 		WishListItem wish = item.getValue();
 
-		return Response.status(Response.Status.OK).entity(WishListBLL.updateWishListItem(wish, entry[0], entry[1])).build();
+		return Response.status(Response.Status.OK).entity(WishListBLL.updateWishListItem(wish, loggedInUser)).build();
 	}
 
 	@POST
@@ -47,12 +55,16 @@ public class WishlistService extends AjaxService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUserWishList(JAXBElement<Friendship> relationship, @Context HttpHeaders header) throws GeneralSecurityException, UnsupportedEncodingException {
-		String[] entry = getHeaderSelectorValidatorArray(header);
+		User loggedInUser = (User) httpRequest.getSession().getAttribute("user");
+		if(loggedInUser == null) {
+			return Response.status(Response.Status.UNAUTHORIZED).entity("You need to log in first!").build();
+		}
+
 		Friendship friendship = relationship.getValue();
 
 		return Response.status(Response.Status.OK)
 					   .entity(new GenericEntity<List<WishListItem>>(
-								   WishListBLL.getFriendsWishList(friendship.getRequesterUserID(), friendship.getRequestedUserID(), entry[0], entry[1])
+								   WishListBLL.getFriendsWishList(friendship.getRequesterUserID(), friendship.getRequestedUserID(), loggedInUser)
 					   ) {}).build();
 	}
 }

@@ -47,26 +47,31 @@ public class UserInfoService extends AjaxService{
 			User userReal = user.getValue();
 			userReal = UserBLL.getUserLogin(userReal.getEmailAddress(), userReal.getPassword());
 
+			httpRequest.getSession().setAttribute("user", userReal);
+
 			NewCookie cook = new NewCookie("nicelist", userReal.getTokenSelector() + ":" + userReal.getTokenValidator(), "/", null, null, 3600, false );
-			return Response.status(Response.Status.OK)
-						   .header("SelectorValidator", userReal.getTokenSelector() + ":" + userReal.getTokenValidator()) //in case no cookies on client
-						   .cookie(cook).entity(UserBLL.wipeSensitiveFields(userReal)).build();
+			NewCookie sessionID = new NewCookie("JSESSIONID", httpRequest.getSession().getId(), "/", null, null, 3600, false ); //used because setting other cookie seems to overwrite Tomcat generated cookie.
+
+			return Response.status(Response.Status.OK).cookie(cook, sessionID)
+						   .entity(UserBLL.wipeSensitiveFields(userReal)).build();
 		} catch(Exception e ){
 			return null;
 		}
 	}
 
 	@POST
-	@Path("/createUser")
+	@Path("/createUserReturnUnHashedValidator")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response putUser(JAXBElement<User> user) throws GeneralSecurityException, URISyntaxException, UnsupportedEncodingException {
 		User userReal = user.getValue();
-		String validator = UserBLL.createUser(userReal);
+		String validator = UserBLL.createUserReturnUnHashedValidator(userReal);
 
+		httpRequest.getSession().setAttribute("user", userReal);
 		NewCookie cook = new NewCookie("nicelist", userReal.getTokenSelector() + ":" + validator, "/", null, null, 3600, false );
+		NewCookie sessionID = new NewCookie("JSESSIONID", httpRequest.getSession().getId(), "/", null, null, 3600, false ); //used because setting other cookie seems to overwrite Tomcat generated cookie.
 		return Response.status(Response.Status.OK)
-					   .header("SelectorValidator", userReal.getTokenSelector() + ":" + validator) //in case no cookies on client
+					   .cookie(cook, sessionID)
 					   .entity(UserBLL.wipeSensitiveFields(userReal)).cookie(cook).build();
 	}
 
@@ -75,8 +80,11 @@ public class UserInfoService extends AjaxService{
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response changeUserInformation(FormDataMultiPart form, @Context HttpHeaders header) throws JAXBException, GeneralSecurityException, IOException {
-		//get cookie
-		String[] entry = getHeaderSelectorValidatorArray(header);
+		User loggedInUser = (User) httpRequest.getSession().getAttribute("user");
+
+		if(loggedInUser == null) {
+			return Response.status(Response.Status.UNAUTHORIZED).entity("You need to log in first!").build();
+		}
 
 		//get user
 		String userString = form.getField("user").getValue();
@@ -94,8 +102,9 @@ public class UserInfoService extends AjaxService{
 		} catch(Exception e) { //swallow exception, merely indicates bad file or no file, either way, no action required.
 		}
 
-		user = UserBLL.updateUser(user, entry[0], entry[1]);
-		return Response.status(Response.Status.OK).entity(user).build();
+		user = UserBLL.updateUser(user, loggedInUser);
+		httpRequest.getSession().setAttribute("user", user);
+		return Response.status(Response.Status.OK).entity(UserBLL.wipeSensitiveFields(user)).build();
 	}
 
 

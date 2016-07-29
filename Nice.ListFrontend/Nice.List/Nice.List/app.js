@@ -48,7 +48,6 @@ var App = (function () {
     App.prototype.initUser = function () {
         var siteCookie = this.findCookie();
         if (siteCookie == null && ServiceMethods.selectorValidator == null) {
-            //TODO kill these cookies
             this.status(AppStatus.Landing);
         }
         else {
@@ -59,7 +58,7 @@ var App = (function () {
     App.prototype.findCookie = function () {
         var usefulCookies = ("; " + document.cookie).split("; nicelist="); //everyone else's garbage ; mine
         if (usefulCookies.length == 2) {
-            return usefulCookies[1];
+            return usefulCookies[1].split(";")[0]; //mine; other garbage
         }
         else {
             return null;
@@ -155,6 +154,10 @@ var App = (function () {
         $("#edit-item").modal('show');
     };
     App.prototype.updateWishListItem = function () {
+        if (!this.editWishListItem().wishListItemID()) {
+            this.addWishListItem();
+            return;
+        }
         if (this.editWishListItem().price(0) == null)
             this.editWishListItem().price(0);
         var self = this;
