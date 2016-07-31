@@ -77,10 +77,8 @@ public class UserBLL {
 			validator = createSelectorAndHashValidator(user);
 			user.initWishList(); //fight Hibernate's stupid lazy loading
 			user.initFriendsList();
-
 			entityManager.getTransaction().commit();
 			entityManager.close();
-
 		} else {
 			entityManager.getTransaction().rollback();
 			entityManager.close();
@@ -100,11 +98,17 @@ public class UserBLL {
 			hashAndSaltPassword(changeUser);
 			sessionUser.setPassword(changeUser.getPassword());
 			sessionUser.setSalt(changeUser.getSalt());
-		} else {
-			changeUser.setPassword(sessionUser.getPassword());
-			changeUser.setSalt(sessionUser.getSalt());
 		}
-		entityManager.merge(changeUser);
+		sessionUser.setFirstName(changeUser.getFirstName());
+		sessionUser.setLastName(changeUser.getLastName());
+		sessionUser.setPostcode(changeUser.getPostcode());
+		sessionUser.setEmailAddress(changeUser.getEmailAddress());
+		sessionUser.setEmailAddress(changeUser.getEmailAddress());
+		sessionUser.setCity(changeUser.getCity());
+		sessionUser.setState(changeUser.getState());
+		sessionUser.setCountry(changeUser.getCountry());
+
+		entityManager.merge(sessionUser);
 		entityManager.getTransaction().commit();
 		entityManager.close();
 		return changeUser;

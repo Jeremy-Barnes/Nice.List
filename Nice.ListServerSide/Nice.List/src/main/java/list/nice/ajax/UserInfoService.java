@@ -32,10 +32,19 @@ public class UserInfoService extends AjaxService{
 	@POST
 	@Path("/getUserFromToken")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getUserFromToken(JAXBElement<Token> token) throws GeneralSecurityException, UnsupportedEncodingException {
+	public Response getUserFromToken(JAXBElement<Token> token) throws GeneralSecurityException, UnsupportedEncodingException, JAXBException {
 		Token tokenReal = token.getValue();
+
+		User user = UserBLL.getUser(tokenReal.selector, tokenReal.validator);
+		httpRequest.getSession().setAttribute("user", user);
+
+		User copiedUser = super.serializeDeepCopy(user, User.class);
+
+		NewCookie cook = new NewCookie("nicelist", user.getTokenSelector() + ":" + user.getTokenValidator(), "/", null, null, 3600, false );
+		NewCookie sessionID = new NewCookie("JSESSIONID", httpRequest.getSession().getId(), "/", null, null, 3600, false ); //used because setting other cookie seems to overwrite Tomcat generated cookie.
+
 		return Response.status(Response.Status.OK)
-					   .entity(UserBLL.wipeSensitiveFields(UserBLL.getUser(tokenReal.selector, tokenReal.validator))).build();
+					   .entity(UserBLL.wipeSensitiveFields(copiedUser)).build();
 	}
 
 	@POST
@@ -47,32 +56,36 @@ public class UserInfoService extends AjaxService{
 			User userReal = user.getValue();
 			userReal = UserBLL.getUserLogin(userReal.getEmailAddress(), userReal.getPassword());
 
+			//quick deep copy so we can keep sensitive data in memory but wipe for sending over the wire.
 			httpRequest.getSession().setAttribute("user", userReal);
+			User copiedUser = super.serializeDeepCopy(userReal, User.class);
 
 			NewCookie cook = new NewCookie("nicelist", userReal.getTokenSelector() + ":" + userReal.getTokenValidator(), "/", null, null, 3600, false );
 			NewCookie sessionID = new NewCookie("JSESSIONID", httpRequest.getSession().getId(), "/", null, null, 3600, false ); //used because setting other cookie seems to overwrite Tomcat generated cookie.
 
 			return Response.status(Response.Status.OK).cookie(cook, sessionID)
-						   .entity(UserBLL.wipeSensitiveFields(userReal)).build();
+						   .entity(UserBLL.wipeSensitiveFields(copiedUser)).build();
 		} catch(Exception e ){
 			return null;
 		}
 	}
 
 	@POST
-	@Path("/createUserReturnUnHashedValidator")
+	@Path("/createUser")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response putUser(JAXBElement<User> user) throws GeneralSecurityException, URISyntaxException, UnsupportedEncodingException {
+	public Response putUser(JAXBElement<User> user) throws GeneralSecurityException, URISyntaxException, UnsupportedEncodingException, JAXBException {
 		User userReal = user.getValue();
 		String validator = UserBLL.createUserReturnUnHashedValidator(userReal);
 
 		httpRequest.getSession().setAttribute("user", userReal);
+		User copiedUser = super.serializeDeepCopy(userReal, User.class);
+
 		NewCookie cook = new NewCookie("nicelist", userReal.getTokenSelector() + ":" + validator, "/", null, null, 3600, false );
 		NewCookie sessionID = new NewCookie("JSESSIONID", httpRequest.getSession().getId(), "/", null, null, 3600, false ); //used because setting other cookie seems to overwrite Tomcat generated cookie.
 		return Response.status(Response.Status.OK)
 					   .cookie(cook, sessionID)
-					   .entity(UserBLL.wipeSensitiveFields(userReal)).cookie(cook).build();
+					   .entity(UserBLL.wipeSensitiveFields(copiedUser)).cookie(cook).build();
 	}
 
 	@POST
@@ -103,7 +116,6 @@ public class UserInfoService extends AjaxService{
 		}
 
 		user = UserBLL.updateUser(user, loggedInUser);
-		httpRequest.getSession().setAttribute("user", user);
 		return Response.status(Response.Status.OK).entity(UserBLL.wipeSensitiveFields(user)).build();
 	}
 

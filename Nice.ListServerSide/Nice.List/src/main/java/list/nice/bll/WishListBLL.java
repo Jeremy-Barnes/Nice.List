@@ -80,18 +80,14 @@ public class WishListBLL {
 	private static void correctURLs(WishListItem item){
 		String correctedURL = item.getURL();
 
-		if(correctedURL == null || correctedURL.isEmpty() || correctedURL.toUpperCase().contains("HTTP://") || correctedURL.toUpperCase().contains("HTTPS://")) {
-			return;
-		} else {
+		if(!(correctedURL == null || correctedURL.isEmpty() || correctedURL.toUpperCase().contains("HTTP://") || correctedURL.toUpperCase().contains("HTTPS://"))) {
 			correctedURL = "http://" + correctedURL;
 		}
 		item.setURL(correctedURL);
 
 		String correctedImgURL = item.getImageURL();
 
-		if(correctedImgURL.toUpperCase().contains("HTTP://") || correctedImgURL.toUpperCase().contains("HTTPS://")) {
-			return;
-		} else {
+		if(!(correctedImgURL == null || correctedImgURL.isEmpty() || correctedImgURL.toUpperCase().contains("HTTP://") || correctedImgURL.toUpperCase().contains("HTTPS://"))) {
 			correctedImgURL = "http://" + correctedImgURL;
 		}
 		item.setImageURL(correctedImgURL);
