@@ -82,7 +82,8 @@ var ServiceMethods = (function () {
         };
         return ServiceMethods.doAjax("getUserWishList", "wishlist", req);
     };
-    ServiceMethods.baseURL = "http://52.32.150.194:8080/api/nice/"; //http://localhost:8080/api/nice/
+    //   static baseURL: string = "https://ec2-52-32-150-194.us-west-2.compute.amazonaws.com/api/nice/"; //http://localhost:8080/api/nice/
+    ServiceMethods.baseURL = "https://" + window.location.hostname + "/api/nice/"; //http://localhost:8080/api/nice/
     return ServiceMethods;
 })();
 //# sourceMappingURL=ServiceMethods.js.map
