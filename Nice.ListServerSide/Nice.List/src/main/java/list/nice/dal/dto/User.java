@@ -6,6 +6,7 @@ import org.hibernate.annotations.WhereJoinTable;
 import org.hibernate.collection.internal.PersistentSet;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -208,11 +209,12 @@ public class User {
 	}
 
 	public void setFriends(Set<User> friends) {
-		this.friends = friends;
-		this.friendsInitialized = false;
-		this.friendsSnapshot = new HashSet<User>();
-		this.requestsToReviewSnapshot = new HashSet<User>();
-		this.friendsOfSnapshot = new HashSet<User>();
+		friendsSnapshot = new HashSet<User>(Arrays.asList(friends.toArray(new User[0])));
+//		this.friends = friends;
+//		this.friendsInitialized = false;
+//		this.friendsSnapshot = new HashSet<User>();
+//		this.requestsToReviewSnapshot = new HashSet<User>();
+//		this.friendsOfSnapshot = new HashSet<User>();
 	}
 
 	public void setFriendsOf(Set<User> friendsOf) {
